@@ -1,0 +1,835 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"/>
+<script>
+  const shopify_customer_id = '{{customer.id}}';
+  const customerEmail = '{{customer.email}}';
+  const customerPhoneNumber = '{{customer.phone}}';
+  //var shopify_customer_id = '2861391052877';
+  const shop_money_format = "{{ shop.money_format }}";
+
+  const allOrders = [
+    {% for order in customer.orders %}
+    {
+      {% if order.cancelled %}
+      cancelled: 'cancelled_order',
+      {% else %}
+      cancelled: '',
+      {% endif %}
+      forLooper: `{% include "for-looper" %}`,
+      id: {{ order.id }},
+      createdAt: '{{ order.created_at | date: format: "short_month" }}',
+      name: '{{ order.name }}',
+      nameHandlize: '{{ order.name | handleize }}',
+      fulfillmentStatus: '{{ order.fulfillment_status }}',
+      financialStatus: '{{ order.financial_status }}',
+      {%if order.fulfillment_status == "fulfilled"%}
+      paymentStatus: 'Delivered',
+      {% else %}
+      {%if order.financial_status == "paid"%}
+      paymentStatus: 'Payment Received',
+      {%else%}
+      paymentStatus: '{{order.financial_status_label}}',
+      {%endif%}
+      {%endif%}
+      financialStatusLabel: '{{order.financial_status_label}}',
+      trackingNumbers: [
+        {% for item in order.line_items %}
+        '{{ item.fulfillment.tracking_number | link_to: item.fulfillment.tracking_url  }}',
+        {% endfor %}
+      ],
+      items: [
+        {% for item in order.line_items %}
+        '{{ item.title | capitalize }}',
+        {% endfor %}
+      ],
+      totalPrice: '{{ order.total_price | money }}',
+    },
+    {% endfor %}
+  ];
+
+  let dataStateSubscriptions = [];
+  let dataStateVisa = [];
+  const CANCELLED = 'CANCELLED'
+  const TYPE_NO_CONTRACT = 'NO_CONTRACT'
+  const TYPE_CONTRACT = 'CONTRACT'
+
+  function loading(element) {
+    $(element).html('');
+    const html = `
+    <div class="cf-react-target">
+      <div class="cf-preload">
+        {% for i in (1..3) %}
+        <div class="cf-preload-label cf-preload-item"></div>
+        <div class="cf-preload-field cf-preload-item"></div>
+        {% endfor %}
+        {% for i in (1..2) %}
+        <span class="cf-preload-button cf-preload-item"></span>
+        {% endfor %}
+      </div>
+    </div>
+    `;
+    $(element).html(html);
+  }
+
+  function loading_subscriptions() {
+    loading('#subscription-plan');
+    const code = Math.random().toString(36).substring(2, 12);
+    $.get(`/apps/2b-offspring/customers/${shopify_customer_id}/subscriptions`)
+      .done(function (dataSubscriptions) {
+        $.get(`/apps/2b-offspring/customers/${shopify_customer_id}/payments`)
+          .done(function (dataVisa) {
+            render_subscriptions(dataSubscriptions, dataVisa)
+          });
+      });
+  }
+
+  function render_subscriptions(dataSubscriptions, dataVisa) {
+    dataStateSubscriptions = dataSubscriptions;
+    dataStateVisa = dataVisa;
+
+    let html = '';
+    html += `
+      <div class="section-title single-borders">
+        <h2 class="accent-text text-center">Subscription Plan</h2>
+      </div>
+      <div class="info-title">SUBSCRIPTION PLAN</div>
+      <p class="text12">This is where you can view the status or modify your subscription plan.</p>
+    `;
+
+    if (dataSubscriptions && dataSubscriptions.length > 0) {
+      html += '<div id="show-subscriptions">'
+      $.each(dataSubscriptions, function (i, subscription) {
+        const {
+          next_charge_scheduled_at,
+          order_interval_frequency,
+          order_interval_unit,
+          price,
+          compare_at_price,
+          quantity,
+          status,
+          product_title,
+          subscriptionTitle,
+          subscriptionDescription,
+          expire_after_specific_number_of_charges,
+          subscriptionRuleType = TYPE_NO_CONTRACT,
+          image_url,
+        } = subscription
+        const nextSchedule = new Date(next_charge_scheduled_at).toLocaleString('en-us', {
+          month: 'short',
+          day: '2-digit',
+          year: 'numeric',
+        });
+        html += `
+        <div class="subscription_item">
+          <div class="subscription_description">
+            <img class="subscription_img" src="${image_url}"/>
+            <div class="subscription_info">
+              <div class="description_title">${product_title}</div>
+              <div class="description_price">${Shopify.formatMoney(2 * parseFloat(price) * parseInt(quantity), shop_money_format)}<span class="text12">/${
+                String(order_interval_frequency) === '1' || subscriptionRuleType === 'CONTRACT'
+                  ? `${order_interval_unit[0].toUpperCase() + order_interval_unit.slice(1).toLowerCase()}ly`
+                  : `${order_interval_frequency} ${order_interval_unit.toLowerCase()}s`
+              }</span></div>
+              <div class="description_plan text12">${
+                subscriptionTitle
+                || `${order_interval_frequency} ${String(order_interval_frequency) === '1' ? order_interval_unit : `${order_interval_unit}s`} plan, billed ${String(order_interval_frequency) === '1' ? `${order_interval_unit}ly` : `every ${order_interval_frequency} ${order_interval_unit}s`}`}</div>
+              <div class="description_schedule text12">${next_charge_scheduled_at ? `Next payment is scheduled for ${nextSchedule}.` : 'This plan is paused'}</div>
+              <div class="description_visa-info text12">Visa ending ****${dataStateVisa[0].card_last4}</div>
+            </div>
+          </div>
+          <div class="subscription_manage">
+        `
+        if (status === CANCELLED) {
+          html += '<div class="subscription_cancel">Paused</div>'
+        }
+        if (TYPE_CONTRACT === subscriptionRuleType && expire_after_specific_number_of_charges) {
+          html += '<div class="subscription_cancel">Canceled</div>'
+        }
+        html += `
+            <button type="button" data-id="${subscription.id}" class="btn button white manage"><span>Manage</span></button>
+          </div>
+        </div>
+        `
+      });
+      html += `
+        <a href="/collections/subscription-plan"><button type="button" class="btn button"><span>Add plan</span></button></a>
+      </div>
+      `;
+    } else {
+      html += '<div>You don\'t have any subscriptions!</div>'
+    }
+
+    $('#subscription-plan').html(html);
+  }
+
+  function loading_subscriptions_detail(subscriptionId) {
+    loading('#subscription-plan');
+
+    let html = '';
+    html += `
+    <div class="section-title single-borders">
+      <h2 class="accent-text text-center">Subscription Plan</h2>
+    </div>
+    <div class="info-title">PLAN INFORMATION</div>
+    <p class="text12">This is where you can view the status or modify your subscription plan.</p>
+    `
+    let subscriptionData;
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      html += '<div id="show-subscriptions">'
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          id,
+          address_id,
+          shopify_product_id,
+          next_charge_scheduled_at,
+          expire_after_specific_number_of_charges,
+          order_interval_frequency,
+          order_interval_unit,
+          price,
+          compare_at_price,
+          quantity,
+          status,
+          product_title,
+          subscriptionTitle,
+          subscriptionDescription,
+          subscriptionRuleType = TYPE_NO_CONTRACT,
+          image_url,
+          resumeDate,
+          havePaused,
+        } = subscriptionData
+        $.get(`/apps/2b-offspring/customers/${shopify_customer_id}/subscriptions/${address_id}/${shopify_product_id}/orders`)
+          .done(function(dataOrders) {
+            const nextSchedule = new Date(next_charge_scheduled_at).toLocaleString('en-us', {
+              month: 'short',
+              day: '2-digit',
+              year: 'numeric',
+            });
+            html += `
+            <div class="subscription_item center">
+              <div class="subscription_description">
+                <img class="subscription_img" src="${image_url}"/>
+                <div class="subscription_info">
+                  <div class="description_title">${product_title}
+                  ${(TYPE_CONTRACT === subscriptionRuleType && expire_after_specific_number_of_charges) ? '<span class="subscription_cancel">Canceled</span>' : ''}
+                  </div>
+                  <div class="description_plan text12">${subscriptionTitle || ''}</div>
+            `
+
+            if (status === CANCELLED && subscriptionRuleType === TYPE_CONTRACT ) {
+              const resumeDateDay = new Date(resumeDate).toLocaleString('en-us', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+              });
+              html += `
+              <div class="subscription_cancel">Paused.</div>
+              <div class="description_visa-info text12">Resumed automatically on <span class="red">${resumeDateDay}</span>.</div>
+              `;
+            } else {
+              html += `
+              <div class="description_schedule text12">${
+                subscriptionDescription
+                || `${order_interval_frequency} ${String(order_interval_frequency) === '1' ? order_interval_unit : `${order_interval_unit}s`} plan, billed ${String(order_interval_frequency) === '1' ? `${order_interval_unit}ly` : `every ${order_interval_frequency} ${order_interval_unit}s`}`}</div>
+
+              `;
+            }
+            html += `
+              </div>
+            </div>
+            <div class="subscription_manage">
+            `;
+            if (status === 'CANCELLED') {
+              html += `
+              <button type="button" data-id="${id}" data-mfp-src="#resume-modal" class="btn button white resume"><span>Resume Plan</span></button>
+              `;
+            } else if (!havePaused) {
+              html += `
+              <button type="button" data-id="${id}" class="btn button white pause"><span>Pause Plan</span></button>
+              `;
+            }
+            if (!(TYPE_CONTRACT === subscriptionRuleType && expire_after_specific_number_of_charges)) {
+              html += `
+              <button type="button" data-id="${id}" data-status="${status}" class="btn button white cancel mg-l"><span>Cancel Plan</span></button>
+              `;
+            }
+            html += `
+            </div>
+            </div>
+            <div class="subscription_item center">
+              <div class="subscription_description">
+                <div>Payment Information</div>
+                <div class="subscription_info">
+                  <div class="description_price">${Shopify.formatMoney(2 * parseFloat(price) * parseInt(quantity), shop_money_format)}<span class="text12">/${
+                String(order_interval_frequency) === '1' || subscriptionRuleType === 'CONTRACT'
+                  ? `${order_interval_unit[0].toUpperCase() + order_interval_unit.slice(1).toLowerCase()}ly`
+                  : `${order_interval_frequency} ${order_interval_unit.toLowerCase()}`
+              }</span></div>
+                  <div class="description_schedule text12">${next_charge_scheduled_at ? `Next payment is scheduled for <span class="red">${nextSchedule}</span>` : 'This plan is paused'}.</div>
+            `;
+            if (TYPE_CONTRACT === subscriptionRuleType && expire_after_specific_number_of_charges) {
+              html += `
+              <div class="description_visa-info text12">This plan will cancel after last bill</div>
+              `;
+            }
+            html += `
+                  <div class="description_visa-info text12">Visa ending ****${dataStateVisa[0].card_last4}</div>
+                </div>
+              </div>
+              <div class="subscription_manage">
+              <button type="button" class="btn button white payment"><span>Manage Payment</span></button>
+              </div>
+            </div>
+            </div>
+            </div>
+            <div class="info-title">BILLING HISTORY</div>
+            <p class="text12">Review your order or billing history by plan, see details, download invoices, and more.</p>
+            {% if customer.order_listing.size != 0 %}
+            <table id="subscription-order-history">
+              <thead>
+                <tr>
+                <th class="accent-text order-created date">Date</th>
+                <th class="accent-text order-number first">Order #</th>
+                <th class="accent-text payment-status">Status</th>
+                <th class="accent-text tracking_id">Shipping tracking</th>
+                <th class="accent-text line_items">Items</th>
+                <th class="accent-text total last">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+            `
+
+            $.each(dataOrders, function(i, orderId) {
+              $.each(allOrders, function(j, _order) {
+                if (String(orderId) === String(_order.id)) {
+                  html += `
+                  <tr class="${_order.forLooper} ${_order.cancelled}">
+                    <td class="text12 text">${_order.createdAt}</td>
+                    <td class="text12 text underline"><a class="text underline" rel="noreferrer" target="_blank" href="/apps/download-pdf/orders/0d8621ec8e1d7751b5e0/${_order.id}/${_order.nameHandlize}.pdf">${_order.name}</a></td>
+                    <td class="text12 text ${_order.financialStatus}">
+                    ${_order.paymentStatus}
+                    </td>
+                    <td class="text12 text ${_order.fulfillmentStatus}">
+                  `;
+                  $.each(_order.trackingNumbers, function(k, number) {
+                    html += number;
+                  })
+                  html += `
+                    </td>
+                    <td class="text12 text ${_order.fulfillmentStatus}">
+                  `;
+                  $.each(_order.items, function(k, title) {
+                    html += `<p>${title}</p>`;
+                  })
+                  html += `
+                    </td>
+                    <td class="total text accent-text last"><span class="money">${_order.totalPrice}</span></td>
+                  </tr>
+                  `;
+                }
+              });
+            });
+
+            html += `
+              </tbody>
+            </table>
+            <a id="view-all" href="#">View all</a>
+            {% else %}
+            <p class="no-orders">{{ customer.order_listing.no_orders | t }}</p>
+            {% endif %}
+            `;
+
+            $('#subscription-plan').html(html);
+
+            if (subscriptionData.status === 'CANCELLED') {
+              $('.btn.resume').magnificPopup({
+                type: 'inline',
+                closeBtnInside:false,
+              });
+
+              const content = `
+              <div class="info-title">CONFIRMATION</div>
+                <div><span class="font15 bold">Are you sure to resume the </span>${product_title}</div>
+                <div class="text font15" style="margin-bottom:50px">Your payment with Visa ending ****${dataStateVisa[0].card_last4} will be resumed.</div>
+                <div style="display: flexjustify-content:flex-end">
+                <button class="btn button popup-modal-dismiss white">Cancel</button>
+                <button data-id="${subscriptionData.id}"class="btn button mg-l confirm-resume">Yes</button>
+              </div>
+              `;
+
+              $('#resume-modal-content').html(content)
+            }
+          });
+      }
+    }
+  }
+
+  function loading_pause_plan(subscriptionId) {
+    loading('#subscription-plan');
+    let html = '';
+    html += `
+    <div class="section-title single-borders">
+      <h2 class="accent-text text-center">Subscription Plan</h2>
+    </div>
+    <div class="info-title">PAUSE YOUR PLAN</div>
+    `;
+    let subscriptionData;
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          address_id,
+          shopify_product_id,
+          next_charge_scheduled_at,
+          order_interval_frequency,
+          order_interval_unit,
+          price,
+          quantity,
+          status,
+          product_title,
+          subscriptionTitle,
+          subscriptionDescription,
+          subscriptionRuleType = TYPE_NO_CONTRACT,
+          image_url,
+          resumeDateIfPause,
+        } = subscriptionData
+        const resumeDate = new Date(subscriptionData.resumeDateIfPause).toLocaleString('en-us', {
+          month: 'short',
+          day: '2-digit',
+          year: 'numeric',
+        });
+        html += `
+        <div class="pause-subscription">
+          <div class="pause-subscription__left">
+            <div class="italic" style="margin-bottom:20px">Pause your plan details include:</div>
+            <div class="text font13 title red">1. FREE OF CHARGE</div>
+            <div class="text font13 red description">There will be no additional fee for pausing your plan.</div>
+            ${TYPE_NO_CONTRACT === subscriptionRuleType ? `
+              <div class="text font13 title">2. YOU CAN PAUSE YOUR PLAN ANYTIME</div>
+            ` : `
+              <div class="text font13 title">2. YOU CAN ONLY PAUSE YOUR PLAN ONCE</div>
+              <div class="text font13 description">Your plan can only be paused 1 time for maximum 60 days per billing cycle if you needed. Don\’t worry, you can pause your plan again in your next billing cycle.</div>
+            `}
+            ${TYPE_NO_CONTRACT === subscriptionRuleType ? '' : `<div class="text font13 title">3. PLAN RESUME</div>
+            <div class="text font13 description">Resume your plan manually before <span class="red">${resumeDate}</span> or it will be automatically resumed on <span class="red">${resumeDate}</span>.</div>`}
+            <div class="text font13 description">By clicking Confirm, I have read and agreed to <a target="_blank" rel=”noreferrer noopener” href="/pages/terms-conditions" class="italic bold">Capitol Optical\'s Subscription and Cancellation Terms</a> and <a target="_blank" rel=”noreferrer noopener” href="/pages/terms-conditions" class="italic bold">Terms of Use</a>.</div>
+          </div>
+          <div class="pause-subscription__right">
+            <div class="italic" style="margin-bottom:20px">Affected plan</div>
+            <div class="pause-info">
+              <div class="description_title">${subscriptionData.product_title}</div>
+              <div class="description_price">${Shopify.formatMoney(2 * parseFloat(price) * parseInt(quantity), shop_money_format)}<span class="text12">/${
+                String(order_interval_frequency) === '1' || subscriptionRuleType === 'CONTRACT'
+                  ? `${order_interval_unit[0].toUpperCase() + order_interval_unit.slice(1).toLowerCase()}ly`
+                  : `${order_interval_frequency} ${order_interval_unit.toLowerCase()}`
+              }</span></div>
+              <div class="text12">Commitment</div>
+              <div class="description_plan text12">${
+                subscriptionTitle
+                || `${order_interval_frequency} ${String(order_interval_frequency) === '1' ? order_interval_unit : `${order_interval_unit}s`} plan, billed ${String(order_interval_frequency) === '1' ? `${order_interval_unit}ly` : `every ${order_interval_frequency} ${order_interval_unit}s`}`}</div>
+            </div>
+          </div>
+        </div>
+        <button type="button" data-id="${subscriptionData.id}" class="btn button white previous"><span>Previous</span></button>
+        <button type="button" data-id="${subscriptionData.id}" class="btn button red mg-l confirm-pause"><span>Confirm</span></button>
+        `;
+
+        $('#subscription-plan').html(html);
+      }
+    }
+  }
+
+  function confirm_pause_plan(subscriptionId) {
+    loading('#subscription-plan');
+    let html = '';
+    html += '<div class="section-title single-borders">'
+    html += '<h2 class="accent-text text-center">Subscription Plan</h2>'
+    html += '</div>'
+    html += '<div class="info-title">PAUSE YOUR PLAN</div>'
+    let subscriptionData;
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          address_id,
+          shopify_product_id,
+          product_title,
+        } = subscriptionData
+        const _data = {
+          action: 'pause',
+          cancellationData: {reason: 'NO REASON', comment: 'NO COMMENT'},
+          addressId: address_id,
+        };
+        $.ajax({
+          type        : 'PUT',
+          url         : `/apps/2b-offspring/customers/${shopify_customer_id}/subscriptions/${address_id}/${shopify_product_id}/status`,
+          data        : JSON.stringify(_data),
+          contentType : "application/json; charset=utf-8",
+          dataType    : 'json',
+        }).done(function(data) {
+          html += '<div><span class="italic text font15 bold">You have successful paused </span><span class="italic bold">'+product_title+'</span></div>';
+          $('#subscription-plan').html(html);
+        }).fail(function() {
+          html += '<div><span class="italic text font15 bold">Fail to paused </span><span class="italic bold">'+product_title+'</span></div>';
+          $('#subscription-plan').html(html);
+        });
+      }
+    }
+  }
+
+  function confirm_resume_plan(subscriptionId) {
+    $.magnificPopup.close();
+    loading('#subscription-plan');
+    let subscriptionData;
+
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          address_id,
+          shopify_product_id,
+          product_title,
+        } = subscriptionData
+        const _data = {
+          action: 'activate',
+          cancellationData: {reason: 'NO REASON', comment: 'NO COMMENT'},
+          addressId: address_id,
+        };
+        $.ajax({
+          type        : 'PUT',
+          url         : `/apps/2b-offspring/customers/${shopify_customer_id}/subscriptions/${address_id}/${shopify_product_id}/status`,
+          data        : JSON.stringify(_data),
+          contentType : "application/json; charset=utf-8",
+          dataType    : 'json',
+        }).done(function(data) {
+          loading_subscriptions();
+        }).fail(function() {
+          let html = '';
+          html += '<div class="section-title single-borders">'
+          html += '<h2 class="accent-text text-center">Subscription Plan</h2>'
+          html += '</div>'
+          html += '<div class="info-title">RESUME YOUR PLAN</div>'
+          html += '<div><span class="italic text font15 bold">Fail to resume </span><span class="italic bold">'+product_title+'</span></div>';
+          $('#subscription-plan').html(html);
+        });
+      }
+    }
+  }
+
+  function confirm_cancel_plan(subscriptionId) {
+    let html = '';
+    html += '<div class="section-title single-borders">'
+    html += '<h2 class="accent-text text-center">Subscription Plan</h2>'
+    html += '</div>'
+    html += '<div class="info-title">PLAN CANCELLATION</div>'
+    let subscriptionData;
+    const reason = [];
+    const reasonComent = $('#cancel-comment').val();
+    $('.checkbox input:checked').each(function(i) {
+      reason.push($(this).data('value'));
+    })
+
+    loading('#subscription-plan');
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          address_id,
+          shopify_product_id,
+          product_title,
+        } = subscriptionData
+        const _data = {
+          action: 'cancel',
+          cancellationData: {
+            reason: reason.join('|'),
+            comment: reasonComent || 'NO COMMENT',
+          },
+          addressId: address_id,
+        };
+        $.ajax({
+          type        : 'PUT',
+          url         : `/apps/2b-offspring/customers/${shopify_customer_id}/subscriptions/${address_id}/${shopify_product_id}/status`,
+          data        : JSON.stringify(_data),
+          contentType : "application/json; charset=utf-8",
+          dataType    : 'json',
+        }).done(function(data) {
+          html += '<div><span class="italic text font15 bold">You have successful cancelled </span><span class="italic bold">'+product_title+'</span></div>';
+          $('#subscription-plan').html(html);
+        });
+      }
+    }
+  }
+
+  function loading_cancel_plan(subscriptionId, planStatus) {
+    loading('#subscription-plan');
+    let html = '';
+    html += `
+    <div class="section-title single-borders">
+      <h2 class="accent-text text-center">Subscription Plan</h2>
+    </div>
+    <div class="info-title">PLAN CANCELLATION</div>
+    `;
+    let subscriptionData;
+    if (dataStateSubscriptions && dataStateSubscriptions.length > 0) {
+      if (dataStateSubscriptions && dataStateSubscriptions.length) {
+        subscriptionData = dataStateSubscriptions.find((sub) => sub.id === subscriptionId);
+      }
+      if (subscriptionData) {
+        const {
+          address_id,
+          shopify_product_id,
+          next_charge_scheduled_at,
+          order_interval_frequency,
+          order_interval_unit,
+          price,
+          quantity,
+          status,
+          product_title,
+          subscriptionTitle,
+          subscriptionDescription,
+          subscriptionRuleType = TYPE_NO_CONTRACT,
+          image_url,
+        } = subscriptionData
+        const nextSchedule = new Date(next_charge_scheduled_at).toLocaleString('en-us', {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+          });
+        html += '<div id="cancel-1">'
+        html += '<div class="subscription_item">';
+        html += '<div class="subscription_description">';
+        html += '<img class="subscription_img" src="' + image_url + '"/>';
+        html += '<div class="subscription_info">'
+        html += '<div class="description_title">' + product_title + '</div>';
+        html += '<div class="description_price">' + Shopify.formatMoney(price, shop_money_format) + '<span class="text12">/Monthly</span></div>';
+        html += '<div class="text12">Commitment</div>';
+        html += '<div class="description_plan text12">'+subscriptionData.order_interval_frequency+' '+subscriptionData.order_interval_unit+' plan, billed monthly</div>';
+        html += '<div class="description_visa-info text12">Next payment is scheduled for '+nextSchedule+'.</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="text italic bold mg-b">Marcus, we\'re sorry to see you go.</div>';
+        html += '<div class="text12 text mg-b">Please share your experience with us. We seek to continuously improve ourselves to deliver the best vision care and customer service.</div>';
+        html += '<div class="text italic bold mg-b">Why do you want to cancel?</div>';
+        html += '<div class="text12 text mg-b">Pick one of the options below.</div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="Product(s) and features are too complicated for me."/>Product(s) and features are too complicated for me.</label></div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="It’s too expensive."/>It’s too expensive.</label></div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="I’m having too many technical issues."/>I’m having too many technical issues.</label></div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="I’m not using the product(s) often enough."/>I’m not using the product(s) often enough.</label></div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="The app or services didn\'t work as expected."/>The app or services didn\'t work as expected.</label></div>';
+        html += '<div class="checkbox text"><label><input type="checkbox" data-value="I\'m looking to change my plan."/>I\'m looking to change my plan.</label></div>';
+        html += '<div class="checkbox text mg-b other"><label><input type="checkbox" data-value="Other (please specify)."/>Other (please specify).</label></div>';
+        html += '<div class="text text12">Comments (optional)</div>'
+        html += '<div style="margin-bottom:15px;"><textarea id="cancel-comment" disabled rows="10" cols="50"></textarea></div>';
+        html += '<button type="button" disabled class="btn button continue">Continue</button>'
+        html += '</div>'
+
+        html += '<div id="cancel-2" style="display:none">'
+        html += '<div class="text font15 italic">Canceling your plan today means</div>'
+
+        html += '<div class="subscription_item">';
+        html += '<div class="subscription_description">';
+        html += '<img class="subscription_img" src="{{"icons-02.png" | asset_img_url: "300x"}}"/>';
+        html += '<div class="subscription_info">'
+        html += '<div class="description_title">YOU WILL NO LONGER RECEIVE YOUR MONTHLY CONTACT LENS BOXES.</div>';
+        html += '<div class="text font13">You will receive your products until your last billing.</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="subscription_item">';
+        html += '<div class="subscription_description">';
+        html += '<img class="subscription_img" src="{{"icons-03.png" | asset_img_url: "300x"}}"/>';
+        html += '<div class="subscription_info">'
+        html += '<div class="description_title">YOU CAN NO LONGER VIEW THE BILLING OF THIS SUBSCRIPTION</div>';
+        html += '<div class="text font13">You can view your previous invoices in Order History.</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="text font15 mg-b">This plan doesn’t work for you? We can help you find the right plan and answer any questions, or maybe even give you a special offer. Email us at <a class="italic bold" target="_blank" rel=”noreferrer noopener” href="mailto:marketing@capitol.com.sg">marketing@capitol.com.sg</a> or chat with us.</div>';
+        html += '<a target="_blank" rel=”noreferrer noopener” href="https://wa.me/6583677971" ><button type="button" class="btn button white"><span>Start chat</span></button></a>';
+        html += '<button type="button" class="btn button mg-l no-thanks"><span>No thanks</span></button>';
+        html += '</div>';
+
+        html += '<div id="cancel-3" style="display:none">'
+
+        html += '<div class="pause-subscription">';
+        html += '<div class="pause-subscription__left">';
+        html += '<div class="italic" style="margin-bottom:20px;">Cancellation details include:</div>';
+
+        html += '<div class="text font13 red title">1. FREE OF CHARGE</div>';
+        html += '<div class="text font13 red description">There will be no additional fee for cancelling your plan now. <a class="italic bold" target="_blank" rel=”noreferrer noopener” href="/apps/help-center">Learn more</a></div>';
+        // html += '<div class="text font13 title">2. PLAN DATE</div>';
+        // html += '<div class="text font13 description">Your plan will end on your next billing date '+nextSchedule+'</div>';
+        html += '<div class="text font13 title">2. PRODUCT</div>';
+        html += '<div class="text font13 description">You will no longer receive your monthly contact lenses.</div>';
+
+        html += '<div class="text font13 description">By clicking Confirm, I have read and agreed to <a target="_blank" rel=”noreferrer noopener” href="/pages/terms-conditions" class="italic bold">Capitol Optical\'s Subscription and Cancellation Terms</a> and <a target="_blank" rel=”noreferrer noopener” href="/pages/terms-conditions" class="italic bold">Terms of Use</a>.</div>';
+        html += '</div>';
+
+        html += '<div class="pause-subscription__right">';
+        html += '<div class="italic" style="margin-bottom:20px;">Affected plan</div>';
+        html += '<div class="pause-info">'
+        html += `
+        <div class="description_price">${Shopify.formatMoney(2 * parseFloat(price) * parseInt(quantity), shop_money_format)}<span class="text12">/${
+          String(order_interval_frequency) === '1' || subscriptionRuleType === 'CONTRACT'
+            ? `${order_interval_unit[0].toUpperCase() + order_interval_unit.slice(1).toLowerCase()}ly`
+            : `${order_interval_frequency} ${order_interval_unit.toLowerCase()}`
+        }</span></div>
+        <div class="text12">Commitment</div>
+        <div class="description_plan text12">${
+          subscriptionTitle
+          || `${order_interval_frequency} ${String(order_interval_frequency) === '1' ? order_interval_unit : `${order_interval_unit}s`} plan, billed ${String(order_interval_frequency) === '1' ? `${order_interval_unit}ly` : `every ${order_interval_frequency} ${order_interval_unit}s`}`}</div>
+        `
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+        html += '<button type="button" data-id="'+subscriptionData.id+'" class="btn button white previous"><span>Previous</span></button>';
+        html += '<button type="button" data-id="'+subscriptionData.id+'" class="btn button red mg-l confirm-cancel"><span>Confirm</span></button>';
+
+        html += '</div>'
+
+        $('#subscription-plan').html(html);
+      }
+    }
+  }
+
+  function loading_payment() {
+    loading('#payment-info');
+    const code = Math.random().toString(36).substring(2, 12);
+    $.get('/apps/2b-offspring/customers/' + shopify_customer_id + '/payments?code='+code).done(function (data) {
+      let html = '';
+      html += '<div class="section-title single-borders">'
+      html += '<h2 class="accent-text text-center">Payment Information</h2>'
+      html += '</div>'
+      html += '<div class="info-title">PAYMENT INFORMATION</div>'
+
+      if (data && data.length > 0) {
+        html += '<div id="show-subscriptions">'
+        $.each(data, function (i, visaInfo) {
+          if (visaInfo.card_last4) {
+            let linkIcon = '';
+            switch (visaInfo.card_brand) {
+              case 'visa':
+                linkIcon = '<img class="subscription_img" src="{{"icons-visa.png" | asset_img_url: "300x180"}}"/>';
+                break;
+              case 'amex':
+                linkIcon = '<img class="subscription_img" src="{{"icons-amex.png" | asset_img_url: "300x180"}}"/>';
+                break;
+              case 'discover':
+                linkIcon = '<img class="subscription_img" src="{{"icons-discover.png" | asset_img_url: "300x180"}}"/>';
+                break;
+              default:
+                linkIcon = '<img class="subscription_img" src="{{"icons-mastercard.png" | asset_img_url: "300x180"}}"/>';
+                break;
+            }
+            html += '<div class="subscription_item">';
+            html += '<div class="subscription_description">';
+            html += linkIcon;
+            html += '<div class="subscription_info">'
+            html += '<div class="description_title">VISA ENDING IN ' + visaInfo.card_last4 + '</div>';
+            html += '<div class="description_plan text12">'+visaInfo.cardholder_name+'</div>';
+            html += '<div class="description_schedule text12">Expires ' + visaInfo.card_exp_month+'/'+visaInfo.card_exp_year + '.</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="subscription_manage">';
+            html += '<a target="_blank" rel=”noreferrer noopener” href="/tools/recurring/customers/'+visaInfo.hash+'/card"><button type="button" data-id="' + visaInfo.id + '" class="btn button white edit-payment">Change card</button></a>';
+            html += '</div>';
+            html += '</div>';
+          } else {
+            html += '<a target="_blank" rel=”noreferrer noopener” href="/tools/recurring/customers/'+visaInfo.hash+'/card"><button type="button" data-id="' + visaInfo.id + '" class="btn button white edit-payment">Add card</button></a>';
+          }
+        });
+        html += '</div>';
+
+      }
+      $('#payment-info').html(html);
+    });
+  }
+
+  $(document).ready(function () {
+    {% if template == 'customers/account.subscriptions' or template == 'customers/account' %}
+    $(document).on('click', '#link-subscription-plan', function () {
+      loading_subscriptions();
+    });
+    $(document).on('click', '.btn.manage', function () {
+      loading_subscriptions_detail($(this).data('id'));
+    });
+    $(document).on('click', '#view-all', function () {
+      $('[href="#order-history1"]').click()
+    });
+    $(document).on('click', '.btn.pause', function () {
+      loading_pause_plan($(this).data('id'));
+    });
+    $(document).on('click', '.btn.confirm-pause', function () {
+      confirm_pause_plan($(this).data('id'));
+    });
+    $(document).on('click', '.btn.confirm-resume', function () {
+      confirm_resume_plan($(this).data('id'));
+    });
+    $(document).on('click', '.btn.cancel', function () {
+      loading_cancel_plan($(this).data('id'), $(this).data('status'));
+    });
+    $(document).on('click', '.btn.continue', function () {
+      $('#cancel-1').hide();
+      $('#cancel-2').show();
+    });
+    $(document).on('change', '.checkbox input', function () {
+      if ($('.checkbox input:checked').length > 0) {
+        $('.btn.continue').prop('disabled', false);
+      } else {
+        $('.btn.continue').prop('disabled', true);
+      }
+    });
+    $(document).on('change', '.checkbox.other input', function () {
+      if ($('.checkbox.other input').is(':checked')) {
+        $('#cancel-comment').prop('disabled', false);
+      } else {
+        $('#cancel-comment').prop('disabled', true);
+      }
+    });
+    $(document).on('click', '.btn.no-thanks', function () {
+      $('#cancel-2').hide();
+      $('#cancel-3').show();
+    });
+    $(document).on('click', '.btn.confirm-cancel', function () {
+      confirm_cancel_plan($(this).data('id'));
+    });
+    $(document).on('click', '.btn.previous', function () {
+      loading_subscriptions_detail($(this).data('id'));
+    });
+
+    $(document).on('click', '.btn.payment', function () {
+      const linkPayment = $('#link-payment-info a')
+      linkPayment.click();
+    });
+
+    $(document).on('click', '#link-payment-info', function () {
+      loading_payment();
+    });
+
+    $(document).on('click', '.popup-modal-dismiss', function (e) {
+      e.preventDefault();
+      $.magnificPopup.close();
+    });
+    {% endif %}
+  });
+</script>
+
+<div id="resume-modal" class="white-popup-block mfp-hide" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content">
+  <div id="resume-modal-content" class="main-content"></div>
+</div>
