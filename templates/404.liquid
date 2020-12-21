@@ -1,0 +1,29 @@
+<style>
+  .page-404--title{font-size: 72px;margin: 0 0 15px 0;}.btn-404{padding: 10px 30px;margin-top: 15px;}
+  @media (max-width: 991px){
+    .page-404--title{
+      font-size: 36px;
+    }
+  }
+</style>
+<section id="columns" class="columns-container page_404">
+  <div class="container">
+    <div class=" text-center">
+      <div class="page-404">
+        <img class="lazyload my-4" data-src="{{ '404.png' | asset_url }}" alt="404 Image" />
+        <h2 class="page-404--title" style="color:{{ settings.found_text_color }}">{{ settings.found_html }}</h2>
+        {%- if settings.sub_404 != blank -%}
+        <p class="page-404--sub fz-4">{{settings.sub_404}}</p>
+        {%- endif -%}
+        <div class="text-center btn_404">
+          {%- if settings.found_btnleft_text != blank -%}
+          <a href="{{ settings.found_btnleft_link }}" class="btn btn-theme btn-404">
+            {%- include 'icon-arrow-thin-left' -%}
+            {{ settings.found_btnleft_text }}
+          </a>
+          {%- endif -%}
+        </div>                      	
+      </div>
+    </div>
+  </div>
+</section>

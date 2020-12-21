@@ -1,0 +1,137 @@
+<!-- collection-template-2.liquid -->
+{%- assign productPerpage = section.settings.collection_perpage -%}
+{%- assign productPerrow = section.settings.collection_perrow -%}
+
+{%- if productPerrow == '2' -%}
+	{%- assign gridProduct = 'js-col col-sm-6 col-12' -%}
+{%- elsif productPerrow == '3' -%}
+	{%- assign gridProduct = 'js-col col-sm-6 col-12 col-lg-4' -%}
+{%- elsif productPerrow == '4' -%}
+	{%- assign gridProduct = 'js-col col-sm-6 col-12 col-lg-3' -%}
+{%- elsif productPerrow == '5' -%}
+	{%- assign gridProduct = 'js-col col-sm-6 col-12 col-lg-2-4' -%}
+{%- elsif productPerrow == '6' -%}
+	{%- assign gridProduct = 'js-col col-sm-6 col-12 col-lg-2' -%}
+{%- endif -%}
+
+{%- assign hasImage = false -%}
+{%- if section.settings.enable_image and collection.image -%}
+{%- assign hasImage = true -%}
+{%- endif -%}
+
+{%- paginate collection.products by productPerpage -%}
+<div class="container">
+  <div class="row flex-lg-row-reverse">
+    <div class="{{section.settings.sidebar_col}} col-12 js-sidebar">
+      <div class="sidebar collection-sidebar">
+        {%- include 'sidebar' -%}
+      </div>
+    </div>
+    <div class="col">
+      <div class="category-heading">
+        <div class="row">
+          <div class="col-3 col-md-4 col-left d-lg-none d-flex">
+            <span class="js-toggle-filter align-self-center align-self-lg-end">
+              {%- include 'icon-sliders' -%}
+              <span>{{'collections.general.filter' | t}}</span>
+            </span>
+          </div>
+          <div class="col-md-4 col-mid d-none d-md-flex">
+            <div id="js-collection-count" class="align-self-center align-self-lg-end">
+              <span class="heading-counter">Showing {{ paginate.current_offset | plus: 1 }} - {% if paginate.next %}{{ paginate.current_offset | plus: paginate.page_size}}{% else %}{{collection.products_count}}{% endif %} in {{collection.products_count}} </span>
+            </div>
+          </div>
+          <div class="col-9 col-md-4 col-lg-8 col-right text-right">
+            <span class="js-btn-view btn-view-2 {% if productPerrow == '2' %}active{% endif %}" data-col="2"></span>
+            <span class="js-btn-view btn-view-3 {% if productPerrow == '3' %}active{% endif %}" data-col="3"></span>
+            <span class="js-btn-view btn-view-4 {% if productPerrow == '4' %}active{% endif %}" data-col="4"></span>
+            {%- include 'collection-sortby' -%}
+          </div>
+        </div>
+      </div>
+      <div id="js-product-ajax"><!-- ONLY HAVE LIST OF PRODUCTS AND PAGINATION TO LOAD AJAX -->
+        <div class="row">
+          {%- for product in collection.products -%}
+          <div class="{{gridProduct}}">
+            {%- include 'product-card', product: product -%}
+          </div>
+          {%- else -%}
+          {%- include 'collection-blank' -%}
+          {%- endfor -%}
+        </div>
+        {%- include 'pagination' -%}
+      </div>
+    </div>
+  </div>
+  {%- include 'coupon_code' -%}
+</div>
+{%- endpaginate -%}
+
+{% schema %}
+  {
+    "name": "Collection template 2",
+    "settings": [
+      {
+        "type": "range",
+        "id": "collection_perpage",
+        "min": 12,
+        "max": 50,
+        "step": 1,
+        "label": "Number displayed",
+        "default": 24
+      },
+      {
+        "type": "select",
+        "id": "collection_perrow",
+        "label": "Products per row",
+		"default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sidebar_col",
+        "label": "Sidebar width",
+		"default": "col-md-3",
+        "options": [
+          {
+            "value": "col-md-2-4",
+            "label": "20%"
+          },
+          {
+            "value": "col-md-3",
+            "label": "25%"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Collection meta"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_image",
+		"default": true,
+        "label": "Show featured image"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_description",
+		"default": true,
+        "label": "Show description"
+      }
+]
+  }
+{% endschema %}

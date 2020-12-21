@@ -1,0 +1,16 @@
+<header class="section-header text-center">
+  <h1 class="section-header__title js-collection-title {% if hasImage %}section-header__title--image{% endif %}"
+      {% if hasImage %}style="background-image:url({{ collection.image | img_url: '1920x' }})"{% endif %}
+      >
+    {{ collection.title }}
+    {%- if current_tags != '' -%}
+    &ndash; {% assign title_tags = current_tags | join: ', ' %}
+    {{ title_tags }}
+    {%- endif -%}
+  </h1>
+  {%- if section.settings.enable_description and collection.description != blank -%}
+  <div class="section-header__subtext">
+    {{ collection.description }}
+  </div>
+  {%- endif -%}
+</header>

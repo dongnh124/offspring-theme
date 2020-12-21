@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js {% if settings.enable_rtl %}rtl{% endif %}" lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{ settings.color_header_bg }}">
+  {%- if settings.favicon != blank -%}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+  {%- endif -%}
+  <link rel="canonical" href="{{ canonical_url }}">
+  <title>
+    {{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+  {%- if page_description -%}
+  <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  {%- include 'social-meta-tags' -%}
+  {%- include 'header-css' -%}
+  {%- include 'header-js' -%}
+  {{ content_for_header }}
+  {% render 'minmaxify-head' %}
+  {% include 'judgeme_core' %}
+</head>
+<body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+  {%- include 'loading' -%}
+  <div class="page-container page-element is-moved-by-drawer">
+    {%- include 'header' -%}
+    {%- include 'breadcrumb' -%}
+    <main class="main-content" id="MainContent" role="main">
+      {%- include 'slideshow' -%}
+      {{ content_for_layout }}
+    </main>
+    {%- include 'footer' -%}
+    {%- include 'popup-newsletter' -%}
+    {%- section 'product-suggest' -%}
+    {%- section 'recently-viewed' -%}
+  </div>
+  {%- include 'cookie-policy' -%}
+  {%- include 'back-to-top' -%}
+  {%- include 'menu-mobile' -%}
+  {%- include 'bottom-contents' -%}
+  {%- include 'quickview' -%}
+  {%- include 'popup-compare' -%}
+  {%- include 'photoswipe' -%}
+  {%- if settings.show_multiple_currencies -%}
+  {{ "/services/javascripts/currencies.js" | script_tag }}
+  {%- endif -%}
+  
+  {% include 'subscription-theme-footer' %}
+</body>
+</html>

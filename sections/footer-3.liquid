@@ -1,0 +1,295 @@
+<style>
+  :root{
+    --g-footer-mid-bg:{{section.settings.footermidbg}};
+    --g-footer-mid-text:{{section.settings.footermidtext}};
+    --g-footer-mid-link:{{section.settings.footermidlink}};
+    --g-footer-bot-text:{{section.settings.footerbottext}};
+    --g-footer-ss-border:{{section.settings.social_border}};
+    }
+</style>
+<style>
+.footer-container {
+    background: var(--g-footer-mid-bg);
+}
+.footer-mid {
+	background: var(--g-footer-mid-bg);
+	color: var(--g-footer-mid-text)
+}
+
+.footer-mid a {
+	color: var(--g-footer-mid-link)
+}
+
+.footer-mid a:hover {
+	opacity: .85
+}
+
+.footer-container .social-icons {
+	background: var(--g-footer-mid-bg);
+	z-index: 1
+}
+
+.footer-bot {
+	background: var(--g-footer-mid-bg);
+	padding-top: 40px;
+	padding-bottom: 65px
+}
+
+.footer-bot__powered,
+.footer-bot__powered a {
+	color: var(--g-footer-bot-text)
+}
+
+.footer-mid__contact-form input {
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 14px;
+	background: var(--g-footer-mid-text);
+	border: 1px solid #ccc
+}
+
+.footer-mid__contact-form textarea {
+	width: 100%;
+	height: 86px;
+	font-size: 14px;
+	background: var(--g-footer-mid-text);
+	border: 1px solid #ccc
+}
+
+.footer-mid__contact-form .form-success {
+	margin-top: 10px
+}
+
+.footer-mid__contact-form .btn {
+	padding: 15px 0;
+	margin-top: 5px;
+	width: 100%;
+	text-transform: uppercase;
+	font-size: 12px
+}
+
+.footer-container {
+	margin: 0 auto
+}
+
+.rtl .footer-container {
+	text-align: right
+}
+
+.footer-mid__title {
+	font-size: 30px;
+	text-transform: none;
+	margin-bottom: 35px;
+	margin-top: 0;
+	border-bottom: 1px solid rgba(255, 255, 255, .2);
+	padding: 35px 0;
+	position: relative
+}
+
+.rtl .footer-mid__title {
+	padding-left: 0;
+	padding-right: 20px
+}
+
+.footer-mid__des {
+	font-size: 18px;
+	line-height: 1.8
+}
+
+.footer-mid__info li {
+	padding: 5px 0;
+	border-bottom: 1px solid rgba(255, 255, 255, .2);
+	line-height: 33px
+}
+
+.footer-mid__info li:last-child {
+	border: none
+}
+
+.footer-mid__info .icon {
+	width: 15px;
+	margin-right: 10px
+}
+
+.rtl .footer-mid__info .icon {
+	margin-left: 10px;
+	margin-right: 0
+}
+
+.footer-mid__social li {
+	width: 35px;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 50%;
+	margin: 8px
+}
+
+.footer-mid__social:before {
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 1px;
+	left: 0;
+	top: 50%;
+	background: var(--g-footer-ss-border)
+}
+
+.footer-mid__contact-form .btn .icon {
+	margin: 0 4px
+}
+</style>
+
+<!-- footer-3.liquid -->
+<div class="footer-container text-center">
+  <section class="footer-mid pt-5">
+    {%- if section.settings.logo != blank -%}
+    <img class="lazyload mb-4" data-src="{{section.settings.logo | img_url: '100x'}}" />
+    {%- endif -%}
+    {%- if section.settings.linklist_link != blank -%}
+    <div class="footer-mid__linklist mb-2">
+      <ul>
+        {%- for link in linklists[section.settings.linklist_link].links -%}
+        <li class="d-inline-block px-3 pb-3 font-weight-bold">
+          <a href="{{link.url}}" title="{% include 'processMenuTitle' with itemName:link.title %}">{% include 'processMenuTitle' with itemName:link.title %}</a>
+        </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+    {%- endif -%}
+    {%- if section.settings.social_enable -%}
+    <div class="footer-mid__social position-relative">
+      <ul class="list--inline social-icons d-inline-block px-2 position-relative iconx4">
+        {%- if settings.social_facebook_link != blank -%}
+        <li>
+          <a href="{{ settings.social_facebook_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Facebook' }}">
+            <svg class="icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 112.196 112.196" style="enable-background:new 0 0 112.196 112.196;" xml:space="preserve"><g><circle style="fill:#3B5998;" cx="56.098" cy="56.098" r="56.098"/><path style="fill:#FFFFFF;" d="M70.201,58.294h-10.01v36.672H45.025V58.294h-7.213V45.406h7.213v-8.34c0-5.964,2.833-15.303,15.301-15.303L71.56,21.81v12.51h-8.151c-1.337,0-3.217,0.668-3.217,3.513v7.585h11.334L70.201,58.294z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_twitter_link != blank -%}
+        <li>
+          <a href="{{ settings.social_twitter_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Twitter' }}">
+            <svg class="icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 112.197 112.197" style="enable-background:new 0 0 112.197 112.197;" xml:space="preserve"><g><circle style="fill:#55ACEE;" cx="56.099" cy="56.098" r="56.098"/><g><path style="fill:#F1F2F2;" d="M90.461,40.316c-2.404,1.066-4.99,1.787-7.702,2.109c2.769-1.659,4.894-4.284,5.897-7.417c-2.591,1.537-5.462,2.652-8.515,3.253c-2.446-2.605-5.931-4.233-9.79-4.233c-7.404,0-13.409,6.005-13.409,13.409c0,1.051,0.119,2.074,0.349,3.056c-11.144-0.559-21.025-5.897-27.639-14.012c-1.154,1.98-1.816,4.285-1.816,6.742c0,4.651,2.369,8.757,5.965,11.161c-2.197-0.069-4.266-0.672-6.073-1.679c-0.001,0.057-0.001,0.114-0.001,0.17c0,6.497,4.624,11.916,10.757,13.147c-1.124,0.308-2.311,0.471-3.532,0.471c-0.866,0-1.705-0.083-2.523-0.239c1.706,5.326,6.657,9.203,12.526,9.312c-4.59,3.597-10.371,5.74-16.655,5.74c-1.08,0-2.15-0.063-3.197-0.188c5.931,3.806,12.981,6.025,20.553,6.025c24.664,0,38.152-20.432,38.152-38.153c0-0.581-0.013-1.16-0.039-1.734C86.391,45.366,88.664,43.005,90.461,40.316L90.461,40.316z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_pinterest_link != blank -%}
+        <li>
+          <a href="{{ settings.social_pinterest_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Pinterest' }}">
+            <svg class="icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 112.198 112.198" style="enable-background:new 0 0 112.198 112.198;" xml:space="preserve"><g><circle style="fill:#CB2027;" cx="56.099" cy="56.1" r="56.098"/><g><path style="fill:#F1F2F2;" d="M60.627,75.122c-4.241-0.328-6.023-2.431-9.349-4.45c-1.828,9.591-4.062,18.785-10.679,23.588c-2.045-14.496,2.998-25.384,5.34-36.941c-3.992-6.72,0.48-20.246,8.9-16.913c10.363,4.098-8.972,24.987,4.008,27.596c13.551,2.724,19.083-23.513,10.679-32.047c-12.142-12.321-35.343-0.28-32.49,17.358c0.695,4.312,5.151,5.621,1.78,11.571c-7.771-1.721-10.089-7.85-9.791-16.021c0.481-13.375,12.018-22.74,23.59-24.036c14.635-1.638,28.371,5.374,30.267,19.14C85.015,59.504,76.275,76.33,60.627,75.122L60.627,75.122z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_tumblr_link != blank -%}
+        <li>
+          <a href="{{ settings.social_tumblr_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Tumblr' }}">
+            <svg class="icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 112.197 112.197" style="enable-background:new 0 0 112.197 112.197;" xml:space="preserve"><g><circle style="fill:#395976;" cx="56.099" cy="56.098" r="56.098"/><g><path style="fill:#F1F2F2;" d="M58.178,38.032V22.966h-9.725c-0.219,0.55-0.327,1.221-0.327,1.891c-0.102,0.327-0.222,0.564-0.222,0.89c-0.997,5.587-3.899,9.484-8.814,11.613c-1.459,0.673-2.798,0.775-4.242,0.673v12.146h7.146c0.116,17.092,0.116,25.903,0.116,26.351v1.013c0.897,7.457,4.796,11.926,11.717,13.606c2.785,0.772,5.794,1.116,8.814,1.116c3.9-0.12,7.696-0.789,11.493-2.007V75.964c-2.218,0.67-4.241,1.234-6.026,1.786c-3.456,1.01-6.358,0.341-8.713-1.891c-0.222-0.341-0.551-0.79-0.667-1.237c-0.329-1.784-0.538-3.678-0.538-5.461V50.178h15.497V38.032H58.178z"/></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_snapchat_link != blank -%}
+        <li>
+          <a href="{{ settings.social_snapchat_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Snapchat' }}">
+            {%- include 'icon-snapchat' -%}
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_youtube_link != blank -%}
+        <li>
+          <a href="{{ settings.social_youtube_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'YouTube' }}">
+            <svg class="icon" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><circle style="fill:#D22215;" cx="256" cy="256" r="256"/><path style="fill:#A81411;" d="M384.857,170.339c-7.677,2.343-15.682,4.356-23.699,6.361c-56.889,12.067-132.741-20.687-165.495,32.754c-27.317,42.494-35.942,95.668-67.017,133.663L294.629,509.1c110.47-16.72,197.773-104.036,214.476-214.511L384.857,170.339z"/><path style="fill:#FFFFFF;" d="M341.649,152.333H170.351c-33.608,0-60.852,27.245-60.852,60.852v85.632c0,33.608,27.245,60.852,60.852,60.852h171.298c33.608,0,60.852-27.245,60.852-60.852v-85.632C402.501,179.578,375.256,152.333,341.649,152.333L341.649,152.333z M300.494,260.167l-80.12,38.212c-2.136,1.019-4.603-0.536-4.603-2.901v-78.814c0-2.4,2.532-3.955,4.67-2.87l80.12,40.601C302.947,255.602,302.904,259.019,300.494,260.167L300.494,260.167z"/><path style="fill:#D1D1D1;" d="M341.649,152.333h-87.373v78.605l46.287,23.455c2.384,1.208,2.341,4.624-0.069,5.773l-46.218,22.044v77.459h87.373c33.608,0,60.852-27.245,60.852-60.852v-85.632C402.501,179.578,375.256,152.333,341.649,152.333z"/><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_instagram_link != blank -%}
+        <li>
+          <a href="{{ settings.social_instagram_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Instagram' }}">
+            <svg class="icon" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 89.758 89.758" style="enable-background:new 0 0 89.758 89.758;" xml:space="preserve"><g><path style="fill:#6A453B;" d="M58.255,23.88H31.503c-4.27,0-7.744,3.474-7.744,7.744v26.752c0,4.27,3.474,7.745,7.744,7.745h26.752c4.27,0,7.745-3.474,7.745-7.745V31.624C66,27.354,62.526,23.88,58.255,23.88z M44.879,58.906c-7.667,0-13.905-6.238-13.905-13.906c0-7.667,6.238-13.905,13.905-13.905c7.668,0,13.906,6.238,13.906,13.905C58.785,52.667,52.546,58.906,44.879,58.906z M59.232,33.97c-1.815,0-3.291-1.476-3.291-3.29c0-1.814,1.476-3.29,3.291-3.29c1.814,0,3.29,1.476,3.29,3.29C62.522,32.494,61.046,33.97,59.232,33.97z"/><path style="fill:#6A453B;" d="M44.879,36.971c-4.426,0-8.03,3.602-8.03,8.028c0,4.428,3.604,8.031,8.03,8.031c4.428,0,8.029-3.603,8.029-8.031C52.908,40.574,49.306,36.971,44.879,36.971z"/><path style="fill:#6A453B;" d="M44.879,0C20.094,0,0,20.094,0,44.879c0,24.785,20.094,44.879,44.879,44.879c24.785,0,44.879-20.094,44.879-44.879C89.758,20.094,69.664,0,44.879,0z M71.875,58.376c0,7.511-6.109,13.62-13.62,13.62H31.503c-7.51,0-13.62-6.109-13.62-13.62V31.624c0-7.51,6.11-13.62,13.62-13.62h26.752c7.511,0,13.62,6.11,13.62,13.62V58.376z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+          </a>
+        </li>
+        {%- endif -%}
+        {%- if settings.social_vimeo_link != blank -%}
+        <li>
+          <a href="{{ settings.social_vimeo_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Vimeo' }}">
+            {%- include 'icon-vimeo' -%}
+          </a>
+        </li>
+        {%- endif -%}
+      </ul>
+    </div>
+    {%- endif -%}
+  </section>
+  <section class="footer-bot text-center">
+    <div class="footer-bot__powered">
+      <p>Copyright &copy; {{ "now" | date: "%Y" }} {{ shop.name }}.</p>
+      {%- if section.settings.powered_enable -%}<p>{{ powered_by_link }}</p>{%- endif -%}
+    </div>
+  </section>
+</div>
+{% schema %}
+{
+  "name": "Footer 3",
+  "settings": [
+      {
+        "type": "header",
+        "content": "Mid footer"
+      },
+      {
+        "type": "color",
+        "id": "footermidbg",
+        "label": "Background",
+        "default": "#1e1e1e"
+      },
+      {
+        "type": "color",
+        "id": "footermidtext",
+        "label": "Text color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "footermidlink",
+        "label": "Link color",
+        "default": "#999"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "link_list",
+        "id": "linklist_link",
+        "label": "Menu links"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_enable",
+        "label": "Enable social",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "social_border",
+        "label": "Border line",
+        "default": "#999"
+      },
+      {
+        "type": "header",
+        "content": "Copyright"
+      },
+      {
+        "type": "color",
+        "id": "footerbottext",
+        "label": "Text",
+        "default": "#656565"
+      },
+      {
+        "type": "checkbox",
+        "id": "powered_enable",
+        "label": "Enable Shopify powered",
+        "default": true
+      }
+  ]
+}
+{% endschema %}

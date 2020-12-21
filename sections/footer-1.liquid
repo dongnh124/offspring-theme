@@ -1,0 +1,508 @@
+<!-- footer-1.liquid -->
+<style>
+  :root {
+    --footer-bg:{{section.settings.background}};
+    --footer-bg-bot:{{section.settings.background_bot}};
+    --footer-text:{{section.settings.text}};
+    --footer-title:{{section.settings.title}};
+    --footer-mix-border:{{section.settings.mix-border}}
+  }
+</style>
+<style>
+  .site-footer {
+   background-color: var(--footer-bg);
+   color: var(--footer-text);
+   border-top:1px solid var(--footer-mix-border);
+   letter-spacing:1px;
+ }
+
+ .site-footer .rte-setting a{
+  color:var(--g-main);
+}
+.site-footer a {
+ color: var(--footer-text);
+ letter-spacing: 1px;
+ text-transform: capitalize;
+}
+.site-footer a:focus,
+.site-footer a:hover {
+ color: var(--g-main)
+}
+.flex-footer {
+ display: -webkit-flex;
+ display: -ms-flexbox;
+ display: flex;
+ width: 100%;
+ -ms-flex-align: start;
+ -webkit-align-items: flex-start;
+ -moz-align-items: flex-start;
+ -ms-align-items: flex-start;
+ -o-align-items: flex-start;
+ align-items: flex-start;
+ -webkit-flex-wrap: wrap;
+ -moz-flex-wrap: wrap;
+ -ms-flex-wrap: wrap;
+ flex-wrap: wrap;
+ margin: 0 -15px;
+}
+.flex-footer .flex__item {
+ -webkit-flex: 1 1 100%;
+ -moz-flex: 1 1 100%;
+ -ms-flex: 1 1 100%;
+ flex: 1 1 100%;
+ padding: 0 15px;
+}
+@media only screen and (min-width:750px) {
+ .flex-footer .flex__item {
+  -webkit-flex: 1 1 20%;
+  -moz-flex: 1 1 20%;
+  -ms-flex: 1 1 20%;
+  flex: 1 1 20%
+}
+}
+.site-footer__section {
+	padding-bottom: 20px
+} 
+.site-footer__section p{
+  margin-bottom:10px;
+}
+.site-footer__copyright {
+  min-height: 130px;
+  border-top:1px solid var(--footer-mix-border);
+  display: flex;
+  align-items: center;
+  background-color: var(--footer-bg-bot);
+}
+
+@media (min-width: 768px){
+  .site-footer__copyright {
+    margin-top: 30px;
+  }
+}
+
+.site-footer__section-title {
+	color: var(--footer-title);
+	font-family: var(--g-font-1);
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+@media (max-width:749px){
+  .site-footer__section-title{
+    margin-top: 30px;
+  }
+}
+
+.site-footer__list {
+	list-style: none
+}
+
+.site-footer__list-item {
+	margin-bottom: 10px
+}
+
+.site-footer__newsletter .btn{
+  background:transparent;
+  color:var(--footer-text)
+}
+.site-footer__newsletter input{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none;
+  border-radius: 0;
+  color: var(--footer-text)!important;
+}
+
+.site-footer__newsletter-label {
+	display: block
+}
+
+.site-footer__newsletter-label a {
+	color: #ad2c34
+}
+
+.site-footer__newsletter-label a:hover {
+	color: #842228
+}
+
+.site-footer .social-icons .icon {
+	fill: currentColor
+}
+
+.site-footer .social-icons a {
+  display: block;
+  color: var(--footer-title);
+    width: 40px;
+    height: 40px;
+    line-height: 34px;
+    border: 2px solid;
+    text-align: center;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+
+.site-footer .social-icons a:hover {
+  color:var(--footer-text);
+}
+
+.site-footer__section{
+  line-height: 1.8
+}
+
+.site-footer__section .form-vertical .input-group{
+  border:2px solid var(--footer-mix-border);
+  border-radius: 5px;
+  padding:4px;
+  margin-bottom:5px;
+}
+
+.site-footer__section .form-vertical .input-group input{
+  height: 34px;
+  font-size: 14px;
+}
+
+.site-footer__section .form-vertical .btn{
+  padding: 0px 20px;
+  background: var(--g-main);
+  line-height: 1;
+  color: white;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  height: 34px;
+}
+
+  .pm-gates{
+    max-width:800px;
+  }
+
+  .footer-certifieds {
+    display: flex;
+    flex-wrap:wrap;
+    margin:10px 0;
+    justify-content: center;
+  }
+  .footer-certifieds li{
+    padding: 0 10px;
+  }
+  .footer-certifieds img{
+    max-width: 70px;
+  }
+</style>
+<footer class="site-footer pt-3 pt-md-5" role="contentinfo">
+  <div class="container">
+    {%- if section.settings.logo != blank -%}
+    <div class="mb-4 text-{{section.settings.logo_align}}">
+      <img alt="logo footer" class="lazyload" data-src="{{section.settings.logo | img_url:'300x'}}" src="{% include 'srcBlank' %}" />
+    </div>
+    {%- endif -%}
+    <div class="flex-footer">
+      {%- for block in section.blocks -%}
+      <div class="flex__item" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+
+        {%- when 'menu' -%}
+        {%- if linklists[block.settings.link_list].links.size > 0 -%}
+        <div class="site-footer__section">
+          {% if block.settings.title != blank %}
+          <h4 class="h4 site-footer__section-title">{{block.settings.title}}</h4>
+          {% endif %}
+          <ul class="site-footer__list">
+            {%- for link in linklists[block.settings.link_list].links -%}
+            <li class="site-footer__list-item"><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        {%- endif -%}
+
+        {%- when 'text' -%}
+        <div class="site-footer__section">
+          {%- if block.settings.title != blank -%}
+          <h4 class="h4 site-footer__section-title">{{ block.settings.title | escape }}</h4>
+          {%- endif -%}
+          <div class="rte-setting">{{ block.settings.text }}</div>
+        </div>
+
+        {%- when 'newsletter' -%}
+        <div class="site-footer__section site-footer__newsletter">
+          <h4 class="h4 site-footer__section-title">
+            {%- if block.settings.title != blank -%}
+            {{ block.settings.title | escape }}
+            {%- endif -%}
+          </h4>
+          <div class="form-vertical">
+            {%- form 'customer' -%}
+            {{ form.errors | default_errors }}
+            {%- if form.posted_successfully? -%}
+            <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+            {%- else -%}
+            {%- if block.settings.subheading != blank -%}
+            <label for="NewsletterEmail-{{ block.id }}" class="site-footer__newsletter-label">
+              {{ block.settings.subheading }}
+            </label>
+            {%- endif -%}
+            <div class="input-group">
+              <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" name="contact[email]" id="NewsletterEmail-{{ block.id }}" class="form-control" autocorrect="off" autocapitalize="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-theme" name="commit">
+                  <span>{{ 'general.newsletter_form.submit' | t }}</span>
+                </button>
+              </div>
+            </div>
+            {%- endif -%}
+            {%- endform -%}
+          </div>
+          
+          {% if block.settings.payment != blank %}
+          	<img src="{% include 'srcBlank' %}" data-src="{{block.settings.payment | img_url:'600x'}}" class="payment-img lazyload" />
+          {% endif %}
+        </div>
+        {%- endcase -%}
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="site-footer__copyright">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-4 text-center text-lg-left">
+          <span>&copy; {{ 'now' | date: "%Y" }} {{ shop.name | link_to: '/' }}</span>
+          <div class="mt-3">
+            <ul class="list--inline social-icons text-{{ block.settings.align }}">
+              {%- if settings.social_facebook_link != blank -%}
+              <li>
+                <a href="{{ settings.social_facebook_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Facebook' }}">
+                  {%- include 'icon-facebook' -%}
+                  <span class="icon__fallback-text">Facebook</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_twitter_link != blank -%}
+              <li>
+                <a href="{{ settings.social_twitter_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Twitter' }}">
+                  {%- include 'icon-twitter' -%}
+                  <span class="icon__fallback-text">Twitter</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_pinterest_link != blank -%}
+              <li>
+                <a href="{{ settings.social_pinterest_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Pinterest' }}">
+                  {%- include 'icon-pinterest' -%}
+                  <span class="icon__fallback-text">Pinterest</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_instagram_link != blank -%}
+              <li>
+                <a href="{{ settings.social_instagram_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Instagram' }}">
+                  {%- include 'icon-instagram' -%}
+                  <span class="icon__fallback-text">Instagram</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_tumblr_link != blank -%}
+              <li>
+                <a href="{{ settings.social_tumblr_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Tumblr' }}">
+                  {%- include 'icon-tumblr' -%}
+                  <span class="icon__fallback-text">Tumblr</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_snapchat_link != blank -%}
+              <li>
+                <a href="{{ settings.social_snapchat_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Snapchat' }}">
+                  {%- include 'icon-snapchat' -%}
+                  <span class="icon__fallback-text">Snapchat</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_youtube_link != blank -%}
+              <li>
+                <a href="{{ settings.social_youtube_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'YouTube' }}">
+                  {%- include 'icon-youtube' -%}
+                  <span class="icon__fallback-text">YouTube</span>
+                </a>
+              </li>
+              {%- endif -%}
+              {%- if settings.social_vimeo_link != blank -%}
+              <li>
+                <a href="{{ settings.social_vimeo_link | escape }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: 'Vimeo' }}">
+                  {%- include 'icon-vimeo' -%}
+                  <span class="icon__fallback-text">Vimeo</span>
+                </a>
+              </li>
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+        {%- if section.settings.enable_certified -%}
+        <div class="col-12 col-lg-8 text-center text-lg-right">
+          <ul class="footer-certifieds list--no-bullets">
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_aus_allergy_certified_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_made_safe_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_dermtest_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_cruelty_free_vegan_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_eco_cert_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_fsc_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_toxic_free_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_ewg_400x.png?v=1605578168">
+            </li>
+            <li>
+              <img class="lazyload" src="{% include 'srcBlank' %}" data-src="//cdn.shopify.com/s/files/1/0271/9875/0764/files/certs_aus_allergy_certified_400x.png?v=1605578168">
+            </li>
+          </ul>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer 1",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background",
+      "default": "#282828"
+    },
+    {
+      "type": "color",
+      "id": "background_bot",
+      "label": "Background bottom",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "text",
+      "label": "Text",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "title",
+      "label": "Title",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "mix-border",
+      "label": "Mix border",
+      "default": "#cfcfcf"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "select",
+      "id": "logo_align",
+      "label": "Logo align",
+      "default": "center",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_certified",
+      "label": "Enable certified"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "id": "link_list",
+          "type": "link_list",
+          "label": "Menu",
+          "default": "footer",
+          "info": "This menu won't show dropdown items"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Text column"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share store details, promotions, or brand content with your customers</p>"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Be in the know"
+        },
+        {
+          "type": "richtext",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "<p>Promotions, new products and sales. Directly to your inbox.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment",
+          "label": "Payment gateways"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

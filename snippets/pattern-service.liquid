@@ -1,0 +1,68 @@
+<!-- pattern-service.liquid -->
+{%- comment -%} VARIABLE : pat-service-icon, pat-service-title, pat-service-des, pattern-service  {%- endcomment -%}
+{%- unless pattern-service -%}{%- assign pattern-service = '1' -%}{%- endunless -%}
+{%- unless pat-service-icon -%}{%- assign pat-service-icon = '[[ Icon ]]' -%}{%- endunless -%}
+{%- unless pat-service-title -%}{%- assign pat-service-title = 'Service' -%}{%- endunless -%}
+{%- unless pat-service-des -%}{%- assign pat-service-des = 'Service description' -%}{%- endunless -%}
+
+{%- case pattern-service -%}
+
+{%- when '1' -%}{%- comment -%} LAYOUT 1 {%- endcomment -%}
+<div class="media pat-service service-1 text-center text-md-left flex-wrap flex-md-wrap">
+	<span class="align-self-center mr-md-3 iconx10">
+		{{ pat-service-icon }}
+	</span>
+	<div class="media-body align-self-center">
+		<h5 class="mt-0 my-2 fz">{{ pat-service-title }}</h5>
+		{{ pat-service-des }}
+	</div>
+</div>
+
+{%- when '2' -%}{%- comment -%} LAYOUT 2 {%- endcomment -%}
+<div class="media pat-service service-2 text-center">
+	<div class="media-body">
+		<div class="mb-4 iconx15">
+			{{ pat-service-icon }}
+		</div>
+		<h5 class="mt-0 mb-2">{{ pat-service-title }}</h5>
+		{{ pat-service-des }}
+	</div>
+</div>
+
+{%- when '3' -%}{%- comment -%} LAYOUT 3 {%- endcomment -%}
+<div class="media pat-service service-3 text-center">
+	<div class="media-body">
+		<h5 class="mt-0 mb-2 text-theme">
+			<span class="mr-1 iconx4">
+				{{ pat-service-icon }}
+			</span>
+			{{ pat-service-title }}
+		</h5>
+		{{ pat-service-des }}
+	</div>
+</div>
+
+{%- when '4' -%}{%- comment -%} LAYOUT 4 {%- endcomment -%}
+<div class="media pat-service service-4 text-left">
+	<span class="align-self-center iconx4 text-theme rounded-circle">
+		{{ pat-service-icon }}
+	</span>
+	<div class="media-body">
+		<h5 class="mt-0 mb-2">{{ pat-service-title }}</h5>
+		{{ pat-service-des }}
+	</div>
+</div>
+
+{%- when '5' -%}{%- comment -%} LAYOUT 5 {%- endcomment -%}
+<div class="media pat-service service-5 text-center">
+	<div class="media-body">
+		<div class="mb-3 iconx8 text-theme pat-service-icon">
+			{{ pat-service-icon }}
+		</div>
+		<h5 class="mt-0 mb-2 font-family-1 fw-600 fz-2">{{ pat-service-title }}</h5>
+		{{ pat-service-des }}
+	</div>
+</div>
+
+{%- else -%}
+{%- endcase -%}

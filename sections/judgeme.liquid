@@ -1,0 +1,31 @@
+{% include 'judgeme_widgets', widget_type: 'judgeme_featured_carousel', concierge_install: false %}
+
+<style>
+  .shopify-section .jdgm-carousel-title{
+    margin-bottom: 15px;
+    text-align: center !important;
+    font-size: 30px;
+    font-weight: 600;
+  }
+  
+  .shopify-section .jdgm-carousel-wrapper .jdgm-all-reviews-rating-wrapper{
+    text-align: center !important;
+  }
+  
+  .jdgm-star.jdgm--on:hover{
+    color: white !important;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Judgeme",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Judgeme",
+        "category": "Media"
+      }
+    ]
+  }
+{% endschema %}

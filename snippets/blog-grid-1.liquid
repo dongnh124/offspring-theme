@@ -1,0 +1,41 @@
+<!-- blog-grid-1.liquid -->
+<div class="blog__item blog__item--1">
+  <h4 class="blog__title-link"><a href="{{ article.url }}">{{ article.title }}</a></h4>
+  <p class="blog__meta">
+    {%- if article.tags.size > 0 -%}
+    {%- for tag in article.tags -%}
+    <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="link-body-color"><strong>{{ tag }}</strong></a>{% if forloop.last %} - {% else %}, {% endif %}
+    {%- endfor -%}
+    {%- endif -%}
+    {{ article.published_at | time_tag: format: 'month_day_year' }}
+  </p>
+  {%- if article.image -%}
+  <div class="content-block__image">
+    <a href="{{ article.url }}">
+      <noscript>
+        {{ article | img_url: '1024x1024' | img_tag: article.title | escape }}
+      </noscript>
+      <div class="article__photo-container">
+        <div class="article__photo-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100}}%;">
+          {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img class="lazyload"
+               src="{%- include 'srcBlank' -%}"
+               data-src="{{ img_url }}"
+               data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+               data-aspectratio="{{ article.image.aspect_ratio }}"
+               data-sizes="auto"
+               alt="{{ article.title | escape }}">
+        </div>
+      </div>
+    </a>
+  </div>
+  {%- endif -%}
+  <div class="rte rte--indented-images">
+    {%- if article.excerpt.size > 0 -%}
+    {{ article.excerpt }}
+    {%- else -%}
+    <p>{{ article.content | strip_html | truncatewords: 25 }}</p>
+    {%- endif -%}
+  </div>
+  <a class="btn btn-theme px-4 rounded-pill" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+</div>

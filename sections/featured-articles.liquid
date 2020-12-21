@@ -1,0 +1,138 @@
+<!-- featured-articles.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="bloglist-wrapper dots-negative">
+      <div class="bloglist-slider mx-n{{section.settings.gaps}}" id="Bloglist-{{ section.id }}"
+           data-rows="{{section.settings.rows}}"
+           data-slidesToShow="{{section.settings.show}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- assign blog = blogs[section.settings.blog] -%}
+        {%- assign limit = section.settings.limit -%}
+        {%- if blog != blank -%}
+        {%- for article in blog.articles limit: limit -%}
+        <div class="bloglist-item px-{{section.settings.gaps}}">
+          {%- include 'blog-card' -%}
+        </div>
+        {%- endfor -%}
+        {%- else -%}
+        {%- for i in (1..limit) -%}
+        <div class="bloglist-item px-{{section.settings.gaps}}">
+          {%- include 'blog-grid-blank' -%}
+        </div>
+        {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Blog posts"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "label": "Blog",
+      "id": "blog",
+      "type": "blog"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "rows",
+      "label": "Rows",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 row"
+        },
+        {
+          "value": "2",
+          "label": "2 rows"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "label": "Limit items",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "show",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Display items",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gaps",
+      "min": -1,
+      "max": 5,
+      "step": 1,
+      "label": "Gutters size",
+      "info": "-1 is global gutter value (Default)",
+      "default": -1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "category": "Text"
+    }
+  ]
+}
+{% endschema %}

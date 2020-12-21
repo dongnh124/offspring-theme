@@ -1,0 +1,196 @@
+<!-- ups-pants.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="services-wrapper dots-negative pt-3">
+      <div class="services-slider row" id="service-list-{{ section.id }}"
+           data-rows="{{section.settings.rows}}"
+           data-slidesToShow="{{section.blocks.size}}"
+           data-slidestoscroll="{{section.blocks.size}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- for block in section.blocks -%}
+        <div class="col services-item carousel__slide-wrapper--{{block.id}}" {{ block.shopify_attributes }}>
+          {%- assign pat-service-icon = block.settings.icon | default:'[Icon]' -%}
+          {%- assign pat-service-title = block.settings.title -%}
+          {%- assign pat-service-des = block.settings.des -%}
+          {%- include 'pattern-service' with section.settings.layout  -%}
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .pat-service h5{
+      font-weight: 600;
+  }
+  .pat-service h5>span{
+    color:var(--g-main);
+  }
+  
+  @media (min-width:992px){
+    .services-wrapper .slick-slider{
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+  }
+  
+  #shopify-section-ups-pants .section-des-1{
+  	max-width:1100px;
+  }
+  
+  #shopify-section-ups-pants .slick-dots li button{
+    border: 1px solid #cfcfcf;
+  }
+  
+  #shopify-section-ups-pants .section-block{
+    background-color:transparent;
+  }
+
+  #shopify-section-ups-pants{
+    background-color:var(--g-main);
+  }
+  
+  #shopify-section-ups-pants .media-body,
+  #shopify-section-ups-pants h5,
+  #shopify-section-ups-pants .section-title,
+  #shopify-section-ups-pants .section-des{
+  	color:white;
+  }
+
+  #shopify-section-ups-pants .service-2{
+    padding:0;
+  }
+  
+  #shopify-section-ups-pants #Icon_1 .st0{fill:none;stroke:#fff;stroke-width:3;stroke-miterlimit:10;}
+  #shopify-section-ups-pants #Icon_1 .st1{fill:#fff}
+  
+  #shopify-section-ups-pants #Icon_2 .st0{fill:none;stroke:#fff;stroke-width:3;stroke-miterlimit:10;}
+  #shopify-section-ups-pants #Icon_2 .st1{fill:#fff}
+
+  #shopify-section-ups-pants #Icon_3 .st0{fill:none;stroke:#fff;stroke-width:3;stroke-miterlimit:10;}
+  #shopify-section-ups-pants #Icon_3 .st1{display:none;}
+  #shopify-section-ups-pants #Icon_3 .st2{display:inline;}
+  #shopify-section-ups-pants #Icon_3 .st3{fill:#fff}
+
+  #shopify-section-ups-pants #Icon_4 .st0{fill:none;stroke:#fff;stroke-width:3;stroke-miterlimit:10;}
+  #shopify-section-ups-pants #Icon_4 .st1{fill:#fff}
+</style>
+
+{% schema %}
+{
+  "name": "UPS",
+  "class": "index-section mb-5 py-5",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "Style 1"
+        },
+        {
+          "value": "2",
+          "label": "Style 2"
+        },
+        {
+          "value": "3",
+          "label": "Style 3"
+        },
+        {
+          "value": "4",
+          "label": "Style 4"
+        },
+        {
+          "value": "5",
+          "label": "Style 5"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Service"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "default": "Service description",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Service heading"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "HTML / Description",
+          "default": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis."
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "HTML icon"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

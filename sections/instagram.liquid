@@ -1,0 +1,177 @@
+<!-- instagram.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid px-0{% else %}container{% endif %}">
+  <div class="section-block">
+    
+    {%- if section.settings.title != blank -%}
+    <h3 class="section-title section-title-1 text-center mb-4">
+      {% include 'icon-instagram' %}<span class="ml-2">{{ section.settings.title }}</span>
+    </h3>
+    {%- endif -%}
+    {%- if section.settings.des != blank -%}
+    <p class="section-des section-des-1 text-center px-3 mb-3">
+      {{ section.settings.des }}
+    </p>
+    {%- endif -%}
+    <div class="row">
+      <div class="col-12 px-0 d-flex flex-column">
+        <div class="my-auto">
+          <div class="instagram row dots-negative" id="Instagram-{{ section.id }}"
+               data-style="{{section.settings.style}}"
+               data-accesstoken="{{section.settings.accesstoken}}"
+               data-limit="{{ section.settings.limit }}" 
+               data-slidesToShow="{{section.settings.show}}"
+               data-arrows="{{ section.settings.arrows }}"
+               data-dots="{{ section.settings.dots }}" 
+               data-draggable="{{ section.settings.draggable }}" 
+               data-infinite="{{ section.settings.infinite }}"
+               data-section-id="{{ section.id }}" 
+               data-section-type="instagrams">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.instagram .instagram-item {
+  position: relative;
+  display: block
+}
+
+.instagram .instagram-item:hover:after {
+  opacity: 1
+}
+
+.instagram .instagram-item:after {
+  opacity: 0;
+  transition: all ease .45s;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFCElEQVRogc2aW4iVVRTHf2scSyvSSsy8hNnFsqgsMIygwALpqoVl9SS9RL0m9GD0EEUggXQhXyLIFyspCiV9KLtBShcCEQyz1PBGhmM3zTF/PewzsWfPd+ac8415+sPA3muvtfZ/fbP396299gk6hNoDjAPGA6dXqbQhK/vHgAMRcbRTPtGOkjoTuB+YB8wGzu50ojbRB+wA1gHvA99ERNUDaQ/qbPUDu4dv1Xl1iPeoy9QTXSSf4331vCquQ5aQOh5YBdxZob8d+AjYBewG/mjlr0JWpdMLTASmArcAcyp0tgHzI2JXxViCOlb9uuIJvKfOU9vaMyOFOkV9Ue0veOxRL2tmFOrrhcFhdfGpIN2E0yx1e8Fpq3pWlfKSQnG/enEXeJe8JqibC24rSqUe9ftM4S91bpc4D4E6Ud2d8esf9HDV+UWET3eB5LnqSvVT9fFyv6m3FxyfzwffKZ7+xC4EsKYgeF8xHsVS2pUP7s8G3j7V5BscDhYBvFyhs7TQmdRreu+fn+ltGyGRAK4ErgMmk/Kl/aRvyOcRcayJ6bekVGUAWyp0Nhf9K1AvLqJ6pCbxM9Qn1R9sjl9Nr+qLKuxnqBvVA+rLam+FzqWFvztQryqEC2uQv1XdOwzxEsdMqUpPh/NMLblWOego+1MfAzYAFzTx1V8hHw08A6xWR3cyX4HTOnoCJdRFwCtA7ucn4AngcuA00h6YBDwEfFa4WASsoD6iagktaJP8heqfhe1L6phhbEJ9WD1S2N3f5pzlElo8kgDeKOyea8euYTvPwYnaj2rV6a5lALWWkOlD93Am2gQsa9c+Ij4Ens1E04F763CpuwcWFLZPRcSJDn0sB37N+vfUIVI3gBuy9i/Axk4dRMQfwPpMdGMdInUDmJy1t0XE3zX9bM3ak+zwuwD1A8jfNOWxshP8lrVHU12mGRZ1A9iftafW9AEwJWsfjogjnTqoG8D2rD1LnVTTT568/VjHQd0A1hX9Rzt1YDrxXZuJ1tYhUjeAL4Efsv5S9Yp2jdWxpBTkXxGwug6RWgE03vn5h+sMYJ16aStb9UwS2dmZeFVEbG1i0tJh3VSiR11f2B5SH7Uiw2zkQbeqWwqbferkqjkqfAxJJYYcGtpFRJww1Yw2ATMb4vHAq8Cz6gbSZj8GXEjasGWZ5ghwT0TsrcujdgAAEdGn3gSsAW7Ohs4FHmxhvgdYEBFfjYTDiM4DABFxELiNdAY41IbJcWAlcP1IycMI/wMDiIh+4AX1NWAhcDdwDSnl6AUOkJbTWmBNROw8GfPScF4e+Wof8SKiD3i98TdQoYgamWozjCv6/b0MzkdgcIllRGjcrtS/YRmKsprR10PKa/Igrj6JE55sXFL0dwBgqscMYI866tRzaw0HlxZ/dqB+aiqm5ljSZa5DoM4pOC7PB89Tf88GD6hThvF3SqGeqX6T8TtheXdhqpTl+FI9p0ucc16j1HcLbu9UKY5x6P3YNnVGF3gPcJqqflxw2qVOaGYw3cGldhtL62mr7qX+O+LjTPvyl4LLUfX6XLfqmnUGqVpQpsa/kWqgG4CdpNdv1U8DWv2soEo2FphGSvrmAg+QUvQcB4HFjZrS8DBdrH3i/web1WktiRdBhLrYtOa6hT7TnUPTakXLi2vT8e9O4C7gDlKq/F/iKPAF8BbwZkQMm+F2dPNu+kJPJN0FXEBau638tfNTg+PAYWAf8F1EHG+X0z/SjkvalQxH4QAAAABJRU5ErkJggg==")
+}
+  
+  .instagram-item img{
+    height:150px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width:1200px){
+    .instagram-item img{
+      height:300px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+ "name": "Instagram",
+ "class": "index-section mb-0",
+ "settings": [
+  {
+   "type": "text",
+   "id": "title",
+   "label": "Title",
+   "default": "# Instagram"
+ },
+ {
+   "type": "textarea",
+   "id": "des",
+   "label": "HTML / Description"
+ },
+ {
+   "type": "checkbox",
+   "id": "fullwidth",
+   "label": "Fullwidth",
+   "default": true
+ },
+ {
+   "type": "header",
+   "content": "Instagram"
+ },
+ {
+   "type": "text",
+   "id": "accesstoken",
+   "label": "Access Token",
+   "default": "IGQVJXUnhTRnhZASTlWdTA3ODE4S3dpY2x6ZA2dTUWdkaThhLVk4bFBZAWkVZATGRUTS1rWXFrOTZAWcWlvQ2pkMEo4RWNFTWRsOTNJRzJlRW9rM29WamI4TlloZAm5rZAXVOTTA3bWMxVVo2WDQtbUNpQXR6NgZDZD",
+   "info": "💡 [Get Access Token?](https:\/\/blog.leotheme.com\/how-to-get-instagram-token.html)"
+ },
+ {
+   "type": "range",
+   "id": "limit",
+   "min": 1,
+   "max": 50,
+   "step": 1,
+   "label": "Limit",
+   "default": 10
+ },
+ {
+   "type": "select",
+   "id": "style",
+   "label": "Layout",
+   "default": "carousel",
+   "options": [
+    {
+     "value": "grid",
+     "label": "Grid"
+   },
+   {
+     "value": "carousel",
+     "label": "Carousel"
+   }
+ ]
+ },
+ {
+   "type": "header",
+   "content": "Carousel"
+ },
+ {
+   "type": "range",
+   "id": "show",
+   "min": 1,
+   "max": 10,
+   "step": 1,
+   "label": "Show",
+   "default": 5
+ },
+ {
+   "type": "checkbox",
+   "id": "arrows",
+   "label": "Arrows",
+   "default": false
+ },
+ {
+   "type": "checkbox",
+   "id": "draggable",
+   "label": "Draggable",
+   "default": true
+ },
+ {
+   "type": "checkbox",
+   "id": "dots",
+   "label": "Dots",
+   "default": false
+ },
+ {
+   "type": "checkbox",
+   "id": "infinite",
+   "label": "Infinite",
+   "default": true
+ }
+
+],
+ "presets": [
+  {
+   "name": "Instagram",
+   "category": "Media"
+ }
+]
+}
+{% endschema %}

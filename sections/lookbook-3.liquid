@@ -1,0 +1,139 @@
+<!-- lookbook-3.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    {%- if section.blocks.size > 0 -%}
+    <div class="lookbooks-wrapper" id="Lookbooks-{{ section.id }}">
+      {%- for block in section.blocks -%}
+      <div class="lookbook__slide carousel__slide-wrapper--{{ block.id }} mb-3 mb-md-5" {{ block.shopify_attributes }}>
+        <div class="row no-gutters">
+          <div class="col-12 col-md-7 {% cycle '', 'order-lg-1' %} ">
+            <div class="position-relative">
+              {%- if block.settings.image != blank -%}
+              <img src="{%- include 'srcBlank' -%}" class="lazyload w-100" data-src="{{block.settings.image | img_url : '1500x'}}" />
+              {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="col-12 col-md-5">
+            <div class="d-flex w-100 h-100 align-items-center p-3 p-lg-5">
+              <div class="lbook-cap">
+                <h4 class="fw-700 mb-3">{{ block.settings.title }}</h4>
+                <div>{{ block.settings.des }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  .lbook-cap{
+  	max-width:500px;
+    margin:auto;
+    font-size:16px;
+    letter-spacing:1px;
+  }
+  .template-page .index-section,.template-page .slick-slider{margin:0}.main-content{padding:0}.breadcrumb{display:none}
+  .lookbook__dot {
+    position: absolute;
+    z-index: 100;
+    width: 15px;
+    height: 15px;
+    border-radius: 10px
+  }
+
+  .lookbook__dot:before {
+    content: "";
+    width: 25px;
+    height: 25px;
+    background-color: inherit;
+    border-radius: 25px;
+    opacity: .3;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    -webkit-animation: pulse 2.5s linear;
+    animation: pulse 2.5s linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite
+  }
+
+  .lookbook__dot:after {
+    content: "";
+    width: 25px;
+    height: 25px;
+    background-color: inherit;
+    border-radius: 25px;
+    opacity: .3;
+    position: absolute;
+    top: -5px;
+    left: -5px
+  }
+
+  .lookbooks-item img {
+    width: 100%
+  }
+
+  .lookbook__slide .product-card {
+    height: auto;
+    width: 100%
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "class": "index-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Lookbook"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Full width",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lookbook",
+      "name": "Lookbook",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "Description"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

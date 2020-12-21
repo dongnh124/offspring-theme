@@ -1,0 +1,277 @@
+<style>
+  .gmap-iframe {
+    margin-bottom: 30px
+  }
+
+  .gmap-iframe .gmap_canvas,
+  .gmap-iframe .mapouter,
+  .gmap-iframe iframe {
+    width: 100%!important
+  }
+
+  @media (max-width:767px) {
+    .gmap-iframe .gmap_canvas,
+    .gmap-iframe .mapouter,
+    .gmap-iframe iframe {
+      height: 350px!important
+    }
+  }
+
+  .contact-page__info li {
+    padding: 2px 0;
+    border-bottom: 1px solid var(--g-border-color);
+    line-height: 33px
+  }
+
+  .contact-page__info li:last-child {
+    border: none
+  }
+
+  .contact-page__info .icon,
+  .contact-page__info [class^=icon-] {
+    width: auto;
+    margin-right: 10px;
+    height: 18px;
+  }
+
+  .rtl .contact-page__info .icon {
+    margin-left: 10px;
+    margin-right: 0
+  }
+
+  .contact-page__info i {
+    margin-right: 8px;
+  }
+
+  .contact-form .btn-contact{
+    display: inline-block;
+    width: auto;
+    min-width: 180px;
+    border-radius: 5px;
+    padding: 0 15px;
+    height:50px;
+    height:50px;
+  }
+
+  .more-info img{
+    max-width: 90px;
+  }
+
+  @media (min-width:992px){
+    .contact-from-wrap{
+      padding: 40px;
+      border: 1px solid var(--g-border-1);
+      border-radius: 5px;
+    }
+  }
+</style>
+<!-- page-contact.liquid -->
+<div class="container">
+  {%- if page.content != blank -%}
+  <div class="content-block">
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+  {%- endif -%}
+  <div class="contact-content">
+    <div class="row mb-2 mb-md-5">
+      <div class="col d-flex">
+        <div class="align-self-center pl-lg-3">
+          {%- if section.settings.contact_title != blank -%}
+          <h2 class="my-3 mb-lg-4">
+            {{section.settings.contact_title}}
+          </h2>
+          {%- endif -%}
+          {%- if section.settings.contact_des != blank -%}
+          <div class="contact-page__des" >{{section.settings.contact_des}}</div>
+          {%- endif -%}
+          <ul class="list-unstyled contact-page__info">
+            {%- if section.settings.contact_addess != blank -%}
+            <li>
+              {%- include 'icon-home' -%}{{section.settings.contact_addess}}
+            </li>
+            {%- endif -%}
+            {%- if section.settings.contact_phone != blank -%}
+            <li>
+              {%- include 'icon-mobile-phone' -%}{{section.settings.contact_phone}}
+            </li>
+            {%- endif -%}
+            {%- if section.settings.contact_mail != blank -%}
+            <li>
+              {%- include 'icon-envelope' -%}{{section.settings.contact_mail}}
+            </li>
+            {%- endif -%}
+            {%- if section.settings.contact_web != blank -%}
+            <li>
+              {%- include 'icon-globe-europe' -%}{{section.settings.contact_web}}
+            </li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+      {%- if section.settings.gmap and section.settings.gmap_iframe != blank -%}
+      <div class="col-12 col-md-8">
+        <div class="gmap-iframe">
+          {{section.settings.gmap_iframe}}
+        </div>
+      </div>
+      {%- endif -%}
+    </div>
+
+    <div class="contact-from-wrap">
+      <div class="row">
+        <div class="col-12 col-md">
+          <div class="contact-form form-vertical">
+            {%- form 'contact' -%}
+            {%- if form.posted_successfully? -%}
+            <p class="form-success">
+              {{ 'contact.form.post_success' | t }}
+            </p>
+            {%- endif -%}
+            {{ form.errors | default_errors }}
+            <div class="grid grid--half-gutters">
+              <div class="grid__item medium-up--one-half">
+                <label for="ContactFormName" class="label--hidden">{{ 'contact.form.name' | t }}</label>
+                <input type="text" id="ContactFormName" name="contact[name]" placeholder="{{ 'contact.form.name' | t }}" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+              </div>
+              <div class="grid__item medium-up--one-half">
+                <label for="ContactFormEmail" class="label--hidden">{{ 'contact.form.email' | t }}</label>
+                <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+              </div>
+            </div>
+            <label for="ContactFormPhone" class="label--hidden">{{ 'contact.form.phone' | t }}</label>
+            <input type="tel" id="ContactFormPhone" name="contact[phone]" placeholder="{{ 'contact.form.phone' | t }}" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+            <label for="ContactFormMessage" class="label--hidden">{{ 'contact.form.message' | t }}</label>
+            <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            <input type="submit" class="btn btn-theme btn-contact" value="{{ 'contact.form.send' | t }}">
+            {%- endform -%}
+          </div>
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+        <div class="col col-md-4">
+          {%- if section.settings.moreinfo_title != blank -%}
+          <h2 class="mb-3 mb-lg-4">
+            {{section.settings.moreinfo_title}}
+          </h2>
+          {%- endif -%}
+          <ul class="list--no-bullets more-info">
+            {%- for block in section.blocks -%}
+            <li>
+              <div class="media mb-4">
+                <img class="mr-3" src="{{ block.settings.icon | img_url:'200x' }}">
+                <div class="media-body">
+                  <h5 class="mt-0">{{ block.settings.title }}</h5>
+                  <div>
+                    {{ block.settings.description }}
+                  </div>
+                </div>
+              </div>
+            </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Contact us",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Goole map ifame"
+    },
+    {
+      "type": "checkbox",
+      "id": "gmap",
+      "label": "Google map",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "gmap_iframe",
+      "label": "Iframe code",
+      "info": "💡 [Get iframe code here](https:\/\/www.embedgooglemap.net\/)"
+    },
+    {
+      "type": "header",
+      "content": "Store information"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Title",
+      "default": "Visit one of our agency locations or contact us today."
+    },
+    {
+      "type": "textarea",
+      "id": "contact_des",
+      "label": "Description",
+      "default": "Have a question? Give us a call or fill out the contact form. We’d love to hear from you"
+    },
+    {
+      "type": "text",
+      "id": "contact_addess",
+      "label": "Addess",
+      "default": "123 Sky Tower, West 21th Street, Suite 721, NY"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone",
+      "default": "+844 123 456 789"
+    },
+    {
+      "type": "text",
+      "id": "contact_mail",
+      "label": "Email",
+      "default": "sale@yourcompany.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_web",
+      "label": "Website",
+      "default": "www.example.com"
+    },
+    {
+      "type": "header",
+      "content": "More information"
+    },
+    {
+      "type": "text",
+      "id": "moreinfo_title",
+      "label": "Addess",
+      "default": "Our staff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "information",
+      "name": "Information",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Service heading"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "HTML / Description",
+          "default": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

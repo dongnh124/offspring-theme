@@ -1,0 +1,141 @@
+<!-- essentials-subscription.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid px-0{% else %}container{% endif %} {% if section.settings.no_gutter %}p-0{% endif %}">
+  <div class="section-block">
+    <div class="banner-cart-wrap">
+      {%- if section.settings.image != blank  -%}
+      <img alt="{{block.settings.description | strip_html}}" src="{% include 'srcBlank' %}" class="lazyload" data-src="{{section.settings.image | img_url:'1920x'}}">
+      {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      <div class="banner-cart d-flex justify-content-center align-items-center">
+        <div class="container">
+          <div class="banner-cart-caption text-{{section.settings.text_align}}">
+            {%- if section.settings.title != blank -%}
+            <h4 class="my-2 banner-cart-title mb-4">
+              {{section.settings.title}}
+            </h4>
+            {%- endif -%}
+            {%- if section.settings.text != blank -%}
+            <div class="banner-cart-des">
+              {{section.settings.text}}
+            </div>
+            {%- endif -%}
+            <div>
+              <a class="btn btn-theme px-4 py-2" href="{{section.settings.button_link}}">
+                {{section.settings.button_label}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .banner-cart-des{
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+  }
+  .banner-cart-title{
+    max-width:800px;
+    margin:0 auto;
+    line-height:1.6;
+  }
+  .banner-cart-wrap{
+    position:relative;
+  }
+  @media (max-width:991px){
+    .banner-cart-wrap{
+      padding-bottom:30px;
+    }
+    .banner-cart-wrap img{
+      min-height: 200px;
+      object-fit: cover;
+    }
+    .banner-cart-title{
+      font-size:18px;
+    }
+  }
+  .banner-cart-wrap .product-card__price{
+    margin-bottom: 20px;
+  }
+  .banner-cart-wrap .product-card__price>.money{
+    font-size:24px;
+  }
+  @media (min-width:992px){
+    .banner-cart-title{
+      margin-bottom: 15px;
+      color:white;
+    }
+    .banner-cart{
+      position:absolute;
+      width:100%;
+      height:100%;
+      top:0;
+      padding:50px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Subscription",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Ceramic Artists Now"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description or HTML",
+      "default": "of Lindsey Hampton"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ]
+}
+{% endschema %}

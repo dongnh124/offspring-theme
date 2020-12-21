@@ -1,0 +1,268 @@
+<!-- quotes.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    {%- if section.blocks.size > 0 -%}
+    <div class="ic-quote-wr text-center">{%- include 'icon-quote' -%}</div>
+    <div class="quotes-wrapper dots-negative {% if section.settings.background != blank %}quotes-wrapper-background{% endif %}" {% if section.settings.background != blank %}style="background-image:url({{section.settings.background | img_url:'1920x'}})"{% endif %}>
+      <div class="quotes-slider" id="Quotes-{{ section.id }}" 
+           data-rows="{{section.settings.rows}}"
+           data-slidesToShow="{{section.settings.show}}"
+           data-slidestoscroll="{{section.settings.show}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- for block in section.blocks -%}
+        <div class="quote__slide-wrapper carousel__slide-wrapper--{{ block.id }}" {{ block.shopify_attributes }}>
+          <div class="quote__slide">
+            <div class="quote-wrap px-3">
+              <div class="quote-content d-flex flex-column">
+                <h6 class="mt-3 fw-600 fz-2">{{ block.settings.author }}</h6>
+                <div class="py-2 text-dark">{{ block.settings.quote }}</div>
+                {%- if block.settings.avatar != blank -%}
+                <div class="author-avatar">
+                  <img class="lazyload" src="{%- include 'srcBlank' -%}" data-src="{{block.settings.avatar | img_url : '300x'}}" />
+                </div>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                <h4>
+                  {{ block.settings.title }}
+                </h4>
+                {%- endif -%}
+                {%- if block.settings.info != blank -%}
+                <p>{{ block.settings.info }}</p>
+                {%- endif -%}
+                
+                {% if block.settings.link != blank %}
+                <div class="mt-auto">
+                  <a class="btn-qt-readmore" href="{{block.settings.link}}">
+                    Read more
+                  </a>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {% if section.settings.btn_link != blank %}
+      <div class="text-center my-3 pt-4">
+        <a href="{{section.settings.btn_link}}" class="btn btn-theme px-4">{{section.settings.btn}}</a>
+      </div>
+    {%- endif -%}
+    {%- endif -%}
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+</div>
+  <style>
+    .btn-qt-readmore{
+      text-transform: uppercase;
+      color:var(--g-main);
+     }
+    .quote-content{
+      background:#f8f8f8;
+      padding:20px;
+      border-radius:10px;
+    }
+    .quotes-slider .slick-track{
+      display: flex !important;
+    }
+
+    .quotes-slider .slick-slide{
+      height: inherit !important;
+    }
+    
+    .quotes-slider .quote__slide,
+    .quotes-slider .quote-wrap,
+    .quotes-slider .quote-content{
+      height:100%;
+    }
+    
+    .ic-quote-wr{
+      margin-bottom: 30px;
+    }
+    .ic-quote-wr svg{
+      width: 50px;
+      height: auto;
+      color: var(--g-main);
+    }
+    .ss-quote .slick-prev{
+      left:-5px;
+    }
+    .ss-quote .slick-next{
+      right:-5px;
+    }
+    .ss-quote{
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--g-border-1);
+    }
+
+    .ss-quote .quote-wrap{
+      max-width:650px;
+      margin:0 auto;
+/*       text-align: center */
+    }
+    .quotes-wrapper .slick-slide[tabindex="0"] {
+      outline: none
+    }
+
+    .author-avatar {
+      display: inline-block;
+      border: 5px solid #ededed;
+      width: 70px;
+      height: 70px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-top: 10px
+    }
+
+    .quotes-wrapper-background{
+      padding:40px 0;
+      background-position: center;
+      background-size:cover;
+      background-repeat: no-repeat;
+    }
+  </style>
+
+  {% schema %}
+  {
+    "name": "Testimonials",
+    "class": "index-section ss-quote",
+    "max_blocks": 20,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "User reviews"
+      },
+      {
+        "type": "textarea",
+        "id": "des",
+        "label": "HTML / Description"
+      },
+      {
+        "type": "image_picker",
+        "id": "background",
+        "label": "Background-image"
+      },
+      {
+        "type": "checkbox",
+        "id": "fullwidth",
+        "label": "Fullwidth",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "show",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "label": "Show",
+        "default": 1
+      },
+      {
+        "type": "checkbox",
+        "id": "arrows",
+        "label": "Arrows",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "draggable",
+        "label": "Draggable",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "dots",
+        "label": "Dots",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "infinite",
+        "label": "Infinite",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "btn",
+        "label": "Button text",
+        "default": "See all reviews"
+      },
+      {
+        "type": "url",
+        "id": "btn_link",
+        "label": "Button link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "quote",
+        "name": "Quote",
+        "settings": [
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "image_picker",
+            "id": "avatar",
+            "label": "Avatar"
+          },
+          {
+            "type": "text",
+            "id": "info",
+            "label": "Author's info"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Comment",
+            "default": "Comment"
+          },
+          {
+            "type": "textarea",
+            "id": "quote",
+            "label": "Text",
+            "default": "Add customer reviews and testimonials to showcase your store’s happy customers."
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+       ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          },
+          {
+            "type": "quote"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

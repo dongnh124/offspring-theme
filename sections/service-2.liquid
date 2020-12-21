@@ -1,0 +1,189 @@
+<!-- service-2.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="services-wrapper dots-negative">
+      <div class="services-slider row" id="service-list-{{ section.id }}"
+           data-rows="{{section.settings.rows}}"
+           data-mobile="1"
+           data-slidesToShow="{{section.blocks.size}}"
+           data-slidestoscroll="{{section.blocks.size}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- for block in section.blocks -%}
+        <div class="col services-item carousel__slide-wrapper--{{block.id}}" {{ block.shopify_attributes }}>
+          {%- assign pat-service-icon = block.settings.icon | default:'[Icon]' -%}
+          {%- assign pat-service-title = block.settings.title -%}
+          {%- assign pat-service-des = block.settings.des -%}
+          {%- include 'pattern-service' with section.settings.layout  -%}
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+
+  {% if section.settings.btn_1 != blank %} 
+  <div class="text-center mt-4">
+    <a href="{{ section.settings.btn_url_1 | default:'/' }}" class="btn btn-theme m-2 px-4">{{ section.settings.btn_1 }}</a>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .pat-service h5{
+      font-weight: 600;
+      }
+  .pat-service h5>span{
+    color:var(--g-main);
+      }
+  
+  @media (min-width:992px){
+    .services-wrapper .slick-slider{
+      -webkit-touch-callout: text;
+      -webkit-user-select: text;
+      -khtml-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+  }
+
+  #shopify-section-service-2 .slick-slider{
+    margin-bottom:0;
+  }
+
+  #shopify-section-service-2{
+    background:#f7f8f8;
+  }
+
+  #shopify-section-service-2 .section-block{
+    background:transparent;
+  }
+
+  #shopify-section-service-2 .dots-negative .slick-dots{
+    bottom: -20px;
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Services",
+  "class": "index-section mb-5 py-5 py-xl-4 ss-service",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "Style 1"
+        },
+        {
+          "value": "2",
+          "label": "Style 2"
+        },
+        {
+          "value": "3",
+          "label": "Style 3"
+        },
+        {
+          "value": "4",
+          "label": "Style 4"
+        },
+        {
+          "value": "5",
+          "label": "Style 5"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Service"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "default": "Service description",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_1",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "btn_url_1",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Service heading"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "HTML / Description",
+          "default": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis."
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "HTML icon"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

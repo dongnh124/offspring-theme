@@ -1,0 +1,200 @@
+<!-- product-tab.liquid  -->
+<div class="{% if section.settings.fullwidth %}container-fluid px-lg-0{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div id="Producttab-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="producttab" 
+    data-rows="{{section.settings.rows}}"
+    data-slidesToShow="{{section.settings.show}}"
+    data-arrows="{{ section.settings.arrows }}"
+    data-dots="{{ section.settings.dots }}" 
+    data-draggable="{{ section.settings.draggable }}" 
+    data-infinite="{{ section.settings.infinite }}">
+    <ol class="nav nav-tabs nav-tabs-1 mt-n3 mb-4 font-weight-bold" role="tablist">
+      {%- for block in section.blocks -%}
+      <li class="nav-item">
+        <a class="nav-link nav-link-{{block.id}} {% if forloop.first %}active{% endif %}" data-toggle="tab" href="#prdtab-{{block.id}}" role="tab" {{ block.shopify_attributes }}>
+          {{block.settings.title}}
+        </a>
+      </li>
+      {%- endfor -%}
+    </ol>
+    <div class="tab-content">
+      {%- for block in section.blocks -%}
+      {%- assign collection = collections[block.settings.collection]  -%}
+      {%- assign limit = section.settings.limit -%}
+      <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="prdtab-{{block.id}}" role="tabpanel">
+        <div class="prdtab-content mb-0 mx-n{{section.settings.gaps}}" style="opacity:0">
+          {%- if collection != blank -%}
+          {%- for product in collection.products limit: limit -%}
+          <div class="producttab-item px-{{section.settings.gaps}}">
+            {%- include 'product-card', product: product -%}
+          </div>
+          {%- endfor -%}
+          {%- else -%}
+          {%- for i in (1..limit) -%}
+          <div class="producttab-item px-{{section.settings.gaps}}">
+            {%- include 'product-grid-blank' -%}
+          </div>
+          {%- endfor -%}
+          {%- endif -%}
+        </div>
+        {%- if section.settings.viewmore != blank -%}
+        <div class="text-center py-3">
+          <a href="{{collection.url}}" class="btn btn-theme">{{section.settings.viewmore}}</a>
+        </div>
+        {%- endif -%}
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+</div>
+
+<style>
+  @media (min-width:1200px){
+    .producttab-item+.producttab-item{
+      margin-left: -1px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product tab",
+  "class": "index-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product tab"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "rows",
+      "label": "Rows",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 row"
+        },
+        {
+          "value": "2",
+          "label": "2 rows"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "label": "Limit items",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "show",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Items",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gaps",
+      "min": -1,
+      "max": 5,
+      "step": 1,
+      "label": "Gutters size",
+      "info": "-1 is global gutter value (Default)",
+      "default": -1
+    },
+    {
+      "type": "header",
+      "content": "View more button"
+    },
+    {
+      "type": "text",
+      "id": "viewmore",
+      "label": "Text",
+      "default": "View more"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title tab"
+        },
+        {
+          "label": "Collection",
+          "id": "collection",
+          "type": "collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tab",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

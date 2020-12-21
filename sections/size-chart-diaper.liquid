@@ -1,0 +1,239 @@
+<!-- size-chart-diaper.liquid -->
+<div class="mb-5 {% if section.settings.fullwidth %}container-fluid px-0{% else %}container{% endif %} {% if section.settings.no_gutter %}p-0{% endif %}">
+  <div class="section-block">
+    <div class="sz-chart-diaper-wrap">
+      {%- if section.settings.image != blank  -%}
+      <img alt="{{block.settings.description | strip_html}}" src="{% include 'srcBlank' %}" class="lazyload" data-src="{{section.settings.image | img_url:'1920x'}}">
+      {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      <div class="sz-chart-diaper d-flex justify-content-center align-items-center" style="left:{{section.settings.left}}%">
+        <div class="sz-chart-diaper-caption text-{{section.settings.text_align}}">
+          {%- if section.settings.title != blank -%}
+          <h4 class="my-2 sz-chart-diaper-title">
+            {{section.settings.title}}
+          </h4>
+          {%- endif -%}
+          <hr class="sz-chart-diaper-hr" />
+          {%- if section.settings.text != blank -%}
+          <div class="sz-chart-diaper-des">
+            {{section.settings.text}}
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+    
+    <div class="diaper-packs">
+      <div class="container">
+        <div class="row">
+          {% for block in section.blocks %}
+          <div class="col-12 col-md-6 col-lg mb-3">
+            <div class="diaper-pack text-center" style="background-color:{{block.settings.bg}}">
+              <img class="lazyload"
+                   data-src="{{block.settings.image | img_url:'400x'}}"
+                   src="{% include 'srcBlank' %}" />
+              <h4 class="diaper-title my-3 fz-8">
+                {{block.settings.title}}
+              </h4>
+              <div class="diaper-des mb-3">
+                {{block.settings.des}}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .js-tg-sizechart{
+    cursor:pointer;
+  }
+  .diaper-des{
+  	letter-spacing:1px;
+    font-size:16px;
+  }
+
+  .diaper-packs{
+    margin-top:-30px;
+  }
+
+  @media (max-width:991px){
+    .diaper-packs{
+      margin-top:40px;
+    }
+  }
+  
+  
+  .diaper-title{
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .diaper-pack{
+    height:100%;
+    padding:40px 25px;
+  }
+  .sz-chart-diaper-des{
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    color:#7a438b;
+    font-size: 18px;
+  }
+  .sz-chart-diaper-hr{
+    display:inline-block;
+    width:40px;
+    border-top-width: 4px;
+  }
+  .sz-chart-diaper-wrap{
+    position:relative;
+  }
+  .sz-chart-diaper-wrap img{
+    width:100%;
+  }
+  @media (max-width:991px){
+    .sz-chart-diaper-wrap{
+      padding-bottom:30px;
+    }
+  }
+  .sz-chart-diaper-wrap .product-card__price{
+    margin-bottom: 20px;
+  }
+  .sz-chart-diaper-wrap .product-card__price>.money{
+    font-size:24px;
+  }
+  @media (min-width:992px){
+    .sz-chart-diaper-title{
+      margin-bottom: 15px;
+      font-size: 26px
+    }
+    .sz-chart-diaper{
+      position:absolute;
+      width:50%;
+      height:100%;
+      top:0;
+      padding:50px;
+    }
+  }
+  @media (min-width:1200px){
+    .sz-chart-diaper-title{
+      font-size: 45px
+    }
+  }
+</style>
+
+<div class="modal fade" id="js-sizechart" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog--sizechart modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">{%- include 'icon-close' -%}</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12">
+            {% assign sizechartPage = pages[section.settings.page] %}
+            {{ sizechartPage.content }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Size chart diaper",
+  "max_blocks": 4,
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Caption align left",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Ceramic Artists Now"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description or HTML",
+      "default": "of Lindsey Hampton"
+    },
+    {
+      "type": "page",
+      "id": "page",
+      "label": "Size chart page"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pack",
+      "name": "Pack",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "Description"
+        },
+        {
+          "type": "color",
+          "id": "bg",
+          "label": "Background"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

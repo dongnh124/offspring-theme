@@ -1,0 +1,8 @@
+{%- if section.settings.fake_view_enable -%}
+<!-- fake-viewer.liquid -->
+<div class="fake-view text-center my-3">
+  <span> {{section.settings.fake_view_text_prefix}}</span>
+  <span class="js-fake-view bg-theme p-1 text-white d-inline-block" data-min="{{section.settings.fake_view_min}}" data-max="{{section.settings.fake_view_max}}" data-duration="{{section.settings.fake_view_duration | times:1000}}"></span>
+  <span> {{section.settings.fake_view_text_suffix}}</span>
+</div>
+{%- endif -%}

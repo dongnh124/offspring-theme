@@ -1,0 +1,24 @@
+<div class="js-contact-soldout {% if current_variant.available %}hide{% endif %}">
+  <span class="btn btn-waitlist btn-theme js-btn-waitlist" data-toggle="modal" data-target="#jsSoldout" title="{{ 'products.product.soldout_messenger' | t }}">{{'products.product.waitlist' | t}}</span>
+</div>
+<div class="modal fade" id="jsSoldout" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog--soldout modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="row justify-content-center js-soldout-content">
+          {%- form 'contact' -%}
+          {{ form.errors | default_errors }}
+          <p class="js-notify-text">{{'products.product.soldout_messenger' | t }}<span>: {% unless current_variant.available %}{{product.title}} - {{current_variant.title}}{% endunless %}</span></p>
+          <input class="hide" type="text" id="ContactFormMessenger" name="contact[messenger]" value="{{'products.product.soldout_messenger' | t }}">
+          <input class="hide" type="text" id="ContactProduct" name="contact[product]" value="{{product.title}} - {{current_variant.title}}">
+          <input type="email" id="ContactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{%- if form.email -%}{{ form.email }}{%- elsif customer -%}{{ customer.email }}{%- endif -%}">
+          <input type="submit" class="btn btn-theme" value="{{ 'contact.form.receive_info' | t }}">
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,226 @@
+<!-- certified-household.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="brand-wrapper">
+      {%- if section.settings.rows == '2' -%}
+      {%- assign slidesToShow = section.settings.display_items | divided_by:2 -%}
+      {%- else -%}
+      {%- assign slidesToShow = section.settings.display_items -%}
+      {%- endif -%}
+      <div class="brand-slider row" id="brand-list-{{ section.id }}"
+           data-rows="{{section.settings.rows}}"
+           data-slidesToShow="{{slidesToShow}}"
+           data-mobile="2"
+           data-slidestoscroll="{{slidesToShow}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- for block in section.blocks -%}
+        <div class="col brand-item carousel__slide-wrapper--{{block.id}}" {{ block.shopify_attributes }}>
+          <a href="{{block.settings.link | default:'#'}}" class="{%- if section.settings.grayscale -%}hv-image-grayscale{%- endif -%}">
+            {%- if block.settings.image != blank -%}
+            <img class="lazyload transition" src="{% include 'srcBlank' %}" data-src="{{ block.settings.image | img_url: '400x' }}" alt="{{ block.settings.image.alt }}">
+            {%- else -%}
+            <div class="image-block__image">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            {%- endif -%}
+          </a>
+          {% if block.settings.title != blank %}
+          <h6 class="text-center text-uppercase brand-title">
+            {{ block.settings.title }}
+          </h6>
+          {% endif %}
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+  {% if section.settings.btn_1 != blank or section.settings.btn_2 != blank %} 
+  <div class="text-center">
+    {% if section.settings.btn_1 != blank %} 
+    <a href="{{ section.settings.btn_url_1 | default:'/' }}" class="btn btn-theme m-2 px-4">{{ section.settings.btn_1 }}</a>
+    {% endif %}
+    {% if section.settings.btn_2 != blank %} 
+    <a href="{{ section.settings.btn_url_2 | default:'/' }}" class="btn btn-theme btn-outline m-2 px-4">{{ section.settings.btn_2 }}</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+<style>
+  .brand-wrapper .slick-slider{
+    margin-bottom: 20px;
+  }
+  .brand-item a{
+  	font-size:0;
+  }
+  .brand-item {
+  	margin-bottom: var(--g-gutter);
+  }
+  
+  .ss-brands .btn-outline{
+  	border:2px solid var(--g-main);
+    color:var(--g-main);
+    background-color:transparent;
+  }
+  
+  .ss-brands .btn-outline:hover{
+    color:white;
+    background-color:var(--g-main);
+  }
+  
+  .ss-brands .slick-dots{
+  	bottom:-5px;
+  }
+  
+  .ss-brands .btn{
+    border-radius: 3px;
+    letter-spacing:1px;
+  }
+  
+  @media (max-width:767px){
+    .ss-brands .btn{
+      width: 100%;
+      margin: 5px 0 !important;
+    }
+    .brand-title {
+      font-size:16px;
+    }
+  }
+  
+  #shopify-section-certified-household img{
+  	max-height:120px;
+    width:auto;
+  }
+</style>
+{% schema %}
+{
+  "name": "Logo carousel",
+  "class": "index-section ss-brands mb-5",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Logo Carousel"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "range",
+      "id": "display_items",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Display items",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "grayscale",
+      "label": "Grayscale effect",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "rows",
+      "label": "Rows",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 row"
+        },
+        {
+          "value": "2",
+          "label": "2 rows"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "btn_1",
+      "label": "Button 1"
+    },
+    {
+      "type": "url",
+      "id": "btn_url_1",
+      "label": "Button link 1"
+    },
+    {
+      "type": "text",
+      "id": "btn_2",
+      "label": "Button 2"
+    },
+    {
+      "type": "url",
+      "id": "btn_url_2",
+      "label": "Button link 2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Logo link to"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

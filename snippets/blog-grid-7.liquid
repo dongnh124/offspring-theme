@@ -1,0 +1,30 @@
+<!-- blog-grid-7.liquid -->
+<div class="blog__item blog__item--7">
+  {%- if article.image -%}
+  <div class="content-block__image">
+    <a href="{{ article.url }}">
+      <noscript>
+        {{ article | img_url: '1024x1024' | img_tag: article.title | escape }}
+      </noscript>
+      <div class="article__photo-container">
+        {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+        <img class="lazyload"
+             src="{%- include 'srcBlank' -%}"
+             data-src="{{ img_url }}"
+             data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+             data-aspectratio="{{ article.image.aspect_ratio }}"
+             data-sizes="auto"
+             alt="{{ article.title | escape }}">
+      </div>
+    </a>
+  </div>
+  {%- endif -%}
+  <p class="fz-n2 mt-3 mb-0">
+    {%- if article.tags.size > 0 -%}
+    {%- for tag in article.tags limit:3 -%}
+    <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="g-tag mb-1 mr-1 px-2 py-1 text-uppercase ls-1 fz-n4">{{ tag }}</a>{% if forloop.last %}{% else %}{% endif %}
+    {%- endfor -%}
+    {%- endif -%}
+  </p>
+  <h5 class="blog__title-link my-2 font-family-2"><a href="{{ article.url }}">{{ article.title }}</a></h5>
+</div>

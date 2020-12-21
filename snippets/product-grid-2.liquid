@@ -1,0 +1,88 @@
+<!-- product-grid-2.liquid -->
+<div class="product-card js-product-card product-card-2" data-price="{{ product.price }}">
+  <div class="product-card__image-wr">
+    {%- assign image = product.featured_image -%}
+    <a class="product-card__image js" href="{{ product.url | within: collection }}" style="max-width: 480px;" data-image-id="{{ image.id }}">
+      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+      <img class="lazyload"
+      data-src="{{ img_url }}"
+      src="{%- include 'srcBlank' -%}"
+      data-sizes="auto"
+      alt="{{ image.alt | escape }}">
+    </a>
+    <div class="product-card__overlay d-flex justify-content-center">
+      {%- if settings.enable_wishlsit -%}
+      <span data-tooltip="true"  data-placement="top" class="btn rounded-0 product-card__overlay-btn js-btn-wishlist" title="{{ 'products.product.wishlist_text' | t }}" data-handle="{{product.handle}}">
+        {%- include 'icon-heart' -%}
+      </span>
+      {%- endif -%}
+      {%- if settings.enable_compare -%}
+      <span data-tooltip="true"  data-placement="top" class="btn rounded-0 product-card__overlay-btn js-btn-compare" title="{{ 'products.product.compare_text' | t }}" data-handle="{{product.handle}}">
+        {%- include 'icon-exchange' -%}
+        {%- include 'icon-close' -%}
+        <span>{{ 'products.product.compare_text' | t }}</span>
+      </span>
+      {%- endif -%}
+      <span data-tooltip="true"  data-placement="top" class="btn rounded-0 product-card__overlay-btn js-btn-quickview" title="{{ 'products.product.quickview_text' | t }}" data-toggle="modal" data-target="#jsQuickview" data-handle="{{product.handle}}">
+        {%- include 'icon-quickview' -%}
+        <span>{{ 'products.product.quickview_text' | t }}</span>
+      </span>
+    </div>
+    
+    {%- if settings.enable_countdown_card and product.metafields.info.countdown != blank -%}
+      <div class="js-countdown js-countdown--2" data-time="{{product.metafields.info.countdown}}"></div>
+    {%- endif -%}
+
+    {%- include 'productVideo' -%}
+    
+    <div class="product-label-wrap">
+      {% include 'product-label-new' %}
+      {% include 'product-label-sale' %}
+    </div>
+
+    {%- include 'swatch-grid-1' -%}
+  </div>
+  
+  <div class="product-card__info">
+    <a href="{{ product.url | within: collection }}" title="{{product.title}}" class="product-card__name font-weight-bold">{{ product.title }}</a>
+    {% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true, product: product %}
+    {%- comment -%}
+    <div class="product-card__review my-2 review">
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+    </div>
+    {%- endcomment -%}
+    {%- if product.available -%}
+    <div class="product-card__price">
+      {%- if product.compare_at_price > product.price -%}
+      {%- if product.price_varies -%}
+      {%- assign sale_price = product.price | money -%}
+      {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+      {%- else -%}
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+      <s class="product-card__regular-price">{{ product.compare_at_price | money }}</s>
+      <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+      {{ product.price | money }}
+      {%- endif -%}
+      {%- else -%}
+      {%- if product.price_varies -%}
+      {%- assign price = product.price | money -%}
+      {{ 'products.product.from_text_html' | t: price: price }}
+      {%- else -%}
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+      {{ product.price | money }}
+      {%- endif -%}
+
+      {%- endif -%}
+    </div>
+    {%- else -%}
+    <div class="product-card__availability">
+      {{ 'products.product.sold_out' | t }}
+    </div>
+    {%- endif -%}
+    <span class="btn js-grid-cart" title="{{ 'products.product.add_to_cart' | t }}" data-id="{{product.selected_or_first_available_variant.id}}">
+      {%- include 'icon-bag' -%}
+      <div class="product-card__loading spinner-{{settings.loading}}" role="status"></div>
+      <span>{{ 'products.product.add_to_cart' | t }}</span>
+    </span>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+{%- if paginate.pages > 1 -%}
+<div class="pagination js-pagination">
+  {% comment %} replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' {% endcomment %}
+  {{ paginate | default_pagination | replace: 'Previous', 'Prev' | replace: 'Next', 'Next' }}
+</div>
+{%- endif -%}

@@ -1,0 +1,174 @@
+<!-- form-cart.liquid -->
+<div class="product-single__info-wrapper {%  if section.id == 'product-template-2'  %}js-stick-parent{% endif %}">
+  <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+  <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
+  <div class="product-single__meta small--text-center mb-5">
+
+    <h1 itemprop="name" class="product-single__title">{{ product.title }}</h1>
+{% render 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: true, product: product %}
+    {%- if product.metafields.info.shortdesc != blank -%}
+    <div class="rte product-single__description my-4" itemprop="description">
+      {{product.metafields.info.shortdesc}}
+    </div>
+    {%- endif -%}
+
+    <div class="review">
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+    </div>
+
+    <ul class="product-single__meta-list list--inline{% if shop.taxes_included or shop.shipping_policy.body != blank %} product-single__price-container{% endif %}">
+      {%- if product.compare_at_price_max > product.price -%}
+      <li>
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        <s id="ComparePrice-{{ section.id }}" class="product-single__price product-single__price--compare">
+          {{ current_variant.compare_at_price | money }}
+        </s>
+      </li>
+      {%- endif -%}
+      <li>
+        {%- unless product.compare_at_price_max > product.price -%}
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        {%- endunless -%}
+        <span id="ProductPrice-{{ section.id }}" class="product-single__price" itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+          {{ current_variant.price | money }}
+        </span>
+      </li>
+      {%- if section.settings.stock_enable -%}
+      <li>{%- include 'productStock' -%}</li>
+      {%- endif -%}
+    </ul>
+
+    {%- if settings.enable_countdown_page -%}
+    {%- include 'product-countdown' -%}
+    {%- endif -%}
+
+  </div>
+  
+  <div class="border-top pt-3 mb-5 fw-700">
+  	CERTIFICATES
+  </div>
+  
+  {%- if product.metafields.info.affiliate_link != blank -%}{% comment %}AFFILIATE PRODUCT{% endcomment %}
+  <a href="{{product.metafields.info.affiliate_link}}" class="btn btn-theme btn--full product-form__cart-submit {% if section.settings.enable_payment_button %}product-form__cart-submit--outline{% endif %}">
+    {{product.metafields.info.affiliate_button}}
+  </a>
+  {%- else -%} {% comment %}NORMAL PRODUCT{% endcomment %}
+  {%- capture "form_class" -%}product-form{% if section.settings.enable_payment_button %} product-form--payment-button{% endif %}{%- endcapture -%}
+  {%- capture "form_id" -%}AddToCartForm-{{ section.id }}{%- endcapture %}
+  {%- form 'product', product, data-productid: product.id, class:form_class, id:form_id -%}
+  {% if product.available %}{% include 'subscription-product' %}{% endif %} 
+  {%- unless product.has_only_default_variant -%}
+  {%- for option in product.options_with_values -%}
+  <div class="selector-wrapper js product-form__item">
+    <label {% if option.name == 'default' %}class="label--hidden" {% endif %}for="SingleOptionSelector-{{ section.id }}-{{ forloop.index0 }}">
+      {{ forloop.index }}. {{ option.name }}
+    </label>
+    {%- include 'productOption' -%}
+    {% if option.name == 'Size' %}
+    <div class="text-right pt-3">
+      {%- include 'productSizeGuide' -%}
+    </div>
+    {% endif %}
+  </div>
+  {%- endfor -%}
+  {%- endunless -%}
+  <select name="id" data-productid="{{product.id}}" id="ProductSelect-{{ section.id }}" class="product-form__variants no-js">
+    {%- for variant in product.variants -%}
+    <option {% if variant == current_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}" {% unless variant.available %} disabled="disabled" {% endunless %}>
+      {%- if variant.available -%}
+      {{ variant.title }} - {{ variant.price | money_with_currency }}
+      {%- else -%}
+      {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+      {%- endif -%}
+    </option>
+    {%- endfor -%}
+  </select>
+  
+  {%- if section.settings.enable_hurrify -%}
+  <span class="js-hurrify {% if current_variant.inventory_management %}{% if current_variant.inventory_quantity >= 10 or current_variant.inventory_quantity <= 0 %}hide{% endif %}{% else %}hide{% endif %}">
+    <p class="text-danger font-weight-bold">{{ 'products.product.hurrify' | t }}</p>
+    <div class="progress">
+      <div class="progress-bar" style="width:{{current_variant.inventory_quantity | times: 10}}%">
+      </div>
+    </div>
+  </span>
+  {%- endif -%}
+
+  <div class="product-form__quantity-submit">
+    <div class="product-form__item product-form__item--quantity">
+      <label class="hide" for="Quantity">{{ 'products.product.quantity' | t }}</label>
+      <input type="number" id="Quantity" name="quantity" value="1" min="1" class="product-form__input product-form__quantity">
+    </div>
+    <div class="product-form__item product-form__item--submit">
+      <button type="submit"
+      name="add"
+      id="AddToCart-{{ section.id }}"
+      class="btn btn--full btn-theme product-form__cart-submit {% if section.settings.enable_payment_button %}product-form__cart-submit--outline{% endif %}{% unless current_variant.available %} btn--sold-out{% endunless %}"
+      {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+      {%- include 'icon-cart' -%}
+      <span id="AddToCartText-{{ section.id }}">
+        {%- unless current_variant.available -%}
+        {{ 'products.product.sold_out' | t }}
+        {%- else -%}
+        {{ 'products.product.add_to_cart' | t }}
+        {%- endunless -%}
+      </span>
+    </button>
+  </div>
+</div>
+{%- if section.settings.enable_payment_button -%}
+{{ form | payment_button }}
+{%- if current_variant.available == false -%}<style>.shopify-payment-button{display:none}</style>{%- endif -%}
+{%- endif -%}
+{%- endform -%}
+{%- endif -%}
+
+{% comment %}  
+<div class="d-flex justify-content-center align-items-center pt-3 pb-2">
+  {%- if settings.enable_compare -%}
+  <span class="btn js-btn-compare" title="{{ 'products.product.compare_text' | t }}" data-handle="{{product.handle}}">
+    {%- include 'icon-exchange' -%}
+    {%- include 'icon-close' -%}
+    <span>{{ 'products.product.compare_text' | t }}</span>
+  </span>
+  {%- endif -%}
+
+  <div class="px-3">
+    {%- include 'productSizeGuide' -%}
+  </div>
+</div>
+{% endcomment %} 
+
+<div class="row">
+  {%- if settings.safe_checkout_detail != blank -%}
+  <div class="safe-checkout-detail col">
+    <img class="lazyload img-fluid w-100" data-src="{{ settings.safe_checkout_detail | img_url: '600x' }}"/>
+  </div>
+  {%- endif -%}
+  <div class="product-single__information col">
+    {%- if section.settings.product_vendor_enable -%}
+    <p class="product-single__vendor"><b>{{'products.product.vendor' | t }}: </b><span>{{ product.vendor }}</span></p>
+    {%- endif -%}
+    {%- if section.settings.product_type_enable -%}
+    <p class="product-single__type"><b>{{'products.product.type' | t }}: </b><span>{{ product.type }}</span></p>
+    {%- endif -%}
+    {%- if section.settings.variant_sku_enable -%}
+    <p class="product-single__sku"><b>{{'products.product.sku' | t }}: </b><span class="js-variant-sku">{{ current_variant.sku | default:'null' }}</span></p>
+    {%- endif -%}
+    {%- if section.settings.variant_available_enable -%}
+    <p class="product-single__availability"><b>{{'products.product.available' | t }}: </b><span>{% if current_variant.available %}{{ 'products.product.available' | t }}{% else %}{{'products.product.sold_out' | t }}{% endif %}</span></p>
+    {%- endif -%}
+
+    {%- if section.settings.social_sharing_products -%}
+    <div class="product-single__social"><b>{{'general.social.share_title' | t }}: </b>
+      {%- include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product -%}
+    </div>
+    {%- endif -%}
+
+  </div>
+</div>
+
+{%- include 'fake-viewer' -%}
+{%- include 'free-shipping' -%}
+{%- include 'shipping-time' -%}
+</div>

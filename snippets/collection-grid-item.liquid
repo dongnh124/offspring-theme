@@ -1,0 +1,39 @@
+{%- capture current -%}{%- cycle 1, 2, 3, 4, 5, 6 -%}{%- endcapture -%}
+{%- assign collectionTitle = featured_collection.title | default: 'Collection title' -%}
+<div class="scollection-card collection-card-80150593610 text-center mb-3 {{ grid_item_width }}" {{ block.shopify_attributes }}>
+  <div class="collection-card__image overflow-hidden">
+    <a class="hv-image-brightness text-hide" href="{{featured_collection.url | default :'#'}}">
+      
+      {%- if featured_image != blank -%}
+      {%- assign lazy_image = featured_image -%}
+      {%- assign img_url = lazy_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+      <img class="lazyload"
+           src="{%- include 'srcBlank' -%}"
+           data-src="{{ img_url }}"
+           data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+           data-aspectratio="{{ lazy_image.aspect_ratio }}"
+           data-sizes="auto"
+           alt="{{ lazy_image.alt | escape }}">
+      {%- elsif featured_collection.image != blank -%}
+      {%- assign lazy_image = featured_collection.image -%}
+      {%- assign img_url = lazy_image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+      <img class="lazyload"
+           src="{%- include 'srcBlank' -%}"
+           data-src="{{ img_url }}"
+           data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+           data-aspectratio="{{ lazy_image.aspect_ratio }}"
+           data-sizes="auto"
+           alt="{{ lazy_image.alt | escape }}">
+      {%- else -%}
+      {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      {{featured_collection.title}}
+    </a>
+  </div>
+  <h3 class="pb-1 m-0 fz-2 mt-3 font-weight-bold">
+    <a class="text-black font-family-2" href="{{featured_collection.url | default :'#'}}">
+      {{ collectionTitle }}
+    </a>
+  </h3>
+  <p class="pb-3">{{ featured_collection.products_count | default: 0 }} {{ featured_collection.products_count | pluralize: 'product', 'products' }}</p>
+</div>

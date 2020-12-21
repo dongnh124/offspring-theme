@@ -1,0 +1,179 @@
+<!-- mini-collection -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="mini-collection-wrapper dots-negative">
+      <div class="mini-collection-slide row"
+           data-slidesToShow="{{section.blocks.size}}"
+           data-slidestoscroll="{{section.blocks.size}}"
+           data-arrows="{{ section.settings.arrows }}"
+           data-dots="{{ section.settings.dots }}" 
+           data-draggable="{{ section.settings.draggable }}" 
+           data-infinite="{{ section.settings.infinite }}" 
+           data-section-id="{{ section.id }}" 
+           data-section-type="slickCarousels">
+        {%- assign limit = section.settings.limit -%}
+        {%- for block in section.blocks -%}
+        <div class="col" {{ block.shopify_attributes }}>
+          {%- assign collection = collections[block.settings.collection]  -%}
+          {%- if collection != blank -%}
+          <h4 class="font-family-2 fz text-uppercase font-weight-bold mb-2">
+            {{block.settings.title | default:collection.title}}
+          </h4>
+          {%- for product in collection.products limit: limit -%}
+          <div class="media py-3 {% unless forloop.last %}border-bottom{% endunless %}">
+            <img class="mr-3 lazyload" data-src="{{product.featured_image | img_url :'80x'}}" src="{%- include 'srcBlank' -%}">
+            <div class="media-body">
+              <a href="{{ product.url | within: collection }}" title="{{product.title}}" class="product-card__name">{{ product.title }}</a>
+              {%- if product.available -%}
+              <div class="product-card__price">
+                {%- if product.compare_at_price > product.price -%}
+                {%- if product.price_varies -%}
+                {%- assign sale_price = product.price | money -%}
+                {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                {%- else -%}
+                <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                <s class="product-card__regular-price">{{ product.compare_at_price | money }}</s>
+                <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+                {{ product.price | money }}
+                {%- endif -%}
+                {%- else -%}
+                {%- if product.price_varies -%}
+                {%- assign price = product.price | money -%}
+                {{ 'products.product.from_text_html' | t: price: price }}
+                {%- else -%}
+                <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                {{ product.price | money }}
+                {%- endif -%}
+                {%- endif -%}
+              </div>
+              {%- else -%}
+              <div class="product-card__availability">
+                {{ 'products.product.sold_out' | t }}
+              </div>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endfor -%}
+          {%- else -%}
+          <h4 class="font-family-2 fz text-uppercase font-weight-bold mb-2">
+            Collection title
+          </h4>
+          {%- for i in (1..limit) -%}
+          <div class="media py-3 {% unless forloop.last %}border-bottom{% endunless %}">
+            <div class="mr-3 border">
+              {%- capture current -%}{%- cycle 1, 2, 3, 4, 5, 6 -%}{%- endcapture -%}
+              {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+            <div class="media-body">
+              <div class="product-card__name">{{ 'homepage.onboarding.product_title' | t }}</div>
+              <div class="product-card__price">
+                {%- cycle '$19.99', '$28.37', '$33.22', '$41.56', '$55.21', '$62.98' -%}
+              </div>
+            </div>
+          </div>
+          {%- endfor -%}
+          {%- endif -%}
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .mini-collection-wrapper .placeholder-svg{width:80px}
+</style>
+{% schema %}
+{
+  "name": "Collection mini",
+  "class": "index-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Mini collections"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Display products",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows",
+      "label": "Arrows",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "draggable",
+      "label": "Draggable",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "dots",
+      "label": "Dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title"
+        },
+        {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection mini",
+      "category": "Collection",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

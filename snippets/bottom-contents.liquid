@@ -1,0 +1,80 @@
+<script id="QuantityTemplate" type="text/template">
+  {% raw %}
+  <div class="js-qty">
+    <input type="text" value="{{ value }}" id="{{ key }}" name="{{ name }}" pattern="[0-9]*" data-line="{{ line }}" class="js-qty__input" aria-live="polite">
+    <button type="button" class="js-qty__adjust js-qty__adjust--minus" aria-label="{% endraw %}{{ 'cart.label.decrease_quantity' | t }}{% raw %}">
+      {% endraw %}{% include 'icon-minus' %}{% raw %}
+      <span class="icon__fallback-text">−</span>
+    </button>
+    <button type="button" class="js-qty__adjust js-qty__adjust--plus" aria-label="{% endraw %}{{ 'cart.label.increase_quantity' | t }}{% raw %}">
+      {% endraw %}{% include 'icon-plus' %}{% raw %}
+      <span class="icon__fallback-text">+</span>
+    </button>
+  </div>
+  {% endraw %}
+</script>
+<ul hidden>
+  <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
+</ul>
+
+{% raw %}
+<script id="x-product-grid" type="text/x-handlebars-template">
+  <div class="x-grid-item col">
+    <div class="x-grid-wrap media d-flex align-items-center">
+      <a href="{{productUrl}}">
+        <img class="x-grid-image" src="{{image}}" />  
+      </a>  
+      <div class="media-body px-3">
+        <h6 class="mb-2 x-grid-title">
+          <a href="{{productUrl}}">
+            {{productName}}
+          </a>
+        </h6>
+        {{#if priceVaries}}
+        <span class="x-grid-from">from</span>
+        {{/if}}
+
+        <span class="money x-grid-price">{{productPrice}}</span>
+
+        {{#if productComparePrice}}
+        <span class="money x-grid-compare-price">{{productComparePrice}}</span>
+        {{/if}}   
+      </div>
+    </div>
+  </div>
+</script>
+{% endraw %}
+
+
+<script id="x-instagram-style1" type="text/x-handlebars-template">
+  {% raw %}
+  <div class="col hv-image-brightness">
+    <a class="instagram-item" href="{{link}}" target="_blank" id="{{id}}">
+      <img alt="instagram image" class="transition lazyload" data-src="{{image}}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="  />
+    </a>
+  </div>
+  {% endraw %}
+</script>
+
+
+<style>
+  .x-grid-from,
+  .x-grid-price{
+    color: var(--g-main);
+    font-weight: bold;
+  }
+  
+  .x-grid-compare-price{
+    font-size: 80%;
+    font-weight: 400;
+    text-decoration: line-through;
+  }
+  
+  .x-grid-title{
+    font-weight:bold;
+    font-size: 14px;
+    line-height: 1.4;
+    height: 40px;
+    overflow: hidden;
+  }
+</style>

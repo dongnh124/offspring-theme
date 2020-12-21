@@ -1,0 +1,37 @@
+<!-- blog-grid-10.liquid -->
+<div class="blog__item blog__item--10 text-center">
+	{%- if article.image -%}
+	<div class="content-block__image position-relative shadow">
+		<a href="{{ article.url }}">
+			<noscript>
+				{{ article | img_url: '1024x1024' | img_tag: article.title | escape }}
+			</noscript>
+			<div class="article__photo-container">
+				<div class="article__photo-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100}}%;">
+					{%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+					<img class="lazyload"
+					src="{%- include 'srcBlank' -%}"
+					data-src="{{ img_url }}"
+					data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+					data-aspectratio="{{ article.image.aspect_ratio }}"
+					data-sizes="auto"
+					alt="{{ article.title | escape }}">
+				</div>
+			</div>
+		</a>
+		<div class="blog__cap">
+			<div class="blog__tags w-100 p-2">
+				{%- if article.tags.size > 0 -%}
+				{%- for tag in article.tags limit: 2 -%}
+				<a class="rounded-0 mb-1 mr-1 py-1 ls-1" href="{{ blog.url }}/tagged/{{ tag | handle }}" class="link-body-color">{{ tag }}</a>{% unless forloop.last %},{% endunless %}
+				{%- endfor -%}
+				{%- endif -%}
+			</div>
+			<h5 class="blog__title-link font-family-1 px-3 fz-2 fw-700 mb-3"><a href="{{ article.url }}">{{ article.title }}</a></h5>
+			<p class="blog__meta shadow">
+				{{ article.published_at | time_tag: format: 'month_day_year' }} - by {{article.author}}
+			</p>
+		</div>
+	</div>
+	{%- endif -%}
+</div>

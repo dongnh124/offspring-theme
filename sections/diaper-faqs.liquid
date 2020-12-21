@@ -1,0 +1,288 @@
+<style>
+  :root{
+    --faq-cl-mix-1: {{section.settings.cl_mix_1 }};
+    --faq-cl-mix-2: {{section.settings.cl_mix_2}};
+  }
+</style>
+<style>
+  .faqs-content .faq-question{
+    font-family: var(--g-font-2);
+  }
+ .section-faqs__subheading {
+   max-width: 800px;
+   margin: 0 auto
+ }
+
+ .layout-1 .faq-question {
+   padding: 20px;
+   padding-right:40px;
+   background: var(--faq-cl-mix-1);
+   margin: 0 0 10px;
+   font-weight: 700;
+   cursor: pointer;
+   color: var(--faq-cl-mix-2);
+   position: relative
+ }
+
+ .layout-1 .faq-question:after {
+   content: "-";
+   position: absolute;
+   top: 0;
+   right: 0;
+   width: 40px;
+   height: 100%;
+   display: -webkit-box;
+   display: -ms-flexbox;
+   display: flex;
+   -webkit-box-align: center;
+   -ms-flex-align: center;
+   align-items: center;
+   -webkit-box-pack: center;
+   -ms-flex-pack: center;
+   justify-content: center
+ }
+
+ .faq-answer {
+   padding: 20px;
+   -webkit-transition: height .35s ease;
+   -o-transition: height .35s ease;
+   transition: height .35s ease
+ }
+
+ .layout-2 .faq-question {
+  padding: 10px 10px 10px 50px;
+  margin: 0 0 10px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  color: var(--faq-cl-mix-1);
+  line-height: 40px;
+}
+
+.layout-2 .faq-question:after {
+	content: "-";
+	width: 40px;
+	height: 40px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	border: 2px solid;
+	border-radius: 50%;
+ position:absolute;
+ top:calc(50% - 20px);
+ left: 0;
+}
+
+.layout-3 .faq-question {
+	padding: 15px 20px;
+	margin: 0 0 10px;
+	font-weight: 700;
+	cursor: pointer;
+	position: relative;
+	padding-right: 60px;
+	color: var(--faq-cl-mix-1)
+}
+
+.layout-3 .faq-question:after {
+	content: "-";
+	position: absolute;
+	top: 50%;
+	right: 0;
+	width: 40px;
+	height: 40px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	margin-top: -20px;
+   	font-size:30px;
+/* 	border: 2px solid */
+}
+
+  .faq-question.collapsed:after {
+    content: "+";
+    font-size:24px;
+    font-family: Helvetica;
+  }
+
+.faqs-form input,
+.faqs-form textarea {
+	width: 100%;
+	margin-bottom: 15px
+}
+
+.faqs-form textarea {
+	height: 150px
+}
+
+.faqs-form.is_stuck {
+	padding-top: 20px
+}
+
+@media (max-width:767px) {
+	.faqs-form {
+		position: static !important;
+	}
+	.faqs-form+div {
+		display: none !important;
+	}
+}
+
+.html-faqs {
+	padding: 20px;
+}
+
+.html-faqs:first-child {
+	padding-top: 0;
+}
+
+.html-faqs h3 {
+	font-size: 20px;
+	margin: 10px 0;
+}
+
+.html-faqs-des {
+	margin-bottom: 20px;
+}
+
+.faq-question {
+	clear: both;
+}
+</style>
+<!-- diaper-faqs.liquid -->
+<div class="section-faqs {{section.settings.layout}}">
+
+  {% assign pat-heading-title = section.settings.heading %}
+  {% assign pat-heading-des = section.settings.subheading %}
+  {% include 'pattern-heading' %}
+  
+  <div class="container">
+    <div class="row row-faqs">
+      <div class="col-12">
+        <div class="faqs-content">
+          {%- for block in section.blocks -%}
+          {%- if block.type == 'html' -%}
+          <div class="html-faqs">
+            {%- if block.settings.title != blank -%}
+            <h3>{{block.settings.title}}</h3>
+            {%- endif -%}
+            {%- if block.settings.des != blank -%}
+            <p class="html-faqs-des">{{block.settings.des}}</p>
+            {%- endif -%}
+          </div>
+          {%- else -%}
+          <div class="faq-question collapsed" data-toggle="collapse" data-target="#faq-{{block.id}}">
+            {{block.settings.title | default: 'Question'}}
+          </div>
+          <div id="faq-{{block.id}}" class="collapse faq-answer">
+            {{block.settings.answer | default: 'Answer'}}
+          </div>
+          {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Diaper FAQs",
+  "class": "page-section mb-5",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "HTML / Description",
+      "default": "Close contact with customers by frequently asked questions"
+    },
+   {
+    "type": "header",
+    "content": "Questions & answers"
+  },
+  {
+    "type": "select",
+    "id": "layout",
+    "label": "Layout",
+    "default": "layout-1",
+    "options": [
+      {
+        "value": "layout-1",
+        "label": "Layout 1"
+      },
+      {
+        "value": "layout-2",
+        "label": "Layout 2"
+      },
+      {
+        "value": "layout-3",
+        "label": "Layout 3"
+      }
+    ]
+  },
+  {
+    "type": "color",
+    "id": "cl_mix_1",
+    "label": "Mix color 1",
+    "default": "#222"
+  },
+  {
+    "type": "color",
+    "id": "cl_mix_2",
+    "label": "Mix color 2",
+    "default": "#fff"
+  }
+],
+  "blocks": [
+    {
+      "type": "html",
+      "name": "Html",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "Description"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Faq",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{%- if template == 'index' -%}
+    {%- case settings.pnewsletter -%}
+    {%- when 'pnewsletter-1' -%} {%- section 'pnewsletter-1' -%}
+    {%- when 'pnewsletter-2' -%} {%- section 'pnewsletter-2' -%}
+    {%- when 'pnewsletter-3' -%} {%- section 'pnewsletter-3' -%}
+    {%- when 'pnewsletter-4' -%} {%- section 'pnewsletter-4' -%}
+    {%- when 'pnewsletter-5' -%} {%- section 'pnewsletter-5' -%}
+    {%- when 'pnewsletter-6' -%} {%- section 'pnewsletter-6' -%}
+    {%- when 'pnewsletter-7' -%} {%- section 'pnewsletter-7' -%}
+    {%- when 'pnewsletter-8' -%} {%- section 'pnewsletter-8' -%}
+    {%- else -%}
+        {%- section 'pnewsletter-1' -%}
+    {%- endcase -%}
+{%- endif -%}

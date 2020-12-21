@@ -1,0 +1,80 @@
+<!-- pants-information -->
+<div class="container">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div class="information-wrapper">
+      <div class="row" id="information-{{ section.id }}">
+        {%- for block in section.blocks -%}
+        <div class="col-12 col-md-6">
+          <div class="px-0 px-md-3">
+            <h5 class="info-heading fw-600">
+              {{ block.settings.title }}
+            </h5>
+            <div class="info-des pb-3">
+              {{ block.settings.des }}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {%- if section.blocks.size == 0 -%}
+    {%- include 'no-blocks' -%}
+    {%- endif -%}
+  </div>
+</div>
+<style>
+  .ss-information{
+    border-top:1px solid #e6e5ea;
+  }
+  .ss-information .section-block{
+    background:transparent;
+  }
+  .info-heading{
+  	padding:20px 0;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--g-main);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Information",
+  "class": "index-section py-5 ss-information mb-5",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Service"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "default": "Service description",
+      "label": "HTML / Description"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Title",
+          "default": "Lovingly Made With"
+        },
+        {
+          "type": "textarea",
+          "id": "des",
+          "label": "HTML / Description",
+          "default": "Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

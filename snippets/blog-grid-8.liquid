@@ -1,0 +1,36 @@
+<!-- blog-grid-8.liquid -->
+<div class="blog__item blog__item--8 text-center">
+  {%- if article.image -%}
+  <div class="content-block__image position-relative shadow">
+    <a href="{{ article.url }}">
+      <noscript>
+        {{ article | img_url: '1024x1024' | img_tag: article.title | escape }}
+      </noscript>
+      <div class="article__photo-container">
+        <div class="article__photo-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100}}%;">
+          {%- assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+          <img class="lazyload"
+               src="{%- include 'srcBlank' -%}"
+               data-src="{{ img_url }}"
+               data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+               data-aspectratio="{{ article.image.aspect_ratio }}"
+               data-sizes="auto"
+               alt="{{ article.title | escape }}">
+        </div>
+      </div>
+    </a>
+  </div>
+  {%- endif -%}
+  <h4 class="blog__title-link mt-4 mb-3"><a href="{{ article.url }}">{{ article.title }}</a></h4>
+  <p class="blog__meta">
+    <span class="blog__meta-title">{{blog.title | default:'News'}}</span> / {{ article.published_at | time_tag: format: 'month_day_year' }}
+  </p>
+  <div class="rte rte--indented-images">
+    {%- if article.excerpt.size > 0 -%}
+    {{ article.excerpt }}
+    {%- else -%}
+    <p>{{ article.content | strip_html | truncatewords: 15 }}</p>
+    {%- endif -%}
+  </div>
+  <a class="btn-link" href="{{ article.url }}">{{ 'blogs.article.read_more' | t }}</a>
+</div>

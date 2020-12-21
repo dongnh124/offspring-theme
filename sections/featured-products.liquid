@@ -1,0 +1,98 @@
+<!-- featured-products.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    {%- assign collection = collections[section.settings.collection] -%}
+    {%- assign rows = section.settings.rows -%}
+    {%- if collection != blank -%}
+    {%- assign product_limit = rows | times: 4 -%}
+    <div class="row">
+      {%- for product in collection.products limit: product_limit -%}
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 {% if forloop.index > 4 %}small--hide{% endif %}">
+        {%- include 'product-card', product: product, collection: collection -%}
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- else -%}
+    <div class="row">
+      {%- assign product_limit = rows | times: 4 -%}
+      {%- for i in (1..product_limit) -%}
+      {%- case i -%}
+      {%- when 7 -%}
+      {%- assign index = 1 -%}
+      {%- when 8 -%}
+      {%- assign index = 2 -%}
+      {%- when 9 -%}
+      {%- assign index = 3 -%}
+      {%- else -%}
+      {%- assign index = i -%}
+      {%- endcase -%}
+      <div class="col-md-3 col-sm-6 col-xs-6 {% if forloop.index > 4 %}small--hide{% endif %}">
+        {%- include 'product-grid-blank' -%}
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+    {%- if section.settings.viewmore != blank -%}
+    <div class="text-center py-3">
+      <a href="{{collection.url}}" class="btn btn-theme">{{section.settings.viewmore}}</a>
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product grid",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product grid"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Rows",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "View more button"
+    },
+    {
+      "type": "text",
+      "id": "viewmore",
+      "label": "Text",
+      "default": "View more"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product grid",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

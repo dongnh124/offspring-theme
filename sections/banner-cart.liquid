@@ -1,0 +1,185 @@
+<!-- banner-cart.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid{% else %}container{% endif %} {% if section.settings.no_gutter %}p-0{% endif %}">
+  <div class="section-block">
+    <div class="banner-cart-wrap">
+      {%- if section.settings.image != blank  -%}
+      <img alt="{{block.settings.description | strip_html}}" src="{% include 'srcBlank' %}" class="lazyload" data-src="{{section.settings.image | img_url:'1920x'}}">
+      {%- else -%}
+      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+      <div class="banner-cart d-flex justify-content-center align-items-center" style="left:{{section.settings.left}}%">
+        <div class="banner-cart-caption text-{{section.settings.text_align}}">
+          {%- if section.settings.title != blank -%}
+          <h4 class="my-2 banner-cart-title">
+            {{section.settings.title}}
+          </h4>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+          <div class="banner-cart-des">
+            {{section.settings.text}}
+          </div>
+          {%- endif -%}
+          <hr class="banner-cart-hr" />
+          {%- if section.settings.product != blank -%}
+          {%- assign product = all_products[section.settings.product] -%}
+          {%- if product.available -%}
+          <div class="product-card__price">
+            {%- if product.compare_at_price > product.price -%}
+            {%- if product.price_varies -%}
+            {%- assign sale_price = product.price | money -%}
+            {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+            {%- else -%}
+            {{ product.price | money }}
+            <s class="product-card__regular-price">{{ product.compare_at_price | money }}</s>
+            {%- endif -%}
+            {%- else -%}
+            {%- if product.price_varies -%}
+            {%- assign price = product.price | money -%}
+            {{ 'products.product.from_text_html' | t: price: price }}
+            {%- else -%}
+            <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+            {{ product.price | money }}
+            {%- endif -%}
+            {%- endif -%}
+          </div>
+          {%- else -%}
+          <div class="product-card__availability">
+            {{ 'products.product.sold_out' | t }}
+          </div>
+          {%- endif -%}
+          <div>
+            <button class="btn btn-theme js-grid-cart" data-id="{{product.selected_or_first_available_variant.id}}">
+              <div class="product-card__loading spinner-{{settings.loading}}" role="status"></div>
+              <span>{{section.settings.button_label | default: "Add To Cart"}}</span>
+            </button>
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+
+  .banner-cart-des{
+    font-weight: 600;
+    margin-bottom: 15px;
+    letter-spacing: 1.5px;
+    color:#757575;
+  }
+  .banner-cart-hr{
+    display:inline-block;
+    width:40px;
+  }
+  .banner-cart-wrap{
+    position:relative;
+  }
+  @media (max-width:991px){
+    .banner-cart-wrap{
+      padding-bottom:30px;
+      border: 1px solid
+    }
+  }
+  .banner-cart-wrap .product-card__price{
+    margin-bottom: 20px;
+  }
+  .banner-cart-wrap .product-card__price>.money{
+    font-size:24px;
+  }
+  @media (min-width:992px){
+    .banner-cart-title{
+      margin-bottom: 15px;
+      font-size: 26px
+    }
+    .banner-cart{
+      position:absolute;
+      width:50%;
+      height:100%;
+      top:0;
+      padding:50px;
+    }
+  }
+  @media (min-width:1200px){
+    .banner-cart-title{
+      font-size: 45px
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Banner cart",
+  "class": "index-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text align",
+      "default": "left",
+      "options": [
+        {
+          "label": "Left",
+          "value": "left"
+        },
+        {
+          "label": "Center",
+          "value": "center"
+        },
+        {
+          "label": "Right",
+          "value": "right"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "left",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Caption align left",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Ceramic Artists Now"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description or HTML",
+      "default": "of Lindsey Hampton"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product promotion"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Call to action text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner cart",
+      "category": "Media"
+    }
+  ]
+}
+{% endschema %}

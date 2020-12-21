@@ -1,0 +1,99 @@
+<div class="container">
+  <h3 id="html-product-grid" class="html-title text-center my-5">Product grid</h3>
+  {%- assign productdemo = all_products['celest-chunky-sneakers'] -%}
+  <div class="row">
+    <div class="col-md-3">
+      <h5 class="text-center">Blank</h5>
+      {%- include 'product-grid-blank' -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 1</h5>
+      {%- include 'product-grid-1', product: productdemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 2</h5>
+      {%- include 'product-grid-2', product: productdemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 3</h5>
+      {%- include 'product-grid-3', product: productdemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 4</h5>
+      {%- include 'product-grid-4', product: productdemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 5</h5>
+      {%- include 'product-grid-5', product: productdemo -%}
+    </div>
+  </div>
+
+  <hr />
+
+  <h3 id="html-blog-grid" class="html-title text-center my-5">Blog post grid</h3>
+  {%- assign articledemo = blogs['news'].articles.first -%}
+  <div class="row">
+    <div class="col-md-3">
+      <h5 class="text-center">Blank</h5>
+      {%- include 'blog-grid-blank' -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 1</h5>
+      {%- include 'blog-grid-1', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 2</h5>
+      {%- include 'blog-grid-2', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 3</h5>
+      {%- include 'blog-grid-3', article: articledemo -%}
+    </div>
+    <div class="my-3 col-12"></div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 4</h5>
+      {%- include 'blog-grid-4', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 5</h5>
+      {%- include 'blog-grid-5', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 6</h5>
+      {%- include 'blog-grid-6', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 7</h5>
+      {%- include 'blog-grid-7', article: articledemo -%}
+    </div>
+    <div class="my-3 col-12"></div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 8</h5>
+      {%- include 'blog-grid-8', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 9</h5>
+      {%- include 'blog-grid-9', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 10</h5>
+      {%- include 'blog-grid-10', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 11</h5>
+      {%- include 'blog-grid-11', article: articledemo -%}
+    </div>
+    <div class="col-md-3">
+      <h5 class="text-center">Layout 12</h5>
+      {%- include 'blog-grid-12', article: articledemo -%}
+    </div>
+  </div>
+
+  <hr />
+
+  <h3 id="html-bootstrap" class="html-title text-center my-5">Blog post grid</h3>
+  <div class="content-block--page">
+    {{ page.content }}
+  </div>
+</div>
+

@@ -1,0 +1,1150 @@
+<style>
+  .breadcrumb,
+  .aboutus_section{
+    margin-bottom:70px;
+  }
+  @media (max-width:991px){
+    .breadcrumb,
+    .aboutus_section{
+      margin-bottom:50px;
+    }
+  }
+  .page-title {
+    padding: 60px 0 30px
+  }
+
+  .main-content {
+    padding: 0
+  }
+
+  .aboutus__intro--with-image {
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 60px 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white
+  }
+
+  .aboutus-title {
+    font-size: 30px;
+    font-weight: bold;
+  }
+
+  @media (max-width:991px) {
+    .aboutus__counterup .aboutus-title {
+      padding-bottom: 20px;
+      padding-top: 20px
+    }
+  }
+
+  .aboutus__intro-meta {
+    margin-bottom: 15px
+  }
+
+  .aboutus__intro--with-image .aboutus__intro-title {
+    color: #fff
+  }
+
+  .aboutus__intro-des {
+    font-size: calc(var(--g-font-size) + 2px);
+    line-height: 1.8;
+    font-weight: 300
+  }
+
+  .aboutus__counterup {
+    padding: 60px 0
+  }
+
+  .counter-wrap {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center
+  }
+
+  .counter-icon svg {
+    width: 25px;
+    height: 25px;
+    color: var(--g-main)
+  }
+
+  .counter-body {
+    border-left: 1px solid #ededed;
+    padding-left: 20px;
+    margin-left: 20px;
+    min-height: 90px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: relative;
+    width: 100%
+  }
+
+  .counter-body:after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    left: 0;
+    background-color: #ededed
+  }
+
+  .counter-body .counter {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 30px;
+    color: #000;
+    font-weight: 600;
+    line-height: 1
+  }
+
+  .counter-body h5 {
+    font-size: calc(var(--g-font-size) + 2px);
+    line-height: 2
+  }
+
+  .aboutus__chooseus {
+    padding: 60px 0;
+    background: #efefef
+  }
+
+  .chooseus-des {
+    background: #fff;
+    padding: 30px 25px;
+    margin-bottom: 20px
+  }
+
+  .chooseus-collapse .title {
+    padding: 0 42px 0 20px;
+    display: block;
+    position: relative;
+    color: #666;
+    background: #fff;
+    margin-bottom: 4px;
+    line-height: 42px;
+    position: relative;
+    font-weight: 700;
+    cursor: pointer
+  }
+
+  .chooseus-collapse .title:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    content: "+";
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 42px;
+    height: 42px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background: #000;
+    color: #fff
+  }
+
+  .chooseus-collapse .title[aria-expanded=true]:after {
+    content: "-"
+  }
+
+  .chooseus-collapse .des {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 4px
+  }
+
+  @media (max-width:767px) {
+    .col-counter {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100%;
+      flex: 0 0 100%;
+      max-width: 100%;
+      margin-bottom: 10px
+    }
+  }
+
+  .person__name {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--g-color-heading);
+    margin: 0 0 16px;
+    line-height: 22px;
+  }
+
+  .person__name span {
+    display: block;
+    font-weight: 100;
+    color:#b0b0b0;
+  }
+
+  .person__avatar {
+    margin-bottom:22px;
+  }
+  .person__social {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin-bottom: 22px;
+    justify-content: center;
+  }
+
+  .person__social li {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 40px;
+    flex: 0 0 40px;
+    width: 40px;
+
+  }
+
+  .person__social li a{
+    color: #999999;
+    width: 30px;
+    height: 30px;
+    line-height: 25px;
+    margin: 0 5px;
+    text-align: center;
+    border: 2px solid var(--g-border-1);
+    border-radius: 50%;
+    display: inline-block;
+    transition: all ease .45s;
+  }
+
+  .person__social li a:hover{
+    color:var(--g-main);
+    border-color:var(--g-main);
+  }
+
+  .person__social .icon,
+  .person__social svg {
+    width: auto;
+    height: 13px
+  }
+
+  .aboutus__action {
+    text-align: center;
+  }
+
+  @media (max-width:991px) {
+    .aboutus__action {
+      padding-top: 0
+    }
+  }
+
+  .aboutus__action-title {
+    margin-bottom: 20px
+  }
+
+  .aboutus__action-des {
+    margin: 0 auto 25px
+  }
+
+  @media (min-width:992px) {
+    .aboutus__action-title {
+      font-size: 50px
+    }
+    .aboutus__action-des {
+      font-size: 20px;
+      max-width: 650px
+    }
+  }
+
+  .aboutus__action .btn {
+    padding: 15px 30px;
+  }
+
+  .blockquote-custom {
+    padding-left: 80px;
+    position: relative;
+  }
+  @media (max-width:992px){
+    .blockquote-custom {
+      padding-left: 60px;
+    }
+  }
+  .blockquote-custom:before {
+    content: '';
+    font-size: 100px;
+    color: var(--g-main);
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    line-height: 40px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-image: url(https://cdn.shopify.com/s/files/1/0268/3981/0133/files/quote.svg?v=1597997420);
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(90%) sepia(26%) saturate(7343%) hue-rotate(4deg) brightness(109%) contrast(104%);
+  }
+
+  .service-2{
+    padding: 35px;
+    background: white;
+  }
+</style>
+<!-- page-about.liquid -->
+<div class="container">
+  {%- if page.content != blank -%}
+  <div class="content-block">
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+  {%- endif -%}
+</div>
+<div class="aboutus-content">
+  {%- for block in section.blocks -%}
+  {%- case block.type -%}
+
+  {%- when 'intro' -%}	
+  <section class="aboutus_section aboutus__intro {% if block.settings.intro_background != blank %}aboutus__intro--with-image{% endif %}" {% if block.settings.intro_background != blank %}style="background-image:url({{block.settings.intro_background | img_url: '1920x'}})"{% endif %} {{ block.shopify_attributes }}>
+    <div class="container">
+      <div class="row">
+        <div class="aboutus__intro-meta col-12 col-lg-6 {% if block.settings.intro_image_align == 'left' %}order-1 pl-lg-5{% endif %}">
+          {%- if block.settings.intro_title != blank -%}
+          <h3 class="aboutus__intro-title aboutus-title text-center text-sm-left my-4 mt-lg-0 " style="color:{{block.settings.intro_title_cl}}">{{block.settings.intro_title}}</h3>
+          {%- endif -%}
+          {%- if block.settings.intro_des != blank -%}
+          <div class="aboutus__intro-des" style="color:{{block.settings.intro_des_cl}}">
+            {{block.settings.intro_des}}
+          </div>
+          {%- endif -%}
+        </div>
+        <div class="aboutus__intro-image col-12 col-lg-6">
+          {% if block.settings.intro_image != blank %}
+          <img class="lazyload" data-src=" {{block.settings.intro_image | img_url:'1200x'}}" alt="{{block.settings.intro_image.alt}}">
+          {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {%- when 'service' -%}
+  <section class="aboutus_section aboutus__service pb-3" {{ block.shopify_attributes }} style="background-color:{{block.settings.background}}">
+    {%- if block.settings.title != blank -%}
+    <h3 class="aboutus-title mt-3 mb-5 container">{{block.settings.title}}</h3>
+    {%- endif -%}
+    <div class="container">
+      <div class="services-slider row dots-negative" id="service-list-{{ section.id }}"
+      data-rows="1"
+      data-slidesToShow="3"
+      data-slidestoscroll="1"
+      data-arrows="false"
+      data-dots="true" 
+      data-draggable="true" 
+      data-infinite="false" 
+      data-section-id="{{ section.id }}" 
+      data-section-type="slickCarousels">
+      {%- for i in (1..3) -%}
+      {%- assign settingIcon = 'service_icon_' | append: i -%}
+      {%- assign settingTitle = 'service_title_' | append: i -%}
+      {%- assign settingDes = 'service_des_' | append: i -%}
+      <div class="col services-item carousel__slide-wrapper--{{block.id}}" {{ block.shopify_attributes }}>
+        <div class="service-2 text-left bg-white">
+          <div class="mb-3 iconx6 text-theme">
+            {{block.settings[settingIcon] | default:'[[ Icon ]]'}}
+          </div>
+          <div class="media-body">
+            <h5 class="mt-0 mb-2">{{block.settings[settingTitle]}}</h5>
+            <div>{{block.settings[settingDes]}}</div>
+          </div>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+</section>
+
+{%- when 'achievement' -%}	
+<section class="aboutus_section aboutus__counterup" {{ block.shopify_attributes }}>
+  <div class="container">
+    <div class="row">
+      {%- if block.settings.achie_title != blank -%}
+      <div class="col-12 col-lg-3">
+        <h3 class="aboutus-title">{{block.settings.achie_title}}</h3>
+      </div>
+      {%- endif -%}
+      {%- for i in (1..3) -%}
+      {%- assign settingIcon = 'achie_icon_' | append: i -%}
+      {%- assign settingNumber = 'achie_count_' | append: i -%}
+      {%- assign settingAchie = 'achie_' | append: i -%}
+      <div class="col col-counter">
+        <div class="counter-wrap media">
+          <div class="counter-icon">
+            {{block.settings[settingIcon]}}
+          </div>
+          <div class="counter-body">
+            <div class="counter">{{block.settings[settingNumber]}}</div>
+            <h5>{{block.settings[settingAchie]}}</h5>
+          </div>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- when 'chooseus' -%}	
+<section class="aboutus_section aboutus__chooseus" {{ block.shopify_attributes }}>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="aboutus__chooseus-left">
+          {%- if block.settings.chooseus_title1 != blank -%}
+          <h3 class="aboutus-title">{{block.settings.chooseus_title1}}</h3>
+          {%- endif -%}
+          {%- if block.settings.chooseus_des != blank -%}
+          <div class="chooseus-des">
+            {{block.settings.chooseus_des}}
+          </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="aboutus__chooseus-right">
+          {%- if block.settings.chooseus_title2 != blank -%}
+          <h3 class="aboutus-title">{{block.settings.chooseus_title2}}</h3>
+          {%- endif -%}
+          {%- for i in (1..4) -%}
+          {%- assign settingTitle = 'chooseus_question' | append: i -%}
+          {%- assign settingDescription = 'chooseus_answer' | append: i -%}
+
+          <div class="chooseus-collapse">
+            <div class="title" data-toggle="collapse" data-target="#chooseus-collapse{{i}}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+              {{block.settings[settingTitle]}}
+            </div>
+            <div class="des collapse {% if forloop.first %}show{% endif %}" id="chooseus-collapse{{i}}">
+              {{block.settings[settingDescription]}}
+            </div>
+          </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- when 'teamwork' -%}
+<section class="aboutus_section aboutus__team" {{ block.shopify_attributes }}>
+  <div class="container">
+    {%- if block.settings.team_title != blank -%}
+    <h3 class="aboutus-title mb-5">{{block.settings.team_title}}</h3>
+    {%- endif -%}
+    <div class="row">
+      {%- for i in (1..4) -%}
+      {%- assign settingAvatar = 'team_avatar_' | append: i -%}
+      {%- assign settingName = 'team_person_' | append: i -%}
+      {%- assign settingInfo = 'team_des_' | append: i -%}
+      {%- assign settingFacebook = 'team_fb_' | append: i -%}
+      {%- assign settingTwitter = 'team_tw_' | append: i -%}
+      {%- assign settingLinkedin = 'team_lk_' | append: i -%}
+      {%- if block.settings[settingName] != blank -%}
+      <div class="col-lg-3 col-12 col-sm-6 col-person text-center">
+        <div class="person__avatar">
+          {% if block.settings[settingAvatar] != blank %}
+          <img class="lazyload" data-src="{{block.settings[settingAvatar] | img_url:'500x'}}" alt="{{block.settings[settingAvatar].alt}}" />
+          {% else %}
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+        </div>
+        <p class="person__name">
+          {{ block.settings[settingName] }}
+        </p>
+        <ul class="person__social list-unstyled">
+          {%- if block.settings[settingFacebook] != blank -%}
+          <li><a class="person__social-fb" href="{{block.settings[settingFacebook]}}">{%- include 'icon-facebook' -%}</a></li>
+          {%- endif -%}
+          {%- if block.settings[settingTwitter] != blank -%}
+          <li><a class="person__social-tw" href="{{block.settings[settingTwitter]}}">{%- include 'icon-twitter' -%}</a></li>
+          {%- endif -%}
+          {%- if block.settings[settingLinkedin] != blank -%}
+          <li><a class="person__social-lk" href="{{block.settings[settingLinkedin]}}">{%- include 'icon-linkedin-in' -%}</a></li>
+          {%- endif -%}
+        </ul>
+        <div class="person__info mb-4">
+          {{ block.settings[settingInfo] }}
+        </div>
+
+      </div>
+      {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- when 'action' -%}
+<section class="aboutus_section aboutus__action" {{ block.shopify_attributes }}>
+  <div class="container">
+    {%- if block.settings.action_title != blank -%}
+    <h3 class="aboutus__action-title">{{block.settings.action_title}}</h3>
+    {%- endif -%}
+    {%- if block.settings.action_des != blank -%}
+    <div class="aboutus__action-des">{{block.settings.action_des}}</div>
+    {%- endif -%}
+    {%- if block.settings.action_btn_txt != blank and block.settings.action_btn_lnk != blank -%}
+    <a class="btn btn-theme" href="{{block.settings.action_btn_lnk}}">{{block.settings.action_btn_txt}}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- when 'video' -%}
+<section class="aboutus_section aboutus__video" {{ block.shopify_attributes }}>
+  {%- if block.settings.cover_image -%}
+  <style>
+    #VideoSection--{{ section.id }} .video-section__cover-background {
+      background-image: url({{ block.settings.cover_image | img_url: '1920x' | format: 'jpg' }});
+      background-position: {{ block.settings.cover_image_position }};
+    }
+  </style>
+  {%- endif -%}
+
+  {%- if block.settings.show_overlay -%}
+  <style>
+    #VideoSection--{{ section.id }} .video-section__cover-overlay {
+      background-color: {{ block.settings.overlay_color }};
+      opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+    }
+  </style>
+  {%- endif -%}
+
+  <div id="VideoSection--{{ section.id }}" class="video-section video-section--{{ block.settings.cover_image_height }}" data-section-id="{{ section.id }}" data-section-type="video" data-video-id="{{ block.settings.video_url.id }}" data-video-type="{{ block.settings.video_url.type }}">
+    <div class="video-section__body-overlay"></div>
+    <div class="video-section__modal">
+      <div class="video-wrapper">
+        <button class="video-section__player-close">
+          <span class="visually-hidden">{{ 'video.close' | t }}</span>
+          {%- include 'icon-close' -%}
+        </button>
+        <div class="video-section__player"></div>
+      </div>
+    </div>
+    <div class="video-section__cover">
+      <div class="video-section__cover-background">
+        {%- if block.settings.cover_image == blank -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      <div class="video-section__cover-overlay"></div>
+      <div class="video-section__cover-content">
+        <button class="video-section__load-player-button video-section__load-player-button--large">
+          <span class="visually-hidden">{{ 'video.play' | t }}</span>
+          <div class="video-section__load-player-icon">
+            <div class="video-section__load-player-button-circle"></div>
+            <div class="video-section__load-player-button-triangle"></div>
+          </div>
+        </button>
+        <p class="video-section__error"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- endcase -%}
+{%- endfor -%}
+</div>
+{% schema %}
+{
+ "name":"About us",
+ "max_blocks": 20,
+ "settings":[
+ ],
+ "blocks": [
+  {
+    "type": "intro",
+    "name": "Intro",
+    "settings": [
+      {
+       "type":"text",
+       "id":"intro_title",
+       "label":"Title",
+       "default":"Our story"
+     },
+     {
+      "type": "color",
+      "id": "intro_title_cl",
+      "label": "Title color",
+      "default": "#222222"
+    },
+    {
+     "type":"textarea",
+     "id":"intro_des",
+     "label":"Description"
+   },
+   {
+    "type": "color",
+    "id": "intro_des_cl",
+    "label": "Description color",
+    "default": "#222222"
+  },
+  {
+   "type":"image_picker",
+   "id":"intro_background",
+   "label":"Background"
+ },
+ {
+   "type":"image_picker",
+   "id":"intro_image",
+   "label":"Image"
+ },
+ {
+   "type": "radio",
+   "id": "intro_image_align",
+   "default":   "left",
+   "options": [
+    { "value": "left", "label": "Left"},
+    { "value": "right", "label": "Right"}
+  ],
+   "label": "Image align"
+ }
+]
+  },
+  {
+    "type": "video",
+    "name": "Video",
+    "settings": [
+      {
+        "type": "select",
+        "id": "align",
+        "label": "Align",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Top"
+          },
+          {
+            "value": "center",
+            "label": "Mid"
+          },
+          {
+            "value": "end",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "video_url",
+        "id": "video_url",
+        "label": "Video link",
+        "accept": [
+          "youtube",
+          "vimeo"
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Cover"
+      },
+      {
+        "type": "image_picker",
+        "id": "cover_image",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "cover_image_position",
+        "label": "Image position",
+        "default": "center center",
+        "options": [
+          {
+            "label": "Top left",
+            "value": "top left"
+          },
+          {
+            "label": "Top center",
+            "value": "top center"
+          },
+          {
+            "label": "Top right",
+            "value": "top right"
+          },
+          {
+            "label": "Middle left",
+            "value": "center left"
+          },
+          {
+            "label": "Middle center",
+            "value": "center center"
+          },
+          {
+            "label": "Middle right",
+            "value": "center right"
+          },
+          {
+            "label": "Bottom left",
+            "value": "bottom left"
+          },
+          {
+            "label": "Bottom center",
+            "value": "bottom center"
+          },
+          {
+            "label": "Bottom right",
+            "value": "bottom right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "cover_image_height",
+        "label": "Image height",
+        "default": "short",
+        "options": [
+          {
+            "value": "short",
+            "label": "Short"
+          },
+          {
+            "value": "tall",
+            "label": "Tall"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Overlay"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_overlay",
+        "label": "Show overlay",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "label": "Overlay",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Opacity",
+        "default": 30
+      }
+    ]
+  },
+  {
+    "type": "action",
+    "name": "Action",
+    "settings": [
+      {
+       "type":"text",
+       "id":"action_title",
+       "default":"Feel free, move free",
+       "label":"Title"
+     },
+     {
+       "type":"textarea",
+       "id":"action_des",
+       "default":"Enjoy the feeling of freedom, that’s the feeling we want to capture when we design our products.",
+       "label":"Description"
+     },
+     {
+       "type":"text",
+       "id":"action_btn_txt",
+       "default":"Explore products",
+       "label":"Button text"
+     },
+     {
+       "type":"url",
+       "id":"action_btn_lnk",
+       "label":"Button link"
+     }
+   ]
+  },
+  {
+    "type": "teamwork",
+    "name": "Teamwork",
+    "settings": [
+      {
+       "type":"text",
+       "id":"team_title",
+       "default":"Meet our people",
+       "label":"Title"
+     },
+     {
+       "type":"header",
+       "content":"Person 1"
+     },
+     {
+       "type":"image_picker",
+       "id":"team_avatar_1",
+       "label":"Avatar"
+     },
+     {
+       "type":"text",
+       "id":"team_person_1",
+       "label":"Name",
+       "default":"Emma Watson"
+     },
+     {
+       "type":"textarea",
+       "id":"team_des_1",
+       "label":"Info",
+       "default":"Emma earned her BSS in Psychology and BSC in Management from Santa Clara University. She joined Us after 4+ years in venture."
+     },
+     {
+       "type":"url",
+       "id":"team_fb_1",
+       "label":"Facebook"
+     },
+     {
+       "type":"url",
+       "id":"team_tw_1",
+       "label":"Twitter"
+     },
+     {
+       "type":"url",
+       "id":"team_lk_1",
+       "label":"Linkedin"
+     },
+     {
+       "type":"header",
+       "content":"Person 2"
+     },
+     {
+       "type":"image_picker",
+       "id":"team_avatar_2",
+       "label":"Avatar"
+     },
+     {
+       "type":"text",
+       "id":"team_person_2",
+       "label":"Name",
+       "default":"John Doe"
+     },
+     {
+       "type":"textarea",
+       "id":"team_des_2",
+       "label":"Info",
+       "default":"John is a proud graduate of Teachers College’s Instructional Design and Technology program and can usually be found gaming, reading"
+     },
+     {
+       "type":"url",
+       "id":"team_fb_2",
+       "label":"Facebook"
+     },
+     {
+       "type":"url",
+       "id":"team_tw_2",
+       "label":"Twitter"
+     },
+     {
+       "type":"url",
+       "id":"team_lk_2",
+       "label":"Linkedin"
+     },
+     {
+       "type":"header",
+       "content":"Person 3"
+     },
+     {
+       "type":"image_picker",
+       "id":"team_avatar_3",
+       "label":"Avatar"
+     },
+     {
+       "type":"text",
+       "id":"team_person_3",
+       "label":"Name",
+       "default":"Sarah Parker"
+     },
+     {
+       "type":"textarea",
+       "id":"team_des_3",
+       "label":"Info",
+       "default":"Sarah earned her BSS in Psychology and BSC in Management from Santa Clara University. She joined Us after 4+ years in venture."
+     },
+     {
+       "type":"url",
+       "id":"team_fb_3",
+       "label":"Facebook"
+     },
+     {
+       "type":"url",
+       "id":"team_tw_3",
+       "label":"Twitter"
+     },
+     {
+       "type":"url",
+       "id":"team_lk_3",
+       "label":"Linkedin"
+     },
+     {
+       "type":"header",
+       "content":"Person 4"
+     },
+     {
+       "type":"image_picker",
+       "id":"team_avatar_4",
+       "label":"Avatar"
+     },
+     {
+       "type":"text",
+       "id":"team_person_4",
+       "label":"Name",
+       "default":"William Smith"
+     },
+     {
+       "type":"textarea",
+       "id":"team_des_4",
+       "label":"Info",
+       "default":"William loves tackling the legal issues that arise as transforms education. He used to have hobbies like traveling. He joined Us after 4+ years in venture."
+     },
+     {
+       "type":"url",
+       "id":"team_fb_4",
+       "label":"Facebook"
+     },
+     {
+       "type":"url",
+       "id":"team_tw_4",
+       "label":"Twitter"
+     },
+     {
+       "type":"url",
+       "id":"team_lk_4",
+       "label":"Linkedin"
+     }
+   ]
+  },
+  {
+    "type": "achievement",
+    "name": "Achievement",
+    "settings": [
+      {
+       "type":"text",
+       "id":"achie_title",
+       "label":"Title",
+       "default":"Fun fact"
+     },
+     {
+       "type":"textarea",
+       "id":"achie_icon_1",
+       "label":"SVG Icon 1"
+     },
+     {
+       "type":"text",
+       "id":"achie_count_1",
+       "default":"Happy clients",
+       "label":"Number 1"
+     },
+     {
+       "type":"text",
+       "id":"achie_1",
+       "default":"1549",
+       "label":"Achievement 1"
+     },
+     {
+       "type":"textarea",
+       "id":"achie_icon_2",
+       "label":"SVG Icon 2"
+     },
+     {
+       "type":"text",
+       "id":"achie_count_2",
+       "default":"37",
+       "label":"Number 2"
+     },
+     {
+       "type":"text",
+       "id":"achie_2",
+       "default":"Award winning",
+       "label":"Achievement 2"
+     },
+     {
+       "type":"textarea",
+       "id":"achie_icon_3",
+       "label":"SVG Icon 3"
+     },
+     {
+       "type":"text",
+       "id":"achie_count_3",
+       "default":"7",
+       "label":"Number 3"
+     },
+     {
+       "type":"text",
+       "id":"achie_3",
+       "default":"Team members",
+       "label":"Achievement 3"
+     }
+   ]
+  },
+  {
+    "type": "service",
+    "name": "Service",
+    "settings": [
+      {
+       "type":"text",
+       "id":"title",
+       "label":"Title",
+       "default":"Why choose us"
+     },
+     {
+       "type":"color",
+       "id":"background",
+       "label":"Background",
+       "default":"#f7f7f7"
+     },
+     {
+       "type":"textarea",
+       "id":"service_icon_1",
+       "label":"SVG Icon 1"
+     },
+     {
+       "type":"text",
+       "id":"service_title_1",
+       "default":"Free Delivery",
+       "label":"Title 1"
+     },
+     {
+       "type":"text",
+       "id":"service_des_1",
+       "default":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+       "label":"Description 1"
+     },
+     {
+       "type":"textarea",
+       "id":"service_icon_2",
+       "label":"SVG Icon 2"
+     },
+     {
+       "type":"text",
+       "id":"service_title_2",
+       "default":"Secure Payment",
+       "label":"Title 2"
+     },
+     {
+       "type":"text",
+       "id":"service_des_2",
+       "default":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+       "label":"Description 2"
+     },
+     {
+       "type":"textarea",
+       "id":"service_icon_3",
+       "label":"SVG Icon 3"
+     },
+     {
+       "type":"text",
+       "id":"service_title_3",
+       "default":"24/7 Support",
+       "label":"Title 3"
+     },
+     {
+       "type":"text",
+       "id":"service_des_3",
+       "default":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
+       "label":"Description 3"
+     }
+   ]
+  },
+  {
+    "type": "chooseus",
+    "name": "Chooseus",
+    "settings": [
+      {
+       "type":"header",
+       "content":"Choose Us - Left"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_title1",
+       "default":"Our design",
+       "label":"Title"
+     },
+     {
+       "type":"textarea",
+       "id":"chooseus_des",
+       "default":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris leo justo, porta et mi vel, fringilla facilisis justo. Nam vel sodales risus. Etiam neque ex, rhoncus semper nulla quis, interdum ullamcorper libero. Etiam bibendum ligula at dolor condimentum, vel facilisis arcu rutrum. In ultrices pellentesque libero, ac pretium enim rutrum ac. Nullam sollicitudin ultricies lacus a varius. Curabitur vel elit in urna porttitor tempus at ac nulla. Ut mattis leo nec auctor fringilla. Aliquam tempor laoreet nunc, vel facilisis libero. Vestibulum at metus quis velit fermentum ornare. In hac habitasse platea dictumst.",
+       "label":"Description"
+     },
+     {
+       "type":"header",
+       "content":"Choose Us - Right"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_title2",
+       "default":"Why choose us",
+       "label":"Title"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_question1",
+       "default":"Quality is our key business",
+       "label":"Collapse title 1"
+     },
+     {
+       "type":"textarea",
+       "id":"chooseus_answer1",
+       "default":"Quality has always been at the core of us, as we want our products to last whilst being used every day. To ensure the highest quality, we like to be in charge of the entire development and production process – from the first sketch to the final Shopify theme.",
+       "label":"Collapse description 1"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_question2",
+       "default":"Full support",
+       "label":"Collapse title 2"
+     },
+     {
+       "type":"textarea",
+       "id":"chooseus_answer2",
+       "default":"Quality has always been at the core of us, as we want our products to last whilst being used every day. To ensure the highest quality, we like to be in charge of the entire development and production process – from the first sketch to the final Shopify theme.",
+       "label":"Collapse description 2"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_question3",
+       "default":"Free returns",
+       "label":"Collapse title 3"
+     },
+     {
+       "type":"textarea",
+       "id":"chooseus_answer3",
+       "default":"Quality has always been at the core of us, as we want our products to last whilst being used every day. To ensure the highest quality, we like to be in charge of the entire development and production process – from the first sketch to the final Shopify theme.",
+       "label":"Collapse description 3"
+     },
+     {
+       "type":"text",
+       "id":"chooseus_question4",
+       "default":"Product Design",
+       "label":"Collapse title 4"
+     },
+     {
+       "type":"textarea",
+       "id":"chooseus_answer4",
+       "default":"Quality has always been at the core of us, as we want our products to last whilst being used every day. To ensure the highest quality, we like to be in charge of the entire development and production process – from the first sketch to the final Shopify theme.",
+       "label":"Collapse description 4"
+     }
+   ]
+  }
+]
+}
+{% endschema %}

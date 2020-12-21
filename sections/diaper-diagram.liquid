@@ -1,0 +1,369 @@
+<!-- diaper-diagram.liquid -->
+<div class="{% if section.settings.fullwidth %}container-fluid px-lg-0{% else %}container{% endif %}">
+  <div class="section-block">
+    {%- include 'pattern-heading' -%}
+    <div id="diaper-diagram-{{ section.id }}" data-section-id="{{ section.id }}" data-section-type="diaper-diagram">
+      {% if section.blocks.size > 1 %}
+      <ol class="nav nav-tabs nav-tabs-1 mb-4 font-weight-bold" role="tablist">
+        {%- for block in section.blocks -%}
+        <li class="nav-item">
+          <a class="nav-link nav-link-{{block.id}} {% if forloop.first %}active{% endif %}" data-toggle="tab" href="#prdtab-{{block.id}}" role="tab" {{ block.shopify_attributes }}>
+            {{block.settings.title}}
+          </a>
+        </li>
+        {%- endfor -%}
+      </ol>
+      {% endif %}
+      <div class="tab-content">
+        {%- for block in section.blocks -%}
+        <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="prdtab-{{block.id}}" role="tabpanel">
+          <div class="row">
+            <div class="col-12">
+              <div class="image-wrap text-center mb-4">
+                {% if block.settings.image != blank %}
+                <img src="{% include 'srcBlank' %}" data-src="{{ block.settings.image | img_url:'1000x' }}" class="lazyload"/>
+                {% else %}	
+                {{ 'image' | placeholder_svg_tag }}
+                {% endif %}
+
+                {% for i in (1..6) %}
+                {% assign settingIcon = 'icon_' | append: i %}
+                {% assign settingDes = 'des_' | append: i %}
+                {% assign settingTop = 'top_' | append: i %}
+                {% assign settingLeft = 'left_' | append: i %}
+
+                <span class="diagram-point bg-light rounded-circle"
+                      style="top:{{block.settings[settingTop]}}%;left:{{block.settings[settingLeft]}}%"
+                      data-toggle="modal"
+                      data-target="#js-diagram-{{block.id}}-{{forloop.index}}">
+                  {{ block.settings[settingIcon] }}
+                </span>
+                <div class="modal fade" id="js-diagram-{{block.id}}-{{forloop.index}}" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog--crosssell modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">{%- include 'icon-close' -%}</button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="media pat-service service-1 text-left mb-4">
+                          <span class="align-self-center mr-3 iconx8">
+                            {{ block.settings[settingIcon] }}
+                          </span>
+                          <div class="media-body align-self-center">
+                            {{ block.settings[settingDes] }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  @media (min-width:1200px){
+    .producttab-item+.producttab-item{
+      margin-left: -1px;
+    }
+  }
+  #shopify-section-diaper-diagram .nav-link{
+    text-transform: uppercase;
+  }
+
+  .#shopify-section-diaper-diagram .image-wrap{
+    position:relative;
+  }
+  
+  .#shopify-section-diaper-diagram .image-wrap img{
+    width:100%;
+  }
+
+  .diagram-point{
+    position: absolute;
+    cursor:pointer;
+  }
+
+  .diagram-point svg{
+    transition: all ease .45s;
+    width: 35px;
+    height: 35px;
+    font-size: 35px;
+  }
+  
+  @media (min-width:1200px){
+    .diagram-point svg{
+      width: 60px;
+      height: 60px;
+      font-size: 60px;
+    }
+  }
+  .diagram-point svg:hover{
+    filter: invert(1);
+    opacitY:.9
+  }
+</style>
+{% schema %}
+{
+  "name": "Diaper Diagram",
+  "class": "index-section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Product tab"
+    },
+    {
+      "type": "textarea",
+      "id": "des",
+      "label": "HTML / Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "fullwidth",
+      "label": "Fullwidth",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "label": "Limit items",
+      "default": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title tab"
+        },
+        {
+          "label": "Main image",
+          "id": "image",
+          "type": "image_picker"
+        },
+        {
+          "type": "header",
+          "content": "UPS1"
+        },
+        {
+          "type": "range",
+          "id": "top_1",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_1",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_1",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_1",
+          "type": "textarea"
+        },
+        {
+          "type": "header",
+          "content": "UPS2"
+        },
+        {
+          "type": "range",
+          "id": "top_2",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_2",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_2",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_2",
+          "type": "textarea"
+        },
+        {
+          "type": "header",
+          "content": "UPS3"
+        },
+        {
+          "type": "range",
+          "id": "top_3",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_3",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_3",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_3",
+          "type": "textarea"
+        },
+        {
+          "type": "header",
+          "content": "UPS4"
+        },
+        {
+          "type": "range",
+          "id": "top_4",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_4",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_4",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_4",
+          "type": "textarea"
+        },
+        {
+          "type": "header",
+          "content": "UPS5"
+        },
+        {
+          "type": "range",
+          "id": "top_5",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_5",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_5",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_5",
+          "type": "textarea"
+        },
+        {
+          "type": "header",
+          "content": "UPS6"
+        },
+        {
+          "type": "range",
+          "id": "top_6",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Top",
+          "default": 25
+        },
+        {
+          "type": "range",
+          "id": "left_6",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Left",
+          "default": 25
+        },
+        {
+          "label": "Icon",
+          "id": "icon_6",
+          "type": "text"
+        },
+        {
+          "label": "Description",
+          "id": "des_6",
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

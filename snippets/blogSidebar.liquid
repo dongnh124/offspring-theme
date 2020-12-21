@@ -1,0 +1,126 @@
+<style>
+  .col--sidebar-blog .content-block {
+   padding: 0 0 20px;
+   margin: 0;
+   background: 0 0
+ }
+ 
+ .list-blog-tags .g-tag a{
+   color:var(--g-color-heading);
+ }
+ 
+ .list-blog-tags .g-tag:hover a{
+   color:white;
+ }
+
+ .sidebar__title {
+   font-size: calc(var(--g-font-size) + 6px);
+   margin-bottom:20px;
+   height: 55px;
+   line-height: 55px;
+   border-bottom: 1px solid var(--g-border-1);
+ }
+
+ .sidebar-blog__title a {
+  color: var(--g-color-heading);
+  font-weight: 700;
+  line-height: 24px;
+  display: block;
+  margin-bottom: 10px;
+  transition: all ease .3s
+}
+
+.sidebar-blog__title a:hover {
+ color: var(--g-main)
+}
+
+.sidebar-blog__item {
+ display: flex;
+ margin-bottom: 20px;
+}
+
+.sidebar-blog__item:last-child {
+ margin-bottom: 0
+}
+
+.sidebar-blog__image {
+ flex: 0 0 110px;
+ width: 110px;
+ padding-right: 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center
+}
+
+.sidebar-blog__image img{
+  height: 100px;
+  width:100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.sidebar-blog__publish {
+ font-size: 90%;
+ font-style: italic
+}
+
+</style>
+<!-- blog-sidebar.liquid -->
+<div class="col col--sidebar-blog">
+  <div class="sidebar-blog-wrap js-stick-parent">
+    {%- if settings.sidebar_post -%}
+    {%- assign limit = settings.sidebar_post_limit -%}
+    <div class="content-block content-block--small">
+      {%- if settings.sidebar_post_title -%}
+      <h6 class="sidebar__title">{{settings.sidebar_post_title}}</h6>
+      {%- endif -%}
+      {%- for article in blog.articles limit:limit -%}
+      <div class="sidebar-blog__item">
+        {%- if article.image -%}
+        <div class="sidebar-blog__image">
+          <a class="w-100" href="{{ article.url }}">
+            <img class="lazyload" data-src="{{ article.image | img_url: '300x' }}" >
+          </a>
+        </div>
+        {%- endif -%}
+        <div class="sidebar-blog__meta">
+          <div class="sidebar-blog__title">
+            <a href="{{ article.url }}">
+              {{article.title}}
+            </a>
+          </div>
+          <p class="sidebar-blog__publish">
+            {{ article.published_at | time_tag: format: 'month_day_year' }}
+          </p>
+        </div>
+      </div>
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+    {%- if settings.sidebar_tag -%}
+    <div class="content-block content-block--small">
+      <h6 class="sidebar__title">{{ 'blogs.article.tags' | t }}</h6>
+      <ul class="list-unstyled list-blog-tags clearfix mb-3">
+        <li class="py-1 px-3 fz-n1 g-tag">
+          <a href="{{ blog.url }}">{{ 'blogs.article.all_tags' | t }}</a>
+        </li>
+        {%- for tag in blog.all_tags -%}
+        {%- if current_tags contains tag -%}
+        <li class="py-1 px-3 fz-n1 g-tag active">{{ tag }}</li>
+        {%- else -%}
+        <li class="py-1 px-3 fz-n1 g-tag">{{ tag | link_to_tag: tag }}</li>
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+    {%- endif -%}
+    {%- if settings.sidebar_html != blank -%}
+    <div class="content-block content-block--small">
+      {%- if settings.sidebar_html_title != blank -%}
+      <h6 class="sidebar__title">{{ settings.sidebar_html_title }}</h6>
+      {%- endif -%}
+      {{settings.sidebar_html}}
+    </div>
+    {%- endif -%}
+  </div>
+</div>
