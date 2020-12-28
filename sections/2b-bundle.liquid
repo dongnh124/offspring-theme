@@ -9,6 +9,9 @@
 {% assign step3 = collection.metafields.offspring.step3 %}
 {% assign step4 = collection.metafields.offspring.step4 %}
 
+{% assign frequency = collection.metafields.offspring.interval_frequency %}
+{% assign unit = collection.metafields.offspring.interval_unit %}
+
 {% if isBundle %}
 <div class="container-fluid">
   <div class="row">
@@ -31,8 +34,8 @@
           <div class="stepwizard-step">
             <a href="#step-{{i}}"
                data-index="{{i}}"
-               type="button" 
-               class="btn btn-step disabled-anchor btn-step-{{i}} {% unless forloop.first %}active{% endunless %}" 
+               type="button"
+               class="btn btn-step disabled-anchor btn-step-{{i}} {% unless forloop.first %}active{% endunless %}"
                {% unless forloop.first %}disabled="disabled"{% endunless %}>
               {{i}}
             </a>
@@ -46,27 +49,29 @@
             id="js-bundle-form"
             data-max-quantity="{{maxQuantity}}"
             data-extra-max-quantity="{{extraMaxQuantity}}"
+            data-frequency="{{frequency}}"
+            data-unit="{{unit}}"
             action=""
             method="post">
 
         <!-- STEP 1 - GENERATE PRODUCT -->
-        <div class="row js-step-wrap px-3 py-5" 
-             id="step-1" 
+        <div class="row js-step-wrap px-3 py-5"
+             id="step-1"
              data-index="1">
           <div class="col-md-12">
             <div class="step-content">
-              <h3 class="step-title fz-10 fw-600 mb-4"> 
+              <h3 class="step-title fz-10 fw-600 mb-4">
                 1. Select Bundle Type
               </h3>
               {% include 'select-bundle' %}
-              
-              <h3 class="step-title fz-10 fw-600 mb-4"> 
+
+              <h3 class="step-title fz-10 fw-600 mb-4">
                 2. {{ step1.title }}
-                <div class="text-right">
+                <div class="text-size-chart">
                   {%- include 'productSizeGuide' -%}
                 </div>
               </h3>
-              
+
               <div class="step-des">
                 {{ step1.description }}
               </div>
@@ -74,7 +79,7 @@
                 <div class="row">
                   {% for product in collection.products %}
                   <div class="col-6 col-lg-3">
-                    <div class="step-product js-step-item mb-5 product-type-{{ product.type | handle }}" 
+                    <div class="step-product js-step-item mb-5 product-type-{{ product.type | handle }}"
                          data-product="{{ product.handle }}"
                          data-type="{{ product.type | handle }}">
                       <h4 class="step-product__title fz-n1 text-center mb-0 js-step-plus">
@@ -99,7 +104,9 @@
               </div>
             </div>
             <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
-              <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+              <div>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+              </div>
               <div class="step-total-quantity">
                 <span class="step-number js-step-total-quantity">0</span>
                 <span class="step-text">of</span>
@@ -112,8 +119,8 @@
         </div>
 
         <!-- STEP 2 - GENERATE VARIANT -->
-        <div class="row js-step-wrap js-to-cart px-3 py-5" 
-             id="step-2" 
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
+             id="step-2"
              data-index="2">
           <div class="col-md-12">
             <div class="step-content">
@@ -146,8 +153,8 @@
         </div>
 
         <!-- STEP 3 - FREEBIE -->
-        <div class="row js-step-wrap js-to-cart px-3 py-5" 
-             id="step-3" 
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
+             id="step-3"
              data-index="3">
           <div class="col-md-12">
             <div class="step-content">
@@ -160,7 +167,7 @@
                   {% assign freebieCollection = collections[freebieCollectionHandle] %}
                   {% for product in freebieCollection.products %}
                   <div class="col-6 col-lg-4">
-                    <div class="step-product js-step-item mb-1 freebie-{{ product.first_available_variant.id }}" 
+                    <div class="step-product js-step-item mb-1 freebie-{{ product.first_available_variant.id }}"
                          data-product="{{ product.handle }}"
                          data-type="{{ product.type | handle }}">
                       <span class="step-product-quickview js-btn-quickview" data-toggle="modal" data-target="#jsQuickview" data-handle="{{product.handle}}">
@@ -194,7 +201,7 @@
         </div>
 
         <!-- STEP 4 - EXTRA -->
-        <div class="row js-step-wrap js-to-cart px-3 py-5" 
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
              id="step-4"
              data-index="4">
           <div class="col-md-12">
@@ -208,7 +215,7 @@
                   {% assign extraCollection = collections[extraCollectionHandle] %}
                   {% for product in extraCollection.products %}
                   <div class="col-6 col-lg-4 mb-4">
-                    <div class="step-product js-step-item mb-4 extra-{{ product.first_available_variant.id }}" 
+                    <div class="step-product js-step-item mb-4 extra-{{ product.first_available_variant.id }}"
                          data-product="{{ product.handle }}"
                          data-first-variant="{{ product.first_available_variant.id }}">
                       <span class="step-product-quickview js-btn-quickview" data-toggle="modal" data-target="#jsQuickview" data-handle="{{product.handle}}">
@@ -237,7 +244,7 @@
             </div>
             <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
               <div>
-                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" >Next</button>
               </div>
               <div class="step-total-quantity">
                 <span class="step-number js-step-total-quantity">0</span>
@@ -269,7 +276,7 @@
                     <div class="js-confirm-bundle"></div>
                   </div>
                   <div class="col-12 col-md-6 mb-3">
-                    <h4 class="fz-2 mb-2">Extras {{extraMaxQuantity}}</h4>
+                    <h4 class="fz-2 mb-2">Extras</h4>
                     <div class="js-confirm-extra"></div>
                   </div>
                   <div class="col-12 col-md-6 mb-3">
@@ -281,7 +288,7 @@
             </div>
             <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
               <div>
-                <button class="btn btn-success btn-lg pull-right" type="submit">Submit</button>
+                <span class="btn btn-success btn-lg pull-right js-bundle-add-to-cart">Add to cart</span>
               </div>
               <div class="js-total-price">
               </div>
@@ -345,7 +352,7 @@
     pointer-events: none;
     font-weight: bold;
   }
-  
+
   .btn-step.active{
     background-color:var(--g-main);
     color:white;
@@ -356,44 +363,56 @@
   .g-breadcrumb{
   	display:none;
   }
+
   .step-content{
     height: 560px;
     overflow: scroll;
     overflow-x: hidden;
-    padding: 0 20px;
+    padding-right:10px;
   }
-  .step-banner img{
-    height: 850px;
-    object-fit: cover;
+  @media (min-width:1200px){
+    .step-banner img{
+      height: 720px;
+      object-fit: cover;
+    }
+    .step-content{
+      padding: 0 20px;
+    }
   }
-  
+
   #step-1 .step-title{
   	position: relative;
   }
-  
-  #step-1 .step-title .text-right{
-    position: absolute;
-    top: 50%;
-    right: 10px;
+
+  #step-1 .step-title .text-size-chart{
     font-size: 15px;
-    margin-top: -10px;
     font-weight: 500;
+    margin-top:10px;
   }
 
-  #step-1 .step-title .text-right svg{
+  @media (min-width:992px){
+    #step-1 .step-title .text-size-chart{
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -10px;
+    }
+  }
+
+  #step-1 .step-title .text-size-chart svg{
     margin-right: 5px;
   }
-  
+
   .step-title{
     font-weight: bold;
     margin-bottom: 15px;
   }
-  
+
   .step-des{
     font-size: 16px;
     letter-spacing: 1px;
   }
-  
+
   .step-product,
   .step-variant{
     border: 2px solid var(--g-border-1);
@@ -401,11 +420,11 @@
     cursor:pointer;
     position:relative;
   }
-  
+
   .step-product:hover{
     border-color:var(--g-main)
   }
-  
+
   .step-product__title{
     padding: 10px;
     border-top-left-radius: 3px;
@@ -413,7 +432,7 @@
     color:#333;
     line-height:1.6;
   }
-  
+
   #step-1 .product-type-diapers:hover{
     border-color:var(--color-diaper)
       }
@@ -431,19 +450,19 @@
     border-color:var(--color-pant);
     background-color:var(--color-pant)
       }
-  
+
   #step-1 .product-type-diapers .step-product__title{
     background: var(--color-diaper);
   }
-  
+
   #step-1 .product-type-pants .step-product__title{
   	background-color:var(--color-pant);
   }
-  
+
   .step-item__image{
   	padding: 10px;
   }
-  
+
   .js-step-quantity-box{
     position: absolute;
     bottom: 0;
@@ -457,7 +476,7 @@
     border: 2px solid var(--g-border-1);
     color:#333;
   }
-  
+
   .js-step-quantity-box span{
     vertical-align: middle;
     min-width: 25px;
@@ -465,7 +484,7 @@
     text-align: center;
     cursor: pointer;
   }
-  
+
   .js-step-quantity{
     padding: 0;
     height: 45px;
@@ -475,7 +494,7 @@
     border: 3px solid var(--g-border-1);
     color: #333;
   }
-  
+
   .step-product.disabled{
     pointer-events: none;
     opacity: .5;
@@ -484,14 +503,20 @@
   .step-product.disabled .js-step-quantity-box{
     background: var(--g-border-1);
   }
-  
+
   .step-total-quantity{
   	color: #0a0a0a;
   }
 
   .step-number{
     font-weight: bold;
-    font-size: 44px;
+    font-size: 30px;
+  }
+
+  @media (min-width:1200px){
+    .step-number{
+      font-size:44px;
+    }
   }
 
   .step-text{
@@ -499,7 +524,7 @@
     font-weight:400;
     padding: 0 5px;
   }
-  
+
   .js-select-bundle{
     padding:5px 0;
   }
@@ -512,25 +537,31 @@
     display:none;
   }
 
+  @media (max-width:991px){
+    .js-step-wrap .btn{
+      font-size:16px;
+    }
+  }
+
   #js-bundle-form {
-    -webkit-user-select: none; /* Chrome/Safari */        
+    -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
-    -o-user-select: none; 
-    user-select: none;   
+    -o-user-select: none;
+    user-select: none;
   }
-  
+
   .qv-product-price,
   .qv-add-to-cart{
     display:none !important;
   }
-  
+
   .template-collection #jsQuickview .qv-product-description{
     display:block;
     padding: 0 0 15px;
     max-height: 300px;
   }
-  
+
   .step-product-quickview{
     border-right: 45px solid transparent;
     height: 0;
@@ -547,20 +578,26 @@
     margin-left: 4px;
     fill: #333;
   }
-  
+
   #step-3 .step-product,
   #step-4 .step-product{
   	border: 2px solid;
     color: var(--g-border-1);
   }
-  
+
   #step-3 .step-product.active,
   #step-4 .step-product.active{
   	color:var(--g-main);
   }
-  
+
   .active .step-product-quickview svg{
   	fill: white;
+  }
+
+  .js-total-price{
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
   }
 </style>
 {% endif %}
@@ -596,7 +633,7 @@
     <img class="mr-3" src="{{ imageSrc }}">
     <div class="media-body align-self-center fz">
       <h5 class="mt-0 fz">{{ quantity }} x <b>{{ productTitle }}</b></h5>
-    {{ variantTitle }}
+    {{ variantTitle }} - <span class=money>{{price}}</span>
     </div>
   </div>
 </script>
