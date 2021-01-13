@@ -1236,7 +1236,7 @@ window.QtySelector = (function() {
     } else {
       this.cache.$discountTotal.empty();
     }
-    
+
     theme.miniCart.updateElements();
     theme.updateCurrencies();
     // Set focus on cart table
@@ -1305,7 +1305,7 @@ window.QtySelector = (function() {
   // Error handling reference from Shopify.onError in api.jquery.js
   cart.prototype.error = function(XMLHttpRequest) {
     var data = JSON.parse(XMLHttpRequest.responseText);
-    
+
     if (data.message) {
       theme.alert.new('',data.description,3000,'warning');
     }
@@ -1707,7 +1707,7 @@ theme.Product = (function() {
           $(this.selectors.comparePrice).addClass('hide');
           $(this.selectors.saleTag).addClass('hide');
         }
-        
+
         theme.updateCurrencies();
       } else {
         $(this.selectors.comparePrice).addClass('hide');
@@ -1731,7 +1731,7 @@ theme.Product = (function() {
         this.setActiveThumbnail(imageId);
       }
     },
-    
+
     _updateStickyCart: function (evt){
       var variant = evt.variant,
       $stickyPrice = $('#js-sticky-price'),
@@ -2447,7 +2447,7 @@ theme.Instagrams = (function() {
       accesstoken 		: this.$container.data('accesstoken'),
       limit 			: this.$container.data('limit'),
       target 			: this.$container.attr('id'),
-      
+
       slidesToShow 		: this.$container.data('slidestoshow') || 1,
       infinite 			: this.$container.data('infinite') || false,
       arrows 			: this.$container.data('arrows') || false,
@@ -2458,7 +2458,7 @@ theme.Instagrams = (function() {
     this.settings.slidesToShow992  		= (this.settings.slidesToShow - 2) > 1? (this.settings.slidesToShow - 2) : 1;
     this.settings.slidesToShow768  		= (this.settings.slidesToShow - 3) > 1? (this.settings.slidesToShow - 3) : 1;
     this.settings.slidesToShow480  		= (this.settings.slidesToShow - 4) > 1? (this.settings.slidesToShow - 4) : 1;
-    
+
     var _self = this;
     var $instagramSelector = $(`#${this.settings.target}`);
     if (this.settings.style === 'grid'){
@@ -2642,7 +2642,7 @@ theme.slickCarousel = (function (){
         }
       });
     },
-    
+
     _goToSlide: function(slideIndex) {
       this.$container.slick('slickGoTo', slideIndex);
     },
@@ -2660,7 +2660,7 @@ theme.slickCarousel = (function (){
 
       // Go to selected slide, pause autoplay
       this._goToSlide(slideIndex);
-      
+
     }
   });
 
@@ -3530,17 +3530,17 @@ theme.addCartButton = (function(){
   })
 })()
 
-// Multi currencies 
+// Multi currencies
 if (theme.enableCurrencies){
   // Can be 'money_format' or 'money_with_currency_format'
   Currency.format = 'money_format';
   var shopCurrency = Shopify.currency.active;
   var cookieCurrency = Currency.cookie.read();
-  // Fix for customer account pages 
+  // Fix for customer account pages
   jQuery('span.money span.money').each(function() {
     jQuery(this).parent('span.money').removeClass('money');
   });
-  // Add precalculated shop currency to data attribute 
+  // Add precalculated shop currency to data attribute
   jQuery('span.money').each(function() {
     jQuery(this).attr('data-currency-' + Shopify.currency.active, jQuery(this).html());
   });
@@ -3609,7 +3609,7 @@ theme.miniCart = (function(){
       itemCount = cart.items.length,
       forLoop = itemCount < numberDisplayed ? itemCount : numberDisplayed;
       // add list items
-      for (let i = 0; i < forLoop; i++) { 
+      for (let i = 0; i < forLoop; i++) {
         var product = cart.items[i],
         productPrice = theme.Currency.formatMoney(product.price, theme.moneyFormat);
         htmlCart += `<div class="mini-cart-item">`;
@@ -3636,10 +3636,10 @@ theme.miniCart = (function(){
   $(document).on('click','.js-remove-mini-cart',function(){
     var itemId = $(this).data('id');
     var isOuterMiniCart = $(this).closest(miniCart).length === 0? true : false;  // check element from mini cart or not
-    
+
     // hide items
     $(this).parent().fadeOut();
-    
+
     //remove from cart
     Shopify.changeItem(itemId,0,updateElements);
     Shopify.getCart(function(cart){
@@ -3726,7 +3726,7 @@ theme.infiniteScroll = (function (){
       });
     }
   }
-  
+
   // Infinite scroll in other page (blog, list-collection)
   function initOtherPages(){
     var otherPages = new Ajaxinate({
@@ -3774,17 +3774,17 @@ theme.wishlist = (function (){
       wishlistObject.push(productHandle);
       allSimilarProduct.fadeOut('slow').fadeIn('fast').html(theme.strings.wishlistIconAdded)
       //change tooltip
-      allSimilarProduct.attr('data-original-title',theme.strings.wishlistTextAdded); 
+      allSimilarProduct.attr('data-original-title',theme.strings.wishlistTextAdded);
       $('.tooltip-inner').text(theme.strings.wishlistTextAdded);
     }
-    localStorage.setItem('localWishlist', JSON.stringify(wishlistObject)); 
+    localStorage.setItem('localWishlist', JSON.stringify(wishlistObject));
     $wishlistCount.text(wishlistObject.length);
   };
   function loadWishlist(){
     $wishlistContainer.html('');
     //page wishlist
     if (wishlistObject.length > 0){
-      for (var i = 0; i < wishlistObject.length; i++) { 
+      for (var i = 0; i < wishlistObject.length; i++) {
         var productHandle = wishlistObject[i];
         Shopify.getProduct(productHandle,function(product){
           var htmlProduct = '';
@@ -3822,7 +3822,7 @@ theme.wishlist = (function (){
       $(this).html(iconWishlist).attr('title',textWishlist);
     });
   }
-  
+
   $(document).on('click',wishlistButtonClass,function (event) {
     event.preventDefault();
     updateWishlist(this);
@@ -3830,7 +3830,7 @@ theme.wishlist = (function (){
   $(document).on('click',wishlistRemoveButtonClass,function(){
     var productHandle = $(this).data('handle'),
     allSimilarProduct = $(wishlistButtonClass+'[data-handle="'+productHandle+'"]');
-    
+
     //update button
     allSimilarProduct.html(theme.strings.wishlistIcon)
      //update tooltip
@@ -3838,7 +3838,7 @@ theme.wishlist = (function (){
      $('.tooltip-inner').text(theme.strings.wishlistText);
     //update Object
     wishlistObject.splice(wishlistObject.indexOf(productHandle), 1);
-    localStorage.setItem('localWishlist', JSON.stringify(wishlistObject)); 
+    localStorage.setItem('localWishlist', JSON.stringify(wishlistObject));
     // Remove element
     $(this).closest('.js-wishlist-item').fadeOut(); // or .remove()
     //count
@@ -3881,7 +3881,7 @@ theme.compare = (function (){
         alertText = theme.strings.compareNotifyAdded;
       }
     }
-    localStorage.setItem('localCompare', JSON.stringify(compareObject)); 
+    localStorage.setItem('localCompare', JSON.stringify(compareObject));
     theme.alert.new(theme.strings.compareText,alertText,2000,alertClass);
     $compareCount.text(compareObject.length);
   };
@@ -3891,7 +3891,7 @@ theme.compare = (function (){
     //popup compare
     if (compareObject.length > 0){
       compareGrid = compareObject.length === 1 ? 'col-md-6 col-sm-6' : 'col';
-      for (var i = 0; i < compareObject.length; i++) { 
+      for (var i = 0; i < compareObject.length; i++) {
         var productHandle = compareObject[i];
         Shopify.getProduct(productHandle,function(product){
           var htmlProduct = '',
@@ -3920,7 +3920,7 @@ theme.compare = (function (){
     }else{
       $compareContainer.html(`<div class="alert alert-warning d-inline-block">${theme.strings.compareNoResult}</div>`);
     }
-    
+
     //button text
     $(compareButtonClass).each(function(){
       var productHandle = $(this).data('handle');
@@ -3939,7 +3939,7 @@ theme.compare = (function (){
   $(document).on('click',compareRemoveButtonClass,function(){
     var productHandle = $(this).data('handle');
     compareObject.splice(compareObject.indexOf(productHandle), 1);
-    localStorage.setItem('localCompare', JSON.stringify(compareObject)); 
+    localStorage.setItem('localCompare', JSON.stringify(compareObject));
     loadCompare();
   });
 
@@ -3966,7 +3966,7 @@ theme.popupNewletter = (function(){
         $popupNewsletter.modal('show');
       });
       $popupNewsletter.on('hidden.bs.modal', setCookies);
-      $newsletterForm.submit(setCookies);     
+      $newsletterForm.submit(setCookies);
     }
   }
 })()
@@ -4016,7 +4016,7 @@ theme.countdown = (function(){
       let endTime = $(this).data('time'),
       style = $(this).data('style') || '',
       htmlLayout = "<ul class='list--inline'><li><span class='countdown-time'>%%D%%</span><span class='countdown-text'>Days</span></li><li><span class='countdown-time'>%%H%%</span><span class='countdown-text'>Hours</span></li><li><span class='countdown-time'>%%M%%</span><span class='countdown-text'>Mins</span></li><li><span class='countdown-time'>%%S%%</span><span class='countdown-text'>Secs</span></li></ul>";
-      if (style === 'style2'){     
+      if (style === 'style2'){
        htmlLayout = "<ul class='list--inline'><li><span class='countdown-time'>%%D%%</span><span class='countdown-text'>D</span></li><li><span class='countdown-time'>%%H%%</span><span class='countdown-text'>H</span></li><li><span class='countdown-time'>%%M%%</span><span class='countdown-text'>M</span></li><li><span class='countdown-time'>%%S%%</span><span class='countdown-text'>S</span></li></ul>";
      };
      $(this).lofCountDown({
@@ -4045,9 +4045,9 @@ theme.priceRange =  (function (){
     enablePriceRange = $('#js-slider-range').length === 1 ? true : false;
 
     if (enablePriceRange){
-      $(productCard).each(function(){      
+      $(productCard).each(function(){
         if(eval($(this).data('price'))>max) max = eval($(this).data('price'));
-        if(min==0) min = eval($(this).data('price')); else if(eval($(this).data('price'))<min) min =  eval($(this).data('price'));      
+        if(min==0) min = eval($(this).data('price')); else if(eval($(this).data('price'))<min) min =  eval($(this).data('price'));
       });
 
       if (min === max){
@@ -4082,7 +4082,7 @@ theme.priceRange =  (function (){
       var price1 = (Shopify.formatMoney(min, theme.moneyFormat));
       var price2 = (Shopify.formatMoney(max, theme.moneyFormat));
       $(rangeMin).html(price1);
-      $(rangeMax).html(price2);	  
+      $(rangeMax).html(price2);
       theme.updateCurrencies();
 
     }
@@ -4216,7 +4216,7 @@ theme.loading = (function(){
   if (hasLoading){
     $(window).load(function () {
       $loading.fadeOut();
-    });  
+    });
   }
 })()
 
@@ -4242,8 +4242,8 @@ theme.isotope = (function(){
         let filterValue = $(this).data('filter') === '*'? $(this).data('filter') : '.' + $(this).data('filter');
         $(filter).removeClass('active');
         $(this).addClass('active');
-        $grid.isotope({ 
-          filter: filterValue 
+        $grid.isotope({
+          filter: filterValue
         });
       });
       $(window).scroll(function() {
@@ -4313,7 +4313,7 @@ theme.crosssell = (function(){
   $blockCrosssell = $('.block-cross-sell'),
   variantSelectClass = '.js-cross-select',
   crossImageClass = '.cross-item-image',
-  crossPriceClass = '.cross-item-money';  
+  crossPriceClass = '.cross-item-money';
   function generateCrosssell(){
     for (let i = 0; i < arrayHandle.length; i++) {
       let productHandle = arrayHandle[i];
@@ -4349,7 +4349,7 @@ theme.crosssell = (function(){
       });
     }
   }
-  
+
   function showPopupCrosssell(lineItem){
     //generate lineitem;
     let htmlLineItem = '';
@@ -4516,7 +4516,7 @@ theme.productSuggest = (function(){
     $closeButtonClass.on('click',function(){
       $productSuggestClass.remove();
       $.cookie(productSuggestCookie, 'closed', {expires:1, path:'/'});
-    });  
+    });
     function toggleSomething() {
       if($productSuggestClass.hasClass('active')){
         $productSuggestClass.removeClass('active')
@@ -4543,8 +4543,9 @@ theme.productSuggest = (function(){
 
 // Stickyheader
 theme.stickyHeader = (function(){
-  let stickHeaderClass = '.site-header--sticky';
-  if ($(stickHeaderClass).length !== 0){
+  const stickHeaderClass = '.site-header--sticky';
+  const $bundleFrom = $('#js-bundle-form');
+  if ($(stickHeaderClass).length !== 0 && $bundleFrom.length === 0){
     let sticky = $(stickHeaderClass).offset().top + $(stickHeaderClass).height();
     $(window).scroll(function() {
       if (window.pageYOffset > sticky) {
@@ -4559,7 +4560,7 @@ theme.stickyHeader = (function(){
 theme.PhotoSwipe = (function(){
   var initPhotoSwipeFromDOM = function(gallerySelector) {
 
-    // parse slide data (url, title, size ...) from DOM elements 
+    // parse slide data (url, title, size ...) from DOM elements
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {
       var thumbElements = el.childNodes,
@@ -4574,7 +4575,7 @@ theme.PhotoSwipe = (function(){
 
         figureEl = thumbElements[i]; // <figure> element
 
-        // include only element nodes 
+        // include only element nodes
         if(figureEl.nodeType !== 1) {
           continue;
         }
@@ -4592,13 +4593,13 @@ theme.PhotoSwipe = (function(){
 
         if(figureEl.children.length > 1) {
           // <figcaption> content
-          item.title = figureEl.children[1].innerHTML; 
+          item.title = figureEl.children[1].innerHTML;
         }
 
         if(linkEl.children.length > 0) {
           // <img> thumbnail element, retrieving thumbnail url
           item.msrc = linkEl.children[0].getAttribute('src');
-        } 
+        }
 
         item.el = figureEl; // save link to element for getThumbBoundsFn
         items.push(item);
@@ -4637,8 +4638,8 @@ theme.PhotoSwipe = (function(){
       index;
 
       for (var i = 0; i < numChildNodes; i++) {
-        if(childNodes[i].nodeType !== 1) { 
-          continue; 
+        if(childNodes[i].nodeType !== 1) {
+          continue;
         }
 
         if(childNodes[i] === clickedListItem) {
@@ -4669,10 +4670,10 @@ theme.PhotoSwipe = (function(){
         if(!vars[i]) {
           continue;
         }
-        var pair = vars[i].split('=');  
+        var pair = vars[i].split('=');
         if(pair.length < 2) {
           continue;
-        }           
+        }
         params[pair[0]] = pair[1];
       }
 
@@ -4708,7 +4709,7 @@ theme.PhotoSwipe = (function(){
       // PhotoSwipe opened from URL
       if(fromURL) {
         if(options.galleryPIDs) {
-          // parse real index when custom PIDs are used 
+          // parse real index when custom PIDs are used
           // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
           for(var j = 0; j < items.length; j++) {
             if(items[j].pid == index) {
@@ -4787,6 +4788,8 @@ theme.bundle = (function(){
       EXTRA_PACKAGE_SIZE = $bundleForm.data('extra-max-quantity') || 0,
       FIRST_PACKAGE_SIZE = 0,
       SECOND_PACKAGE_SIZE = 0,
+      subscriptionFrequency = $bundleForm.data('frequency') || 1,
+      subscriptionUnit = $bundleForm.data('unit') || 'month',
       bundleType = 'single',
       bundleProducts = [],
       bundleItems = [],
@@ -4935,16 +4938,16 @@ theme.bundle = (function(){
         resetForm();
 
         const $inputBox = $(this).find('input'),
-              bundleName = $inputBox.data('bundle') || '';
+              productType = $inputBox.data('bundle') || '';
 
         bundleType = $inputBox.data('type');
         $step1.removeClass('single mix').addClass(bundleType);
 
-        if (bundleName !== ''){
-          $stepItems.addClass('hide');
-          $(`.product-type-${bundleName}`).removeClass('hide');
+        if (productType !== ''){
+          $stepItems.parent().addClass('hide');
+          $(`.product-type-${productType}`).parent().removeClass('hide');
         }else{
-          $stepItems.removeClass('hide');
+          $stepItems.parent().removeClass('hide');
         }
 
         $step1.find('.js-step-max-quantity').text(STEP_PACKAGE_SIZE);
@@ -5121,8 +5124,8 @@ theme.bundle = (function(){
       if (newItemQuantity === 0){
         bundleItems.splice(bundleItems.indexOf(itemHandle), 1);
       }
-      
-      minusHandleStep2(productIndex); 
+
+      minusHandleStep2(productIndex);
       setTotalQuantityOfProduct(productIndex);
     })
 
@@ -5183,19 +5186,12 @@ theme.bundle = (function(){
       }
     })
   }
-  
+
   const processFourthStep = () => {
     const $step4 = $('#step-4');
     const $stepItems = $step4.find('.js-step-item');
     const $nextButton = $step4.find('.nextBtn');
-    
-    const plusHandleStep4 = () => {
-      const totalQuantity = getTotalQuantityOf($step4);
-      if (totalQuantity === EXTRA_PACKAGE_SIZE) {
-        enableNextButtonOfStep(4);
-      }
-    }
-    
+
     $step4.find('.js-step-plus').on('click', function(){
       const $currentProduct = $(this).closest('.js-step-item');
       const extraId = $currentProduct.data('first-variant');
@@ -5210,7 +5206,6 @@ theme.bundle = (function(){
       }
 
       setTotalQuantityOfStep(4)
-      plusHandleStep4();
     })
 
     $step4.find('.js-step-minus').on('click', function(){
@@ -5229,75 +5224,148 @@ theme.bundle = (function(){
         bundleExtras.splice(bundleExtras.indexOf(extraId), 1);
       }
 
-      disableNextButtonOfStep(4);
       setTotalQuantityOfStep(4);
     })
-    
+
     $nextButton.on('click',function(){
-      
+
       const BUNDLES = bundleItems.map(bundleItem => {
         const productHandle = $(`#js-variant-quantity-${bundleItem}`).closest('.js-step-item').data('product');
         const quantity = $(`#js-variant-quantity-${bundleItem}`).data('quantity');
         return {
           product:productHandle,
           variantId:bundleItem,
-          quantity:quantity
+          quantity:quantity,
+          subscription:true
         };
       })
-      
+
       const FREEBIES = bundleFreebies.map(freebie => {
         const productHandle = $(`.freebie-${freebie}`).data('product');
+        const mapping = $(`.freebie-${freebie}`).data('mapping');
         return {
           product:productHandle,
           variantId:freebie,
-          quantity:1
+          quantity:1,
+          subscription:false,
+          mapping:mapping
         };
       })
-      
+
       const EXTRAS = bundleExtras.map(extra => {
         const productHandle = $(`.extra-${extra}`).data('product');
+        const mapping = $(`.extra-${extra}`).data('mapping');
         const quantity = $(`.extra-${extra}`).find('.js-step-quantity').data('quantity');
         return {
           product:productHandle,
           variantId:extra,
-          quantity:quantity
+          quantity:quantity,
+          subscription:false,
+          mapping:mapping
         };
       })
-      
+
+      const TOTALS = BUNDLES.concat(FREEBIES).concat(EXTRAS);
+
       const generateConfirmItem = ($selector,objects) => {
         $selector.html('');
+        if (objects.length > 0){
+          objects.forEach(object => {
+            const productHandle = object.product,
+                  variantId = object.variantId,
+                  quantity = object.quantity;
+            jQuery.getJSON(`/products/${productHandle}.js`, function(product) {
+              const productTitle = product.title;
+              const productImageSrc = product.featured_image !== null ? theme.Images.getSizedImageUrl(product.featured_image,'40x') : '';
+              const variants = product.variants;
+
+              variants.map(variant => {
+                if (variant.id === variantId) {
+                  const variantPrice = (object.mapping !== null && object.mapping !== undefined) ? parseFloat(object.mapping.price) * 100 : variant.price;
+                  const variantComparePrice = (object.mapping !== null && object.mapping !== undefined) ? variant.price : '';
+                  const variantImageSrc = variant.featured_image !== null ? theme.Images.getSizedImageUrl(variant.featured_image.src,'40x') : '';
+                  const itemImageSrc = product.variants.length > 1 ? variantImageSrc : productImageSrc;
+                  const $template = $('#x-review-item');
+                  const variantTitle = variants.length > 1 ? `${variant.title} - ` : '';
+                  const context = {
+                    productTitle		: productTitle,
+                    imageSrc          : itemImageSrc,
+                    quantity          : quantity,
+                    price				: variantPrice,
+                    comparePrice		: variantComparePrice,
+                    variantTitle		: variantTitle
+                  }
+
+                  const templateScript = Handlebars.compile($template.html());
+                  const itemHTML = templateScript(context);
+                  $selector.append(itemHTML);
+                  theme.updateCurrencies();
+                }
+              })
+            })
+          })
+        }
+      }
+
+      const calculateTotal = ($selector,objects) => {
+        var totalPrice = 0;
         objects.forEach(object => {
           const productHandle = object.product,
                 variantId = object.variantId,
                 quantity = object.quantity;
           jQuery.getJSON(`/products/${productHandle}.js`, function(product) {
-            const productTitle = product.title;
             const variants = product.variants;
             variants.map(variant => {
               if (variant.id === variantId) {
-                const variantImageSrc = variant.featured_image !== null ? theme.Images.getSizedImageUrl(variant.featured_image.src,'40x') : '';
-                const $template = $('#x-review-item');
-                const context = {
-                  productTitle		: productTitle,
-                  imageSrc          : variantImageSrc,
-                  quantity          : quantity,
-                  variantTitle		: variant.title
-                }
-
-                const templateScript = Handlebars.compile($template.html());
-                const itemHTML = templateScript(context);
-
-                $selector.append(itemHTML);
+                const variantPrice = (object.mapping !== null && object.mapping !== undefined) ? parseFloat(object.mapping.price) * 100 : variant.price;
+                const itemPrice = variantPrice * quantity;
+                totalPrice += itemPrice;
+                const htmlTotalPrice = theme.Currency.formatMoney(totalPrice, theme.moneyFormat);
+                $selector.html(htmlTotalPrice);
               }
             })
+          })
+        })
+      }
+
+      const processAddToCart = (objects) => {
+        const $addToCartButton = $('.js-bundle-add-to-cart');
+        $addToCartButton.on('click',function(){
+          let formData = {
+            'items':[]
+          };
+          objects.forEach(object => {
+            const itemId = (object.mapping !== null && object.mapping !== undefined) ? object.mapping.variant : object.variantId;
+            const subscriptions = object.subscription ? {
+              'shipping_interval_frequency': subscriptionFrequency,
+              'shipping_interval_unit_type': subscriptionUnit
+            } : ''
+            const lineItem = {
+              quantity: object.quantity,
+              id: itemId,
+              properties: subscriptions
+            }
+            formData['items'].push(lineItem);
+          })
+          jQuery.ajax({
+            type: 'POST',
+            url: '/cart/add.js',
+            data: formData,
+            dataType: 'json',
+            success: function() {
+              window.location.href = "/cart";
+            }
           });
         })
       }
-      
+
       generateConfirmItem($('.js-confirm-bundle'),BUNDLES);
       generateConfirmItem($('.js-confirm-freebie'),FREEBIES);
       generateConfirmItem($('.js-confirm-extra'),EXTRAS);
-      
+
+      calculateTotal($('.js-total-price'),TOTALS);
+      processAddToCart(TOTALS);
+
     })
   }
 
@@ -5332,12 +5400,12 @@ theme.productRecentlyViewed = (function(){
         arrayProduct.splice(arrayProduct.indexOf(productHandle), 1);
       }
       arrayProduct.push(productHandle);
-      
+
       //remove first item if limit
       if (arrayProduct.length > limit){
         arrayProduct.shift()
       }
-      
+
       localStorage.setItem('localRecentlyViewed', JSON.stringify(arrayProduct));
     }
   }
@@ -5358,11 +5426,11 @@ theme.productRecentlyViewed = (function(){
             productPrice          : product.price_varies ? product.price_min : product.price,
             productComparePrice   : product.compare_at_price
           }
-          
+
           // modify HTML on bottom-contents.liquid/x-product-grid
           let templateScript = Handlebars.compile($template.html());
           let itemHtml = templateScript(context);
-          
+
           $content.append(itemHtml);
           theme.updateCurrencies();
         });
@@ -5387,7 +5455,7 @@ theme.alert = (function(){
     aTime = time || 2000,
     aMessage = mess || '',
     aClass = type || 'default';
-    $.growl({ 
+    $.growl({
       title: aTitle,
       message: aMessage,
       duration: aTime,
@@ -5408,7 +5476,7 @@ theme.noticeSoldout = (function(){
   $textClass = $('.js-notify-text'),
   $soldoutValueId = $('#ContactProduct');
   function noticeSoldout(variant){
-    
+
 //     $soldoutWrapFormClass.find('.form-success').remove()
 //     if (variant.available){
 //       $textClass.find('span').text('');
@@ -5419,7 +5487,7 @@ theme.noticeSoldout = (function(){
 //       $soldoutValueId.val(variant.name).attr('value',variant.name);
 //       $btnWaitlist.trigger('click');
 //     }
-    
+
   }
   return {
     init : noticeSoldout
@@ -5447,7 +5515,7 @@ theme.prdMedia = (function(){
       let OriginalURL = $(videoTargetIframe).attr('src'),
       pureURL = OriginalURL.substr(0, OriginalURL.indexOf('?')),
       newURL = pureURL + '?autoplay=1';
-      
+
       $(videoTargetIframe).attr('src',newURL);
       $($modalId).on('hidden.bs.modal', function (e) {
         $(videoTargetIframe).attr('src',OriginalURL);
@@ -5490,7 +5558,7 @@ theme.stickyCart = (function(){
       }
     });
   }
-  
+
 })()
 
 // Back to top
@@ -5545,7 +5613,7 @@ theme.ajaxFilter = (function() {
 
   var apollo = {
     init: function() {
-      this.initFilter(); 
+      this.initFilter();
     },
     showLoading: function() {
       $(jsLoading).show();
@@ -5556,7 +5624,7 @@ theme.ajaxFilter = (function() {
       }, 600);
       setTimeout(function(){
         $(jsLoading).hide(); //delay 500ms for better UX
-      }, 500); 
+      }, 500);
 
     },
     initFilter: function() {
@@ -5709,7 +5777,7 @@ theme.ajaxFilter = (function() {
     });
   }
   apollo.init();
-  
+
 })();
 
 $(theme.init);

@@ -1,0 +1,22 @@
+.table {
+  width: 100%;
+  text-align: left;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+.table thead {
+  background-color: #e2e2e2;
+}
+
+.table tr {
+  border-bottom: 1px solid #333333;
+}
+
+.table th {
+  padding: 10px;
+}
+
+.table td {
+  padding: 10px;
+}

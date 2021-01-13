@@ -1,386 +1,58 @@
+{{ '2b.bundle.css' | asset_url | stylesheet_tag }}
+{% assign diaper_handle = shop.metafields.offspring.diaper_bundle %}
+{% assign diaper_products = collections[diaper_handle].products %}
+<script>
+  const shopify_customer_id = '{{customer.id}}';
+  const customerEmail = '{{customer.email}}';
+  const customerPhoneNumber = '{{customer.phone}}';
+  const customerFistName = '{{customer.first_name | capitalize}}';
+  const shop_money_format = "{{ shop.money_format }}";
+  const diaperProducts = {{diaper_products | json}};
+
+  const allOrders = [
+    {% for order in customer.orders %}
+    {
+      {% if order.cancelled %}
+      cancelled: 'cancelled_order',
+      {% else %}
+      cancelled: '',
+      {% endif %}
+      id: {{ order.id }},
+      createdAt: '{{ order.created_at | date: "%a, %b %d, %y" }}',
+      name: '{{ order.name }}',
+      nameHandlize: '{{ order.name | handleize }}',
+      fulfillmentStatus: '{{ order.fulfillment_status }}',
+      financialStatus: '{{ order.financial_status }}',
+      {%if order.fulfillment_status == "fulfilled"%}
+      paymentStatus: 'Delivered',
+      {% else %}
+      {%if order.financial_status == "paid"%}
+      paymentStatus: 'Payment Received',
+      {%else%}
+      paymentStatus: '{{order.financial_status_label}}',
+      {%endif%}
+      {%endif%}
+      financialStatusLabel: '{{order.financial_status_label}}',
+      trackingNumbers: [
+        {% for item in order.line_items %}
+        '{{ item.fulfillment.tracking_number | link_to: item.fulfillment.tracking_url  }}',
+        {% endfor %}
+      ],
+      items: [
+        {% for item in order.line_items %}
+        '{{ item.title | capitalize }}',
+        {% endfor %}
+      ],
+      totalPrice: '{{ order.total_price | money }}',
+    },
+    {% endfor %}
+
+  ];
+console.log(allOrders);
+</script>
 <div id="content" class="page-width">
-  <div class="page-wrap profile-banner">
-    <div class="custom-content ">
-      <div class="custom__item section-title">
-        <h1 class="accent-text">Welcome back, <br /><span>{{ customer.first_name | capitalize }}</span></h1>
-        <p>Manage your account, update your details and more.</p>
-      </div>
-    </div>
-  </div>
+  <div id="react-embedded-shopify"></div>
 
-  <div class="page-wrap text-left">
-    <div class="row">
-      <div class="col-md-3">
-        <ul class="tablist">
-          <li class="active"><a href="#order-history1">Order History</a></li>
-          <li id="link-subscription-plan"><a href="#subscription-plan">Subscription Plan</a></li>
-          <li id="link-payment-info"><a href="#payment-info">Payment Infomation</a></li>
-        </ul>
-      </div>
-      <div class="col-md-9 space-left">
-        <!-- Order history -->
-        <!-- +++++++++++++++++++++++++++++++++++++++ -->
-        <section id="order-history1" class="tab-info">
-          <div class="section-title single-borders">
-            <h2 class="accent-text text-center">{{ 'customer.order_listing.header' | t }}</h2>
-          </div>
-          <div class="info-title">ORDER HISTORY</div>
-          <p class="text12">Review your order or billing history by plan, see details, download invoices, and more.</p>
-          {%- if customer.orders.size != 0 -%}
-          <table class="responsive-table">
-            <thead>
-              <tr>
-                <th>{{ 'customer.orders.order_number' | t }}</th>
-                <th>{{ 'customer.orders.date' | t }}</th>
-                <th>{{ 'customer.orders.payment_status' | t }}</th>
-                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
-                <th>{{ 'customer.orders.total' | t }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {%- for order in customer.orders -%}
-              <tr>
-                <td data-label="{{ 'customer.orders.order_number' | t }}">{{ order.name | link_to: order.customer_url }}</td>
-                <td data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | date: format: 'month_day_year' }}</td>
-                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
-                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
-                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
-              </tr>
-              {%- endfor -%}
-            </tbody>
-          </table>
-          {%- else -%}
-          <p>{{ 'customer.orders.none' | t }}</p>
-          {%- endif -%}
-
-        </section>
-
-        <!-- Subscription plan -->
-        <!-- +++++++++++++++++++++++++++++++++++++++ -->
-
-        <style>
-          .subscription_item {
-            display: flex;
-            justify-content: space-between;
-            margin: 15px 0;
-            background: #f7f7f7;
-            align-items: flex-end;
-            padding: 10px;
-          }
-
-          .subscription_item.center {
-            align-items: center;
-          }
-
-          .subscription_description {
-            display: flex;
-            align-items: center;
-          }
-
-          .subscription_info {
-            margin-left: 20px;
-          }
-
-          .description_title {
-            font-weight: 600;
-          }
-
-          .subscription_title {
-            text-transform: uppercase;
-            font-weight: 900;
-          }
-
-          .subscription_img {
-            max-width: 180px;
-          }
-
-          .subscription_manage {
-            width: max-content;
-            height: max-content;
-            display: flex;
-            align-items: center;
-          }
-
-          .subscription_cancel {
-            margin-right: 20px;
-            font-size: 1rem;
-            font-style: italic;
-            color: red;
-          }
-
-          .btn {
-            font-family: 'Avenir';
-            letter-spacing: 0;
-            text-transform: none;
-            padding: 0.35em 0.875em;
-            height: 32px;
-            min-width: 120px;
-            border-radius: 80px;
-            -webkit-border-radius: 80px;
-            padding: 0 0.875em;
-            border: 2.5px solid #193661;
-            font-weight: 900;
-            font-size: 0.813em;
-            background: #193661;
-            color: #fff;
-          }
-
-          .btn.white {
-            background: #fff;
-            color: #193661;
-          }
-
-          .btn.white:hover {
-            background: #193661;
-            color: #fff;
-          }
-
-          .btn.white:hover a {
-            color: #fff;
-          }
-
-          #subscription-order-history th {
-            background: #f6f8f8;
-            text-transform: none;
-            padding: 1.25em 0;
-            letter-spacing: 0;
-            font-size: 14px;
-            font-weight: 500;
-            font-size: 0.825em;
-            font-weight: 500;
-            font-family: 'Avenir';
-          }
-
-          #subscription-order-history {
-            border-collapse: collapse;
-            margin-bottom: 15px;
-          }
-
-          #subscription-order-history tbody tr {
-            border-bottom: 1px solid #333;
-          }
-
-          #order-history1 table {
-            width: 100%;
-          }
-
-          #order-history1 th {
-            background: #f6f8f8;
-            text-transform: none;
-            padding: 1.25em 10px;
-            letter-spacing: 0;
-            font-size: 14px;
-            font-weight: 500;
-            font-size: 0.825em;
-            font-weight: 500;
-            font-family: 'Avenir';
-          }
-
-          #order-history1 {
-            border-collapse: collapse;
-            margin-bottom: 15px;
-          }
-
-          #order-history1 tbody tr {
-            border-bottom: 1px solid #333;
-          }
-
-          .order-created,
-          .order-number,
-          .payment-status,
-          .total {
-            width: 100px;
-          }
-
-          .tracking_id,
-          .tracking {
-            width: 200px;
-          }
-
-          .line_items {
-            width: 300px;
-          }
-
-          .view-all {
-            font-style: italic;
-          }
-
-          .pause-subscription {
-            display: flex;
-            margin-bottom: 30px;
-          }
-
-          .pause-subscription__left {
-            width: 50%;
-          }
-
-          .pause-subscription__right {
-            width: 50%;
-          }
-
-          .pause-info {
-            background: #f7f7f7;
-            padding: 15px 10px;
-          }
-
-          .text {
-            color: #7e8180;
-          }
-
-          .font13 {
-            font-size: 13px;
-          }
-
-          .font15 {
-            font-size: 15px;
-          }
-
-          .italic {
-            font-style: italic;
-          }
-
-          .bold {
-            font-weight: 600;
-          }
-
-          .underline {
-            text-decoration: underline;
-          }
-
-          .mg-b {
-            margin-bottom: 10px;
-          }
-
-          .text.title {
-            font-weight: 600;
-            text-transform: uppercase;
-          }
-
-          .text.description {
-            margin-bottom: 15px;
-          }
-
-          .red {
-            color: red;
-          }
-
-          .mg-l {
-            margin-left: 20px;
-          }
-
-          .btn.red,
-          .btn.red:hover {
-            background: red;
-            color: #fff;
-            border-color: red;
-          }
-
-          .btn.continue:disabled {
-            background: #7e8180;
-            border-color: #7e8180;
-            color: #fff;
-          }
-
-          #resume-modal {
-            position: relative;
-            background-color: #FFF;
-            max-width: 450px;
-            margin: 0 auto;
-            padding: 20px;
-          }
-
-          .checkbox input {
-            margin-right: 10px;
-          }
-
-          .cf-preload {
-            margin-top: 50px;
-            opacity: 0.5;
-          }
-
-          .cf-preload-item {
-            position: relative;
-            overflow: hidden;
-            background: #e2e2e2;
-            border-radius: 4px;
-          }
-
-          .cf-preload-item:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
-            animation: cf-preload 1s cubic-bezier(0.33, 0.8, 0.85, 0.77) infinite;
-            z-index: 1;
-          }
-
-          .cf-preload-label {
-            display: inline-block;
-            width: 50%;
-            height: 20px;
-            background: #eee;
-            margin-bottom: 5px;
-          }
-
-          .cf-preload-field {
-            margin-bottom: 25px;
-            height: 40px;
-          }
-
-          .cf-preload-button {
-            display: inline-block;
-            width: 120px;
-            margin-right: 15px;
-            height: 40px;
-          }
-
-          .cf-form-inner {
-            animation: cf-fadein 500ms cubic-bezier(0.11, 0.33, 0.24, 1);
-          }
-
-          @keyframes cf-preload {
-            from {
-              transform: translateX(-100%);
-              opacity: 0;
-            }
-
-            to {
-              transform: translateX(100%);
-              opacity: 1;
-            }
-          }
-
-          @keyframes cf-fadein {
-            from {
-              opacity: 0;
-              transform: translateY(30px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        </style>
-
-        <section id="subscription-plan" class="tab-info">
-        </section>
-        <!-- +++++++++++++++++++++++++++++++++++++++ -->
-
-        <!-- Subscription plan -->
-        <!-- +++++++++++++++++++++++++++++++++++++++ -->
-        <section id="payment-info" class="tab-info"></section>
-        <!-- +++++++++++++++++++++++++++++++++++++++ -->
-      </div>
-
-      <!-- Breadcrumbs -->
-      <!-- +++++++++++++++++++++++++++++++++++++++ -->
-
-    </div>
-  </div>
 </div>
 <div id="shipping-address" class="modal">
   <div class="modal-container">
@@ -472,3 +144,4 @@
   </div>
   <div class="modal-overlay"></div>
 </div>
+<script defer type="module" src="{{ "2b.bundle.js" | asset_url }}"></script>

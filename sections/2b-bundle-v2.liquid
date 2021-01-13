@@ -1,0 +1,703 @@
+{% assign freebieCollectionHandle = shop.metafields.offspring.freebie_bundle %}
+{% assign extraCollectionHandle = shop.metafields.offspring.extra_bundle %}
+{% assign bundleCollectionHandle = shop.metafields.offspring.diaper_bundle %}
+
+{% assign collection = collections[bundleCollectionHandle] %}
+{% assign maxQuantity = 7 %}
+{% assign extraMaxQuantity = 5 %}
+{% assign step1 = collection.metafields.offspring.step1 %}
+{% assign step2 = collection.metafields.offspring.step2 %}
+{% assign step3 = collection.metafields.offspring.step3 %}
+{% assign step4 = collection.metafields.offspring.step4 %}
+
+{% assign frequency = collection.metafields.offspring.interval_frequency %}
+{% assign unit = collection.metafields.offspring.interval_unit %}
+
+<div class="container-fluid {{extraCollectionHandle}}">
+  <div class="row">
+    <div class="col-12">
+      <h3 class="text-center pb-5">
+        Bundle Buidler
+      </h3>
+    </div>
+    <div class="col-12 col-lg-6 bundle-col-left">
+      <div class="step-banner">
+        <img class="lazyload w-100" src="{% include 'srcBlank' %}" data-src="{{ section.settings.bg_image | img_url: '1920x' }}" />
+      </div>
+    </div>
+    <div class="col-12 col-lg-6 bundle-col-right">
+      <div class="stepwizard col-md-offset-3">
+        <div class="stepwizard-row setup-panel">
+          {% for i in (1..5) %}
+          {% assign stepIndex = 'step' | append: i %}
+          {% assign step = collection.metafields.offspring[stepIndex] %}
+          <div class="stepwizard-step">
+            <a href="#step-{{i}}"
+               data-index="{{i}}"
+               type="button"
+               class="btn btn-step disabled-anchor btn-step-{{i}} {% unless forloop.first %}active{% endunless %}"
+               {% unless forloop.first %}disabled="disabled"{% endunless %}>
+              {{i}}
+            </a>
+            <p>{{ step.name }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <form role="form"
+            id="js-bundle-form"
+            data-max-quantity="{{maxQuantity}}"
+            data-extra-max-quantity="{{extraMaxQuantity}}"
+            data-frequency="{{frequency}}"
+            data-unit="{{unit}}"
+            action=""
+            method="post">
+
+        <!-- STEP 1 - GENERATE PRODUCT -->
+        <div class="row js-step-wrap px-3 py-5"
+             id="step-1"
+             data-index="1">
+          <div class="col-md-12">
+            <div class="step-content">
+              <h3 class="step-title fz-10 fw-600 mb-4">
+                1. Select Bundle Type
+              </h3>
+              {% include 'select-bundle' %}
+
+              <h3 class="step-title fz-10 fw-600 mb-4">
+                2. {{ step1.title }}
+                <div class="text-size-chart">
+                  {%- include 'productSizeGuide' -%}
+                </div>
+              </h3>
+
+              <div class="step-des">
+                {{ step1.description }}
+              </div>
+              <div class="step-products">
+                <div class="row">
+                  {% for product in collection.products %}
+                  <div class="col-6 col-lg-3">
+                    <div class="step-product js-step-item mb-5 product-type-{{ product.type | handle }}"
+                         data-product="{{ product.handle }}"
+                         data-type="{{ product.type | handle }}">
+                      <h4 class="step-product__title fz-n1 text-center mb-0 js-step-plus">
+                        {{ product.title }}
+                      </h4>
+                      <div class="step-item__image js-step-plus">
+                        <img class="lazyload" src="{% include 'srcBlank' %}" data-src="{{ product.featured_image | img_url:'600x' }}" />
+                      </div>
+                      <div class="js-step-quantity-box">
+                        <span class="js-step-minus">-</span>
+                        <span type="number"
+                              class="js-step-quantity"
+                              id="js-product-quantity-{{ product.handle }}"
+                              data-handle="{{product.handle}}"
+                              data-quantity="0">0</span>
+                        <span class="js-step-plus">+</span>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
+              <div>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+              </div>
+              <div class="step-total-quantity">
+                <span class="step-number js-step-total-quantity">0</span>
+                <span class="step-text">of</span>
+                <span class="step-number js-step-max-quantity"></span>
+                <div class="step-text-pack js-package"></div>
+              </div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 - GENERATE VARIANT -->
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
+             id="step-2"
+             data-index="2">
+          <div class="col-md-12">
+            <div class="step-content">
+              <h3 class="step-title"> {{ step2.title }}</h3>
+              <div class="step-des">
+                {{ step2.description }}
+              </div>
+              <div class="py-5">
+                <div id="js-product-1" data-prd="1" class="row mb-5 js-bundle-product"></div>
+                <div id="js-product-2" data-prd="2" class="row mb-5 hide js-bundle-product"></div>
+              </div>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
+              <div>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+                <button class="btn btn-theme nextBtnFake btn-lg pull-right js-next-btn hide" type="button" disabled="disabled"  >Next</button>
+              </div>
+              <div class="step-total-quantity">
+                <span class="step-number js-step-total-quantity">0</span>
+                <span class="step-text">of</span>
+                <span class="step-number js-step-max-quantity"></span>
+                <div class="step-text-pack js-package"></div>
+              </div>
+              <div>
+                <button class="btn btn-theme prevBtn btn-lg pull-right" type="button" >Prev</button>
+                <button class="btn btn-theme prevBtnFake btn-lg pull-right hide" type="button" >Prev</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 - FREEBIE -->
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
+             id="step-3"
+             data-index="3">
+          <div class="col-md-12">
+            <div class="step-content">
+              <h3 class="step-title"> {{ step3.title }}</h3>
+              <div class="step-des">
+                {{ step3.description }}
+              </div>
+              <div class="step-products mt-5">
+                <div class="row">
+                  {% assign freebieCollection = collections[freebieCollectionHandle] %}
+                  {% for product in freebieCollection.products %}
+                  <div class="col-6 col-lg-4">
+                    <div class="step-product js-step-item mb-1 freebie-{{ product.first_available_variant.id }}"
+                         data-product="{{ product.handle }}"
+                         data-mapping='{{ product.variants.first.metafields.offspring.mapping | json }}'
+                         data-type="{{ product.type | handle }}">
+                      <span class="step-product-quickview js-btn-quickview" data-toggle="modal" data-target="#jsQuickview" data-handle="{{product.handle}}">
+                        {%- include 'icon-quickview' -%}
+                      </span>
+                      <div class="step-item__image js-step-plus"
+                           data-handle="{{product.handle}}"
+                           data-first-variant="{{ product.first_available_variant.id }}">
+                        <img class="lazyload" src="{% include 'srcBlank' %}" data-src="{{ product.featured_image | img_url:'600x' }}" />
+                      </div>
+                    </div>
+                    <h4 class="step-product__title fz-n1 text-center mb-0">
+                      {{ product.title }}
+                    </h4>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
+              <div>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" disabled="disabled" >Next</button>
+              </div>
+              <div class="step-total-quantity">
+              </div>
+              <div>
+                <button class="btn btn-theme prevBtn btn-lg pull-right" type="button" >Prev</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4 - EXTRA -->
+        <div class="row js-step-wrap js-to-cart px-3 py-5"
+             id="step-4"
+             data-index="4">
+          <div class="col-md-12">
+            <div class="step-content">
+              <h3 class="step-title"> {{ step4.title }}</h3>
+              <div class="step-des">
+                {{ step4.description }}
+              </div>
+              <div class="step-products mt-5">
+                <div class="row">
+                  {% assign extraCollection = collections[extraCollectionHandle] %}
+                  {% for product in extraCollection.products %}
+                  <div class="col-6 col-lg-4 mb-4">
+                    <div class="step-product js-step-item mb-4 extra-{{ product.first_available_variant.id }}"
+                         data-product="{{ product.handle }}"
+                         data-mapping='{{ product.variants.first.metafields.offspring.mapping | json }}'
+                         data-first-variant="{{ product.first_available_variant.id }}">
+                      <span class="step-product-quickview js-btn-quickview" data-toggle="modal" data-target="#jsQuickview" data-handle="{{product.handle}}">
+                        {%- include 'icon-quickview' -%}
+                      </span>
+                      <div class="step-item__image js-step-plus">
+                        <img class="lazyload" src="{% include 'srcBlank' %}" data-src="{{ product.featured_image | img_url:'600x' }}" />
+                      </div>
+                      <div class="js-step-quantity-box">
+                        <span class="js-step-minus">-</span>
+                        <span type="number"
+                              class="js-step-quantity"
+                              id="js-product-quantity-{{ product.handle }}"
+                              data-handle="{{product.handle}}"
+                              data-quantity="0">0</span>
+                        <span class="js-step-plus">+</span>
+                      </div>
+                    </div>
+                    <h4 class="step-product__title fz-n1 text-center mb-0">
+                      {{ product.title }}
+                    </h4>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
+              <div>
+                <button class="btn btn-theme nextBtn btn-lg pull-right js-next-btn" type="button" >Next</button>
+              </div>
+              <div class="step-total-quantity">
+                <span class="step-number js-step-total-quantity">0</span>
+                <span class="step-text">of</span>
+                <span class="step-number">5</span>
+                <div class="step-text-pack js-package"></div>
+              </div>
+              <div>
+                <button class="btn btn-theme prevBtn btn-lg pull-right" type="button" >Prev</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5 - CONFIRM -->
+        <div class="row js-step-wrap px-3 py-5"
+             id="step-5"
+             data-index="5">
+          <div class="col-md-12">
+            <div class="step-content">
+              <h3 class="step-title"> {{ step5.title }}</h3>
+              <div class="step-des">
+                {{ step5.description }}
+              </div>
+              <div class="bundle-confirm">
+                <div class="row">
+                  <div class="col-12 col-md-6 mb-3">
+                    <h4 class="fz-2 mb-2">Bundle pack</h4>
+                    <div class="js-confirm-bundle"></div>
+                  </div>
+                  <div class="col-12 col-md-6 mb-3">
+                    <h4 class="fz-2 mb-2">Extras</h4>
+                    <div class="js-confirm-extra"></div>
+                  </div>
+                  <div class="col-12 col-md-6 mb-3">
+                    <h4 class="fz-2 mb-2">Freebie</h4>
+                    <div class="js-confirm-freebie"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center pt-3 border-top">
+              <div>
+                <span class="btn btn-success btn-lg pull-right js-bundle-add-to-cart">Add to cart</span>
+              </div>
+              <div class="js-total-price">
+              </div>
+              <div>
+                <button class="btn btn-theme prevBtn btn-lg pull-right" type="button" >Prev</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  :root {
+    --color-diaper: #d5eef8;
+    --color-pant: #e0c8e7;
+  }
+</style>
+<style>
+  .stepwizard-step p {
+    margin-top: 10px;
+  }
+  .stepwizard-row {
+    display: table-row;
+  }
+  .stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+  }
+  .stepwizard-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+  }
+  .stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+  }
+  .stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+  }
+  .btn-step {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    padding: 0 0 0 2px;
+    font-size: 12px;
+    line-height: 33px;
+    border-radius: 50%;
+    background-color: white;
+    border-color: var(--g-main);
+    pointer-events: none;
+    font-weight: bold;
+  }
+
+  .btn-step.active{
+    background-color:var(--g-main);
+    color:white;
+  }
+  .btn-step.active:focus{
+    color:white !important;
+  }
+  .g-breadcrumb{
+  	display:none;
+  }
+
+  .step-content{
+    height: 560px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding-right:10px;
+  }
+  @media (min-width:1200px){
+    .step-banner img{
+      height: 720px;
+      object-fit: cover;
+    }
+    .step-content{
+      padding: 0 20px;
+    }
+  }
+
+  #step-1 .step-title{
+  	position: relative;
+  }
+
+  #step-1 .step-title .text-size-chart{
+    font-size: 15px;
+    font-weight: 500;
+    margin-top:10px;
+  }
+
+  @media (min-width:992px){
+    #step-1 .step-title .text-size-chart{
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      margin-top: -10px;
+    }
+  }
+
+  #step-1 .step-title .text-size-chart svg{
+    margin-right: 5px;
+  }
+
+  .step-title{
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .step-des{
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .step-product,
+  .step-variant{
+    border: 2px solid var(--g-border-1);
+    border-radius: 6px;
+    cursor:pointer;
+    position:relative;
+  }
+
+  .step-product:hover{
+    border-color:var(--g-main)
+  }
+
+  .step-product__title{
+    padding: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    color:#333;
+    line-height:1.6;
+  }
+
+  #step-1 .product-type-diapers:hover{
+    border-color:var(--color-diaper)
+      }
+
+  #step-1 .product-type-diapers.active{
+    border-color:var(--color-diaper);
+    background-color:var(--color-diaper)
+      }
+
+  #step-1 .product-type-pants:hover{
+    border-color:var(--color-pant)
+      }
+
+  #step-1 .product-type-pants.active{
+    border-color:var(--color-pant);
+    background-color:var(--color-pant)
+      }
+
+  #step-1 .product-type-diapers .step-product__title{
+    background: var(--color-diaper);
+  }
+
+  #step-1 .product-type-pants .step-product__title{
+  	background-color:var(--color-pant);
+  }
+
+  .step-item__image{
+  	padding: 10px;
+  }
+
+  .js-step-quantity-box{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: -25px;
+    text-align: center;
+    width: 140px;
+    left: calc(50% - 70px);
+    background: white;
+    border-radius: 40px;
+    font-size: 20px;
+    border: 2px solid var(--g-border-1);
+    color:#333;
+  }
+
+  .js-step-quantity-box span{
+    vertical-align: middle;
+    min-width: 25px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .js-step-quantity{
+    padding: 0;
+    height: 45px;
+    line-height: 41px;
+    width: 45px;
+    border-radius: 100%;
+    border: 3px solid var(--g-border-1);
+    color: #333;
+  }
+
+  .step-product.disabled{
+    pointer-events: none;
+    opacity: .5;
+    background: var(--g-border-1);
+  }
+  .step-product.disabled .js-step-quantity-box{
+    background: var(--g-border-1);
+  }
+
+  .step-total-quantity{
+  	color: #0a0a0a;
+  }
+
+  .step-number{
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  @media (min-width:1200px){
+    .step-number{
+      font-size:44px;
+    }
+  }
+
+  .step-text{
+    font-size:25px;
+    font-weight:400;
+    padding: 0 5px;
+  }
+
+  .js-select-bundle{
+    padding:5px 0;
+  }
+
+  .js-select-bundle .form-check-input{
+    margin-top:4px
+  }
+
+  .js-step-wrap.single .js-step-quantity-box{
+    display:none;
+  }
+
+  @media (max-width:991px){
+    .js-step-wrap .btn{
+      font-size:16px;
+    }
+  }
+
+  #js-bundle-form {
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    -o-user-select: none;
+    user-select: none;
+  }
+
+  .qv-product-price,
+  .qv-add-to-cart{
+    display:none !important;
+  }
+
+  .template-collection #jsQuickview .qv-product-description{
+    display:block;
+    padding: 0 0 15px;
+    max-height: 300px;
+  }
+
+  .step-product-quickview{
+    border-right: 45px solid transparent;
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-top: 45px solid;
+  }
+
+  .step-product-quickview svg{
+    margin-top: -82px;
+    width: 15px;
+    margin-left: 4px;
+    fill: #333;
+  }
+
+  #step-3 .step-product,
+  #step-4 .step-product{
+  	border: 2px solid;
+    color: var(--g-border-1);
+  }
+
+  #step-3 .step-product.active,
+  #step-4 .step-product.active{
+  	color:var(--g-main);
+  }
+
+  .active .step-product-quickview svg{
+  	fill: white;
+  }
+
+  .js-total-price{
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .bundle-confirm .money{
+    font-weight:bold;
+    display:inline-block;
+  }
+
+  .bundle-confirm .cp-price{
+    text-decoration: line-through;
+    font-size: 85%;
+    font-weight:300
+  }
+
+  .bundle-confirm h5{
+    line-height:1.6;
+    margin-bottom:5px;
+  }
+</style>
+
+{% raw %}
+<script id="x-bundle-variant" type="text/x-handlebars-template">
+  <div class="b-variant-item col-6 col-lg-4">
+    <div class="step-variant js-step-item mb-4"
+    	 data-product="{{ productHandle }}"
+         data-id="{{ variantId }}">
+      <div class="step-item__image js-step-plus">
+        <img src="{{ variantImage }}" />
+      </div>
+      <div class="js-step-quantity-box">
+        <span class="js-step-minus">-</span>
+        <span type="number"
+              class="js-step-quantity"
+              id="js-variant-quantity-{{ variantId }}"
+              data-handle="{{variantId}}"
+              data-quantity="0">0</span>
+        <span class="js-step-plus">+</span>
+      </div>
+    </div>
+    <h4 class="step-product__title fz-n1 text-center mb-0 js-step-plus">
+      {{ variantTitle }}
+    </h4>
+  </div>
+</script>
+
+<script id="x-review-item" type="text/x-handlebars-template">
+  <div class="media b-review-item mb-2">
+    <img class="mr-3" src="{{ imageSrc }}">
+    <div class="media-body align-self-center fz">
+      <h5 class="mt-0 fz">{{ quantity }} x <b>{{ productTitle }}</b></h5>
+
+      {{#if variantTitle}}
+      <span class="mb-2 d-inline-block">
+        {{ variantTitle }}
+      </span>
+      {{/if}}
+
+      <span class=money>{{price}}</span>
+
+      {{#if comparePrice}}
+      <span class="money cp-price">{{ comparePrice }}</span>
+      {{/if}}
+
+    </div>
+  </div>
+</script>
+{% endraw %}
+
+{% schema %}
+  {
+    "name": "Bundle",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Size guide"
+      },
+      {
+        "type": "checkbox",
+        "id": "sizeguide_enable",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "sizeguide_title",
+        "label": "Title",
+        "default": "Size guide"
+      },
+      {
+        "type": "image_picker",
+        "id": "bg_image",
+        "label": "Background"
+      },
+      {
+        "type": "page",
+        "id": "sizeguide_page",
+        "label": "Select page",
+        "info": "[Create new page](\/admin\/pages\/new) and enter your HTML size guide"
+      }
+	]
+  }
+{% endschema %}
