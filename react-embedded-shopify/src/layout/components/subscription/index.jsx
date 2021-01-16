@@ -278,7 +278,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
             <button
               className='btn btn-theme'
               onClick={handleChangeInterval}
-            >Change delivery schedule</button>
+            >Change</button>
           </div>
 
           {subscriptionByAddress && subscriptionByAddress.canSkip ? (

@@ -78,3 +78,21 @@
   background-color: #ffffff;
   padding: 5px 10px 5px 15px !important;
 }
+
+@media (max-width: 767px) {
+  .subscription {
+    flex-flow: column;
+    align-items: flex-start;
+  }
+  .detail {
+    flex-flow: column;
+    align-items: center;
+  }
+  .detailContent {
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .editProduct button {
+    margin-left: 0;
+  }
+}
