@@ -86,7 +86,7 @@ const ModalChangeSize = ({ addressId, openModalChangeExtra, setLoading, setOpenM
                     >
                     {extraProducts.map((product, index) => {
                       return (
-                        <div key={CHOOSE_VARIANT + product.id} className="b-variant-item col-6 col-lg-4">
+                        <div key={CHOOSE_VARIANT + product.id} className={`b-variant-item col-6 col-lg-4 ${product.available ? '' : 'disabled'}`}>
                           <div className="step-variant js-step-item mb-4">
                             <div
                               className="step-item__image "

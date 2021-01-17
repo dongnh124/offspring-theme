@@ -10,6 +10,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
+  width: 220px;
 }
 .sidebar ul {
   list-style: none;
@@ -20,8 +21,12 @@
   cursor: pointer;
 }
 .sidebar ul li:hover, .sidebar ul li:global(.active) {
-  background-color: #00a98d;
-  color: #ffffff;
+  color: #000000;
+  font-weight: 600;
+}
+.sidebar li a {
+  color: #656666 !important;
+  transition: none !important;
 }
 
 .content {
@@ -50,6 +55,7 @@
   }
   .sidebar {
     border-top: 1px solid rgb(88, 88, 88);
+    width: 100%;
   }
   .sidebar ul {
     padding-inline-start: 0;

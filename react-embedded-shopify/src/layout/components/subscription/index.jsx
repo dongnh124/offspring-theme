@@ -220,7 +220,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
         <div className={`${styles.manage}`}>
           {subscriptions.find(c => c.address_id === address).next_charge_scheduled_at
             ? (
-              <div>
+              <div className={`${styles.shipment}`}>
                 <div>Next shipment</div>
                 <div>{new Date(subscriptions.find(c => c.address_id === address).next_charge_scheduled_at).toLocaleDateString('en-US', FOTMAT_DATE)}</div>
                 <div>Delivery every {subscriptions.find(c => c.address_id === address).order_interval_frequency} {subscriptions.find(c => c.address_id === address).order_interval_unit}s</div>
@@ -283,7 +283,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
 
           {subscriptionByAddress && subscriptionByAddress.canSkip ? (
             <div className={`skip ${styles.actionItem}`}>
-              <div className={`${styles.actionDescription}`}>Content of action Skip</div>
+              <div className={`${styles.actionDescription}`}>Skip next shipment</div>
               <button
                 className='btn btn-theme'
                 onClick={handleSkip}
@@ -301,7 +301,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
 
           {subscriptionByAddress && subscriptionByAddress.status === ACTIVE_SUBSCRIPTION_STATUS ? (
             <div className={`pause ${styles.actionItem}`}>
-              <div className={`${styles.actionDescription}`}>Content of action Pause</div>
+              <div className={`${styles.actionDescription}`}>Pause this subscription</div>
               <button
                 className='btn btn-theme'
                 onClick={handlePause}
@@ -319,7 +319,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
 
           {subscriptionByAddress && subscriptionByAddress.status === CANCELED_SUBSCRIPTION_STATUS ? (
             <div className={`pause ${styles.actionItem}`}>
-              <div className={`${styles.actionDescription}`}>Content of action Resume</div>
+              <div className={`${styles.actionDescription}`}>Continue subscription</div>
               <button
                 className='btn btn-theme'
                 onClick={handleResume}
@@ -336,7 +336,7 @@ const Subscription = ({ subscriptions, refetch, setLoading }) => {
           )}
 
           <div className={`cancel ${styles.actionItem}`}>
-            <div className={`${styles.actionDescription}`}>Content of action Cancel</div>
+            <div className={`${styles.actionDescription}`}>Cancel subscription</div>
             <button
               className='btn btn-theme'
               onClick={handleCancel}

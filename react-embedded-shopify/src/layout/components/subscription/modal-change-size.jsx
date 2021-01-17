@@ -165,7 +165,7 @@ const ModalChangeSize = ({ addressId, openModalChangeSize, setLoading, setOpenMo
                     <div className="row">
                       {diaperProducts.filter(c => sizeType.includes(c.type.toLowerCase())).map(product => (
                         <div key={CHOOSE_PRODUCT + product.id} className="col-6 col-lg-3">
-                          <div className={`step-product js-step-item mb-5 product-type-${sizeType} ${sizeType === TYPE_MIX && (diaperProducts.filter(c => c.quantity).length >= 2 || diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0) === maxQuantity) && !product.quantity && 'disabled'} ${sizeType !== TYPE_MIX && product.quantity && 'active'}`}
+                          <div className={`step-product ${product.available ? '' : 'disabled'} js-step-item mb-5 product-type-${sizeType} ${sizeType === TYPE_MIX && (diaperProducts.filter(c => c.quantity).length >= 2 || diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0) === maxQuantity) && !product.quantity && 'disabled'} ${sizeType !== TYPE_MIX && product.quantity && 'active'}`}
                             onClick={() => {
                               if (sizeType === TYPE_MIX) {
                                 const currentQuantity = diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0)

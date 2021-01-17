@@ -95,4 +95,11 @@
   .editProduct button {
     margin-left: 0;
   }
+  .manage {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .shipment {
+    flex-basis: 80%;
+  }
 }
