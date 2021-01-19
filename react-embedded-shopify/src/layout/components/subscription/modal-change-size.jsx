@@ -24,7 +24,7 @@ const clearSelection = () => {
 const ModalChangeSize = ({ addressId, openModalChangeSize, setLoading, setOpenModalChangeSize, refetch }) => {
   const [sizeChange, setSizeChange] = useState([])
   const [sizeType, setSizeType] = useState(TYPE_DIAPER)
-  const [extraChange, setExtraChange] = useState([])
+  const [maxQuantity, setMaxQuantity] = useState(diaperMaxQuantity)
   const [diaperProducts, setDiaperProducts] = useState(diaperProductsRaw.map(c => ({
     ...c,
     quantity: 0,
@@ -43,6 +43,8 @@ const ModalChangeSize = ({ addressId, openModalChangeSize, setLoading, setOpenMo
     })))
     setShowVariantsOfSecondProduct(false)
     setIsDisabledStep(true)
+    setSizeType(TYPE_DIAPER)
+    setMaxQuantity(diaperMaxQuantity)
   }, [openModalChangeSize])
   const getTotalVariants = () => {
     const currentQuantity = diaperProducts
@@ -89,6 +91,9 @@ const ModalChangeSize = ({ addressId, openModalChangeSize, setLoading, setOpenMo
       variants: c.variants.map(d => ({ ...d, quantity: 0 })),
     })))
     setIsDisabledStep(true)
+    if (e.target.value === TYPE_DIAPER) setMaxQuantity(diaperMaxQuantity)
+    if (e.target.value === TYPE_PANTS) setMaxQuantity(trainingMaxQuantity)
+    if (e.target.value === TYPE_MIX) setMaxQuantity(diaperMaxQuantity)
   }
   return (
     <Modal
@@ -165,7 +170,7 @@ const ModalChangeSize = ({ addressId, openModalChangeSize, setLoading, setOpenMo
                     <div className="row">
                       {diaperProducts.filter(c => sizeType.includes(c.type.toLowerCase())).map(product => (
                         <div key={CHOOSE_PRODUCT + product.id} className="col-6 col-lg-3">
-                          <div className={`step-product ${product.available ? '' : 'disabled'} js-step-item mb-5 product-type-${sizeType} ${sizeType === TYPE_MIX && (diaperProducts.filter(c => c.quantity).length >= 2 || diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0) === maxQuantity) && !product.quantity && 'disabled'} ${sizeType !== TYPE_MIX && product.quantity && 'active'}`}
+                          <div className={`step-product js-step-item mb-5 ${product.available ? '' : 'disabled'} product-type-${sizeType} ${sizeType === TYPE_MIX && (diaperProducts.filter(c => c.quantity).length >= 2 || diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0) === maxQuantity) && !product.quantity && 'disabled'} ${sizeType !== TYPE_MIX && product.quantity && 'active'}`}
                             onClick={() => {
                               if (sizeType === TYPE_MIX) {
                                 const currentQuantity = diaperProducts.reduce((cur, acc) => cur += (acc.quantity || 0), 0)
